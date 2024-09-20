@@ -26,3 +26,5 @@ export const getCityFromAddress = (address: string) => {
 
   return `a ${city}`;
 };
+
+export const formatRestaurantName = (name: string) => name.toLowerCase().replace(' ', '-')

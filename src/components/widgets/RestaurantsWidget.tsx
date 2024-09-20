@@ -30,7 +30,7 @@ const RestaurantsWidget = () => {
   const restaurantCity = getCityFromAddress(selectedAddress!);
 
   return (
-    <div className="mt-5 px-16 home-widget">
+    <div className="px-16 home-widget">
       <h1 className="font-medium text-[30px]">Ristoranti {restaurantCity}</h1>
       <form className="my-5 search-restaurant-box" onSubmit={handleSubmit}>
         <div className="flex items-center gap-2 pl-2 w-full max-w-[380px] relative">

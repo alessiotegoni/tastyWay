@@ -25,7 +25,7 @@ const Restaurants = () => {
   return (
     <section className="all-restaurants">
       <Navbar pageNum={3} />
-      <main className="flex flex-col items-center">
+      <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
         {/* TODO: filter element with dropdow */}
         {data && <RestaurantsList data={data} />}
