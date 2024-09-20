@@ -1,4 +1,4 @@
-export type AllRestaurantsType = {
+export type RestaurantsType = {
   _id: string;
   address: string;
   name: string;
@@ -12,7 +12,7 @@ export type AllRestaurantsType = {
 
 export type RestaurantsRes = {
   nextCursos: string | null;
-  restaurants: AllRestaurantsType[];
+  restaurants: RestaurantsType[];
 };
 
 // export enum FoodType {
@@ -75,7 +75,7 @@ export type FoodFilters = {
   value: FoodType;
 };
 
-export type RestaurantType =
+export type RestaurantTypeFilter =
   | "cheap"
   | "expensive"
   | "top_rated"
@@ -86,5 +86,5 @@ export type RestaurantType =
 export type RestaurantFilters = {
   name: string | null;
   foodType: FoodType[] | null;
-  restaurantType: RestaurantType[] | null;
+  restaurantType: RestaurantTypeFilter[] | null;
 };

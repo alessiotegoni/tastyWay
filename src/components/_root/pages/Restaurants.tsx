@@ -1,3 +1,4 @@
+import RestaurantsList from "@/components/custom/restaurants/RestaurantsList";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
 import { useAddress } from "@/contexts/AddressContext";
@@ -12,7 +13,7 @@ const Restaurants = () => {
 
   console.log(selectedAddress);
 
-  const { data, error, isError, fetchNextPage } = useGetRestaurants(
+  const { data, error, isError, isLoading, fetchNextPage } = useGetRestaurants(
     selectedAddress,
     filters
   );
@@ -20,13 +21,14 @@ const Restaurants = () => {
   useEffect(() => {
     return () => removeFilters();
   }, []);
-  console.log(data);
 
   return (
     <section className="all-restaurants">
       <Navbar pageNum={3} />
       <main className="flex flex-col items-center">
         <RestaurantsWidget />
+        {/* TODO: filter element with dropdow */}
+        {data && <RestaurantsList data={data} />}
       </main>
     </section>
   );
