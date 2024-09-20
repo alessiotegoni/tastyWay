@@ -1,0 +1,216 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-color: #ed5500;
+
+    /* Home widget */
+    --home-widget-background: linear-gradient(
+      to top right,
+      rgba(237, 85, 0, 0.26) 0%,
+      rgba(10, 3, 0, 0.26) 100%
+    );
+
+    --home-dropdown-background: linear-gradient(
+      to top right,
+      rgba(237, 85, 0, 1) 0%,
+      rgba(255, 76, 0, 0.7) 100%
+    );
+
+    --home-widget-border: #fc5b00;
+
+    /* Searchbar */
+    --searchbar-color: #8a7575;
+
+    /* Button for location */
+    --location-button-background: linear-gradient(
+      to right,
+      rgba(0, 136, 235, 0.64) 0%,
+      rgba(0, 77, 133, 1) 100%
+    );
+
+    --location-button-border: #3787ff;
+
+    /* X icon for address deletion */
+    --x-icon-background: #ff0000;
+
+    @apply font-inter text-white;
+  }
+
+  section {
+    @apply min-h-screen font-bold p-5 sm:p-9;
+  }
+
+  button {
+    transition: all 0.1s ease;
+    @apply active:scale-95;
+  }
+}
+
+@layer components {
+  .bg-home {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
+      url("/imgs/home-bg.png") no-repeat;
+    background-size: cover;
+    background-position: 50% 90%;
+  }
+
+  .bg-auth {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("/imgs/auth-bg.png") no-repeat;
+    background-size: cover;
+    background-position: 50% 90%;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center gap-2;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .login-btn {
+    @apply rounded-[47px] border border-primary-80
+    font-bold text-[17px] w-[100px] h-[45px] sm:w-[123px] sm:h-[45px];
+  }
+
+  .logout-btn {
+    @apply m-2 mt-3 gap-3 bg-[#ed00009c]
+    border border-[#ed0000cf] rounded-[8px] cursor-pointer
+    hover:bg-[#ed0000];
+  }
+
+  .user-btn-bg {
+    background: linear-gradient(
+      to top right,
+      rgba(252, 91, 0, 0.65) 0%,
+      rgba(150, 54, 0, 0.2) 100%
+    );
+    backdrop-filter: blur(33px);
+  }
+
+  .user-btn-bg:not(.dropdown):hover {
+    background: linear-gradient(
+      to top right,
+      rgba(252, 91, 0, 1) 0%,
+      rgba(150, 54, 0, 0.2) 100%
+    );
+  }
+
+  .user-btn {
+    @apply gap-[11px] flex-center
+    py-2 px-8 rounded-[33px]
+    border border-primary-80
+    outline-none;
+  }
+
+  .nav-btn {
+    @apply flex-center gap-[10px] py-3 px-5 bg-home-widget-border-50
+    rounded-[34px] border border-home-widget-border font-semibold
+    hover:bg-home-widget-border-80 transition-all;
+  }
+
+  .home-widget {
+    @apply w-full px-5 py-5 rounded-[30px] bg-home-widget
+    border border-primary-10 sm:w-[600px] backdrop-blur-[123px]
+    flex flex-col text-center;
+  }
+
+  .home-widget-bg {
+    @apply bg-home-widget backdrop-blur-[123px];
+  }
+
+  .location-dropdown {
+    @apply absolute bg-home-dropdown rounded-[16px] w-full
+    min-h-[173px] max-h-[240px] z-50
+      left-1/2 top-[120%] -translate-x-1/2 backdrop-blur-3xl
+      border border-home-widget-border-20 overflow-auto
+     has-[.animate-pulse]:space-y-1 opacity-0 isolate;
+  }
+  /* scrollbar.css */
+  /* Stile per la barra di scorrimento */
+  .location-dropdown::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Stile per il track (sfondo della scrollbar) */
+  .location-dropdown::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Stile per il thumb (parte scorrevole) */
+  .location-dropdown::-webkit-scrollbar-thumb {
+    @apply rounded-[6px] bg-home-widget-border;
+  }
+
+  /* Stile per il thumb quando viene attivato al passaggio del mouse */
+  .location-dropdown::-webkit-scrollbar-thumb:hover {
+    @apply cursor-pointer bg-primary;
+  }
+
+  .location-suggest {
+    @apply flex items-center gap-[10px] hover:underline
+    cursor-pointer rounded-lg my-2 last:mb-0;
+  }
+
+  .search-restaurant-box {
+    @apply flex w-full self-center md:self-auto md:max-w-none
+    items-center justify-between gap-2 bg-searchbar-40 border
+    border-white/10 rounded-[12px] p-[4px];
+  }
+
+  .widget-input {
+    @apply text-white placeholder:text-white/80 font-medium
+    bg-transparent w-full;
+  }
+
+  .search-btn {
+    @apply bg-primary text-[13px] h-[45px] font-semibold w-[88px] rounded-[9px]
+    min-w-[80px];
+  }
+
+  .use-location-btn {
+    @apply flex items-center gap-2 bg-location-btn opacity-80 border
+    border-location-btn-border-40 rounded-[10px] mt-[15px] cursor-pointer
+    p-[6px] self-center hover:opacity-100 transition-all;
+  }
+
+  .x-icon {
+    @apply bg-x-icon-bg-60 border border-x-icon-bg-40
+    w-[20px] h-[20px] absolute -right-8 top-[50%]
+    -translate-y-[50%] rounded-full
+    justify-center items-center cursor-pointer;
+  }
+
+  .carousel-btn {
+    @apply transition-colors bg-home-widget-border-30 border
+    border-home-widget-border-40 hover:bg-home-widget-border-80
+    disabled:hidden
+  }
+
+  .food-filter {
+    @apply border border-primary-30 w-[80px] h-[80px] rounded-full
+    transition-all flex justify-center items-center group-hover:bg-home-widget-border-80;
+  }
+
+  .signin-form-input {
+    @apply border border-primary-90 bg-home-widget-border-10
+    rounded-[22px] px-[25px] py-[35px] hover:bg-home-widget-border-30
+     text-white placeholder:text-white/80 font-medium;
+  }
+
+  .signup-form-input {
+    @apply border border-primary-90 bg-home-widget-border-10
+    rounded-[22px] px-5 py-7 hover:bg-home-widget-border-30
+    text-white placeholder:text-white/80 font-medium;
+  }
+
+  .all-restaurants {
+    background: url("/imgs/restaurants-bg.png") 50% 90%;
+  }
+}

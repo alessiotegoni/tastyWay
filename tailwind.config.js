@@ -1,0 +1,88 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: ["class"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
+      colors: {
+        primary: {
+          DEFAULT: "var(--primary-color)",
+          90: "rgba(237, 85, 0, 0.9)",
+          80: "rgba(237, 85, 0, 0.8)",
+          70: "rgba(237, 85, 0, 0.7)",
+          60: "rgba(237, 85, 0, 0.6)",
+          50: "rgba(237, 85, 0, 0.5)",
+          40: "rgba(237, 85, 0, 0.4)",
+          30: "rgba(237, 85, 0, 0.3)",
+          20: "rgba(237, 85, 0, 0.2)",
+          10: "rgba(237, 85, 0, 0.1)",
+          0: "rgba(237, 85, 0, 0)",
+        },
+        "home-widget-border": {
+          DEFAULT: "var(--home-widget-border)",
+          90: "rgba(252, 91, 0, 0.9)",
+          80: "rgba(252, 91, 0, 0.8)",
+          70: "rgba(252, 91, 0, 0.7)",
+          60: "rgba(252, 91, 0, 0.6)",
+          50: "rgba(252, 91, 0, 0.5)",
+          40: "rgba(252, 91, 0, 0.4)",
+          30: "rgba(252, 91, 0, 0.3)",
+          20: "rgba(252, 91, 0, 0.2)",
+          10: "rgba(252, 91, 0, 0.1)",
+          0: "rgba(252, 91, 0, 0)",
+        },
+        searchbar: {
+          DEFAULT: "var(--searchbar-color)",
+          90: "rgba(138, 117, 117, 0.9)",
+          80: "rgba(138, 117, 117, 0.8)",
+          70: "rgba(138, 117, 117, 0.7)",
+          60: "rgba(138, 117, 117, 0.6)",
+          50: "rgba(138, 117, 117, 0.5)",
+          40: "rgba(138, 117, 117, 0.4)",
+          30: "rgba(138, 117, 117, 0.3)",
+          20: "rgba(138, 117, 117, 0.2)",
+          10: "rgba(138, 117, 117, 0.1)",
+          0: "rgba(138, 117, 117, 0)",
+        },
+        "location-btn-border": {
+          DEFAULT: "var(--location-button-border)",
+          90: "rgba(55, 135, 255, 0.9)",
+          80: "rgba(55, 135, 255, 0.8)",
+          70: "rgba(55, 135, 255, 0.7)",
+          60: "rgba(55, 135, 255, 0.6)",
+          50: "rgba(55, 135, 255, 0.5)",
+          40: "rgba(55, 135, 255, 0.4)",
+          30: "rgba(55, 135, 255, 0.3)",
+          20: "rgba(55, 135, 255, 0.2)",
+          10: "rgba(55, 135, 255, 0.1)",
+          0: "rgba(55, 135, 255, 0)",
+        },
+        "x-icon-bg": {
+          DEFAULT: "var(--x-icon-background)",
+          90: "rgba(255, 0, 0, 0.9)",
+          80: "rgba(255, 0, 0, 0.8)",
+          70: "rgba(255, 0, 0, 0.7)",
+          60: "rgba(255, 0, 0, 0.6)",
+          50: "rgba(255, 0, 0, 0.5)",
+          40: "rgba(255, 0, 0, 0.4)",
+          30: "rgba(255, 0, 0, 0.3)",
+          20: "rgba(255, 0, 0, 0.2)",
+          10: "rgba(255, 0, 0, 0.1)",
+          0: "rgba(255, 0, 0, 0)",
+        },
+      },
+      backgroundImage: {
+        'home-widget': 'var(--home-widget-background)',
+        'home-dropdown': 'var(--home-dropdown-background)',
+        'location-btn': 'var(--location-button-background)',
+      },
+      screens: {
+        xs: 480
+      }
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+};
