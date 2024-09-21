@@ -7,7 +7,6 @@ interface RestaurantItemProps {
 }
 
 const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
-  console.log(restaurant);
 
   const navigate = useNavigate();
 
