@@ -25,6 +25,8 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
 
   const handleNavigate = () => navigate(`/restaurants/${restaurantName}`);
 
+  // FIXME: switch heart icon with like thumb icon
+
   return (
     <li
       className="flex justify-between m-4 relative restaurant-separator"
@@ -38,7 +40,7 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
           />
         </figure>
         <div className="">
-          <figcaption className="text-[26px]">{restaurant.name}</figcaption>
+          <figcaption className="text-[26px] font-semibold">{restaurant.name}</figcaption>
           <ul className="flex items-center gap-2 my-4">{restaurantCuisine}</ul>
         </div>
       </div>

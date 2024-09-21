@@ -13,7 +13,7 @@ const Restaurants = () => {
 
   console.log(selectedAddress);
 
-  const { data, error, isError, isLoading, fetchNextPage } = useGetRestaurants(
+  const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
     selectedAddress,
     filters
   );
@@ -28,7 +28,7 @@ const Restaurants = () => {
       <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
         {/* TODO: filter element with dropdow */}
-        {data && <RestaurantsList data={data} />}
+        <RestaurantsList data={data} isFetching={isFetching}  />
       </main>
     </section>
   );
