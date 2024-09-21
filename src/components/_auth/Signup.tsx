@@ -17,7 +17,7 @@ const Signup = () => {
     <section className="bg-auth flex flex-col items-center gap-5 pb-0">
       <Navbar pageNum={2} />
       <main
-        className="home-widget-bg
+        className="primary-widget-bg
       mx-auto w-full max-w-[650px] rounded-[69px]
       flex flex-col items-center border border-primary-20"
       >

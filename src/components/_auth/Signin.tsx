@@ -27,7 +27,7 @@ const Signin = () => {
     <section className="bg-auth flex flex-col items-center gap-5 pt-[80px]">
       <Navbar pageNum={1} />
       <main
-        className="home-widget-bg
+        className="primary-widget-bg
       mx-auto w-full max-w-[540px] rounded-[69px]
       flex flex-col items-center border border-primary-20"
       >
