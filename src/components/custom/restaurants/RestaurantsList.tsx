@@ -11,8 +11,8 @@ const RestaurantsList = ({ data }: RestaurantsListProps) => {
 
   return (
     <div className="primary-widget-bg w-[900px]
-    rounded-[30px]">
-      <ul className="max-h-[450px] overflow-auto p-4 flex flex-col gap-4">
+    rounded-[30px] overflow-hidden">
+      <ul className="restaurants__list">
         {restaurants.map((r) => (
           <RestaurantItem key={r._id} restaurant={r} />
         ))}

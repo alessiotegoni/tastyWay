@@ -11,7 +11,7 @@ const AuthNav = ({ to }: AuthNavProps) => {
     <header className="w-full flex-center">
       <nav
         className="flex-center gap-4 rounded-[30px] py-4 px-5
-primary-widget-bg border border-primary-20"
+                  primary-widget-bg border border-primary-20"
       >
         <Link to="/" className="nav-btn">
           <img src="/icons/home-icon.png" alt="home-icon" />

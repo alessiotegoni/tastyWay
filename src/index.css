@@ -5,7 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-
   :root {
     --primary-color: #ed5500;
 
@@ -133,7 +132,7 @@
       border border-home-widget-border-20 overflow-auto
      has-[.animate-pulse]:space-y-1 opacity-0 isolate;
   }
-  /* scrollbar.css */
+
   /* Stile per la barra di scorrimento */
   .location-dropdown::-webkit-scrollbar {
     width: 5px;
@@ -191,7 +190,7 @@
   .carousel-btn {
     @apply transition-colors bg-home-widget-border-30 border
     border-home-widget-border-40 hover:bg-home-widget-border-80
-    disabled:hidden
+    disabled:hidden;
   }
 
   .food-filter {
@@ -213,5 +212,39 @@
 
   .all-restaurants {
     background: url("/imgs/restaurants-bg.png") 50% 90%;
+  }
+
+  .restaurant-deliveryinfo {
+    @apply px-3 py-[5px] rounded-[30px]
+    border flex-center gap-2;
+  }
+
+  .restaurant-separator {
+    @apply first:before:hidden before:h-[1px] before:w-[calc(100%+32px)]
+    before:absolute before:-top-4 before:left-1/2 before:-translate-x-1/2
+    before:bg-white/10;
+  }
+
+  .restaurants__list {
+    @apply max-h-[450px] overflow-auto flex flex-col
+  }
+
+  .restaurants__list::-webkit-scrollbar {
+    @apply w-[5px]
+  }
+
+  /* Stile per il track (sfondo della scrollbar) */
+  .restaurants__list::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Stile per il thumb (parte scorrevole) */
+  .restaurants__list::-webkit-scrollbar-thumb {
+    @apply rounded-[6px] primary-widget-bg;
+  }
+
+  /* Stile per il thumb quando viene attivato al passaggio del mouse */
+  .restaurants__list::-webkit-scrollbar-thumb:hover {
+    @apply cursor-pointer bg-primary-60;
   }
 }
