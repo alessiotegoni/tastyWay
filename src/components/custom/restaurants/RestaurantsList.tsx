@@ -7,9 +7,11 @@ import RestaurantItem from "./RestaurantItem";
 import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { AxiosError } from "axios";
 
 interface RestaurantsListProps {
   data: InfiniteData<RestaurantsRes> | undefined;
+  error: AxiosError<unknown, any> | null;
   isFetching: boolean;
   fetchNextPage: () => Promise<
     InfiniteQueryObserverResult<InfiniteData<RestaurantsRes>>
@@ -18,10 +20,11 @@ interface RestaurantsListProps {
 
 const RestaurantsList = ({
   data,
+  error,
   isFetching,
   fetchNextPage,
 }: RestaurantsListProps) => {
-  const { inView, ref } = useInView({ triggerOnce: false, threshold: 0.5 });
+  const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
   const restaurants = data?.pages.flatMap((p) => p.restaurants) ?? [];
   const skeletons = Array.from({ length: 3 }, (_, i) => (
@@ -40,7 +43,7 @@ const RestaurantsList = ({
         ));
 
   useEffect(() => {
-    if (inView && !isFetching) fetchNextPage();
+    if (inView && !isFetching && !error) fetchNextPage();
   }, [inView, isFetching]);
 
   return (

@@ -19,6 +19,8 @@ const Restaurants = () => {
     return () => removeFilters();
   }, []);
 
+  // TODO: add error widget
+
   return (
     <section className="all-restaurants">
       <Navbar pageNum={3} />
@@ -27,6 +29,7 @@ const Restaurants = () => {
         <FiltersDropdown />
         <RestaurantsList
           data={data}
+          error={error}
           isFetching={isFetching}
           fetchNextPage={fetchNextPage}
         />
