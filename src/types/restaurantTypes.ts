@@ -11,7 +11,7 @@ export type RestaurantsType = {
 };
 
 export type RestaurantsRes = {
-  nextCursos: string | null;
+  nextCursor: string | null;
   restaurants: RestaurantsType[];
 };
 

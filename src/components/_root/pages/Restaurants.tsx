@@ -12,19 +12,12 @@ const Restaurants = () => {
 
   const { filters, removeFilters } = useRestaurantFilters();
 
-  console.log(selectedAddress);
-
-  const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
-    selectedAddress,
-    filters
-  );
+  const { data, error, isError, isFetching, fetchNextPage, hasNextPage } =
+    useGetRestaurants(selectedAddress, filters);
 
   useEffect(() => {
     return () => removeFilters();
   }, []);
-
-  console.log(data);
-
 
   return (
     <section className="all-restaurants">

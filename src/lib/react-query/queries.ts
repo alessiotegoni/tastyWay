@@ -49,7 +49,7 @@ export const useGetRestaurants = (
     queryKey: ["restaurants", address, filters],
     queryFn: ({ pageParam }) => getRestaurants(address!, pageParam, filters),
     enabled: !!address,
-    getNextPageParam: (lastPage) => lastPage.nextCursos,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
     retry: 1,
   });
