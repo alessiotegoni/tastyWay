@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 interface RestaurantItemProps {
   restaurant: RestaurantsType;
+  observerRef?: (node?: Element | null) => void | undefined;
 }
 
-const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
-
+const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
   const navigate = useNavigate();
 
   const restaurantName = formatRestaurantName(restaurant.name);
@@ -29,6 +29,7 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
   return (
     <li
       className="flex justify-between m-4 relative restaurant-separator"
+      ref={observerRef}
     >
       <div className="col-left flex gap-4">
         <figure className="w-[260px] h-[140px]">
@@ -39,7 +40,9 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
           />
         </figure>
         <div className="">
-          <figcaption className="text-[26px] font-semibold">{restaurant.name}</figcaption>
+          <figcaption className="text-[26px] font-semibold">
+            {restaurant.name}
+          </figcaption>
           <ul className="flex items-center gap-2 my-4">{restaurantCuisine}</ul>
         </div>
       </div>

@@ -23,13 +23,20 @@ const Restaurants = () => {
     return () => removeFilters();
   }, []);
 
+  console.log(data);
+
+
   return (
     <section className="all-restaurants">
       <Navbar pageNum={3} />
       <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
         <FiltersDropdown />
-        <RestaurantsList data={data} isFetching={isFetching} />
+        <RestaurantsList
+          data={data}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        />
       </main>
     </section>
   );

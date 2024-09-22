@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { getMyAddress, getRestaurants, refreshToken } from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
-import { RestaurantsRes, RestautantFilters } from "@/types/restaurantTypes";
+import { RestaurantsRes, RestaurantFilters } from "@/types/restaurantTypes";
 import { AxiosError } from "axios";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
@@ -41,7 +41,7 @@ export const useRefreshToken = () => {
 
 export const useGetRestaurants = (
   address: string | null,
-  filters: RestautantFilters
+  filters: RestaurantFilters
 ) => {
   const queryClient = useQueryClient();
 

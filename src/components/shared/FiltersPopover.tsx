@@ -46,8 +46,7 @@ const restaurantsFilters = [
 ];
 
 export const FiltersPopover = () => {
-  const { setRestaurantTypeFilter, removeFilters, filters } =
-    useRestaurantFilters();
+  const { setRestaurantTypeFilter, removeFilters } = useRestaurantFilters();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
