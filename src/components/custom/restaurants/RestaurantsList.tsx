@@ -22,7 +22,7 @@ const RestaurantsList = ({ data, isFetching }: RestaurantsListProps) => {
 
   return (
     <div
-      className="primary-widget-bg w-[900px]
+      className="primary-widget-bg border border-primary-30 w-[900px]
     rounded-[30px] overflow-hidden"
     >
       <ul className="restaurants__list">{content}</ul>

@@ -29,7 +29,6 @@ const Restaurants = () => {
       <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
         <FiltersDropdown />
-        {/* TODO: filter element with dropdow */}
         <RestaurantsList data={data} isFetching={isFetching} />
       </main>
     </section>

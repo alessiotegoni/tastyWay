@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +15,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useEffect, useState } from "react";
+import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 
 const restaurantsFilters = [
   {
@@ -47,10 +46,27 @@ const restaurantsFilters = [
 ];
 
 export const FiltersPopover = () => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const { setRestaurantTypeFilter, removeFilters, filters } =
+    useRestaurantFilters();
 
-  // FIXME: dropwdown colors and logic
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  // FIXME: add icons to popover content
+
+  const handleSelect = (currentValue: string) => {
+    setRestaurantTypeFilter([currentValue]);
+    setValue(currentValue === value ? "" : currentValue);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (!value) removeFilters();
+  }, [value]);
+
+  const currentFilter = value
+    ? restaurantsFilters.find((filter) => filter.value === value)?.label
+    : "Filtra";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -68,26 +84,22 @@ export const FiltersPopover = () => {
             width={25}
             height={25}
           />
-          {value
-            ? restaurantsFilters.find((filter) => filter.value === value)?.label
-            : "Filtra"}
+          {currentFilter}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent
+        className="w-[200px] p-4 rounded-[30px] bg-home-dropdown
+       mt-2 backdrop-blur-[130px] border-home-widget-border-30 border-t-0"
+      >
         <Command>
-          <CommandInput placeholder="Cerca filtro..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No filter found.</CommandEmpty>
             <CommandGroup>
               {restaurantsFilters.map((filter) => (
                 <CommandItem
                   key={filter.value}
                   value={filter.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
+                  onSelect={handleSelect}
                 >
                   {filter.label}
                   <CheckIcon
