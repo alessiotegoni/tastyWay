@@ -6,7 +6,6 @@ import {
 import { getMyAddress, getRestaurants, refreshToken } from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
 import { RestaurantsRes, RestaurantFilters } from "@/types/restaurantTypes";
-import { AxiosError } from "axios";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -42,10 +41,8 @@ export const useRefreshToken = () => {
 export const useGetRestaurants = (
   address: string | null,
   filters: RestaurantFilters
-) => {
-  const queryClient = useQueryClient();
-
-  return useInfiniteQuery<RestaurantsRes, AxiosError>({
+) =>
+  useInfiniteQuery<RestaurantsRes, ApiError>({
     queryKey: ["restaurants", address, filters],
     queryFn: ({ pageParam }) => getRestaurants(address!, pageParam, filters),
     enabled: !!address,
@@ -53,4 +50,3 @@ export const useGetRestaurants = (
     initialPageParam: null,
     retry: 1,
   });
-};
