@@ -1,4 +1,4 @@
-import { btn, ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
+import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
 import { ApiError } from "@/types/apiTypes";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";

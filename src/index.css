@@ -51,6 +51,20 @@
   }
 }
 
+@layer utilities {
+  .flex-between {
+    @apply flex justify-between items-center gap-2;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .bg-img {
+    @apply fixed inset-0 w-full h-full -z-10;
+  }
+}
+
 @layer components {
   .bg-home {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
@@ -64,14 +78,6 @@
       url("/imgs/auth-bg.png") no-repeat;
     background-size: cover;
     background-position: 50% 90%;
-  }
-
-  .flex-between {
-    @apply flex justify-between items-center gap-2;
-  }
-
-  .flex-center {
-    @apply flex justify-center items-center;
   }
 
   .login-btn {
@@ -210,10 +216,6 @@
     text-white placeholder:text-white/80 font-medium;
   }
 
-  .all-restaurants {
-    background: url("/imgs/restaurants-bg.png") 50% 90%;
-  }
-
   .restaurant-deliveryinfo {
     @apply px-3 py-[5px] rounded-[30px]
     border flex-center gap-2;
@@ -226,11 +228,11 @@
   }
 
   .restaurants__list {
-    @apply max-h-[450px] overflow-auto flex flex-col
+    @apply overflow-auto flex flex-col;
   }
 
   .restaurants__list::-webkit-scrollbar {
-    @apply w-[5px]
+    @apply w-[5px];
   }
 
   /* Stile per il track (sfondo della scrollbar) */

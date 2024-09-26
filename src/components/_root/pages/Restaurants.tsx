@@ -1,5 +1,5 @@
 import RestaurantsList from "@/components/custom/restaurants/RestaurantsList";
-import FiltersDropdown from "@/components/shared/FiltersPopover";
+import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
@@ -41,6 +41,11 @@ const Restaurants = () => {
 
   return (
     <section className="all-restaurants">
+      <img
+        src="/imgs/restaurants-bg.png"
+        alt="restaurants-bg-img"
+        className="bg-img"
+      />
       <Navbar pageNum={3} />
       <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
@@ -48,7 +53,7 @@ const Restaurants = () => {
         {isError && <ErrorWidget {...invalidAddressErrProps} />}
         {canShowRestaurants && (
           <>
-            {!isFetching && <FiltersDropdown />}
+            <FiltersPopover />
             <div
               className="primary-widget-bg border border-primary-20 min-w-[900px]
         rounded-[30px] overflow-hidden"

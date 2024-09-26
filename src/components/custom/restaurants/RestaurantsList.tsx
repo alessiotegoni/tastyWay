@@ -20,9 +20,9 @@ const RestaurantsList = ({
 }: RestaurantsListProps) => {
   const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
-  // useEffect(() => {
-  //   if (inView && !isFetching && !error) fetchNextPage();
-  // }, [inView, isFetching]);
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView]);
 
   return restaurants.map((r, i) => (
     <RestaurantItem

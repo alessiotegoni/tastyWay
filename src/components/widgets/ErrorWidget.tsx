@@ -38,7 +38,8 @@ const ErrorWidget = ({
       <Button
         key={btn.id}
         onClick={handleClick}
-        className={`font-semibold flex-center gap-2 py-4 px-6 rounded-[30px] ${
+        className={`font-semibold flex-center gap-2 py-4 px-6 rounded-[30px]
+          w-full max-w-[230px] ${
           btn.className ?? ""
         }`}
       >

@@ -15,8 +15,14 @@ import {
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
+import { RestaurantTypeFilter } from "@/types/restaurantTypes";
 
-const restaurantsFilters = [
+interface FiltersType {
+  value: RestaurantTypeFilter;
+  label: string;
+}
+
+const restaurantsFilters: FiltersType[] = [
   {
     value: "cheap",
     label: "Economico",
@@ -44,21 +50,22 @@ const restaurantsFilters = [
 ];
 
 export const FiltersPopover = () => {
-  const { setRestaurantTypeFilter, removeFilters } = useRestaurantFilters();
+  const { setRestaurantTypeFilter } = useRestaurantFilters();
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<RestaurantTypeFilter | "">("");
 
   // FIXME: add icons to popover content
 
-  const handleSelect = (currentValue: string) => {
+  const handleSelect = (value: string) => {
+    const currentValue = value as RestaurantTypeFilter;
     setRestaurantTypeFilter([currentValue]);
     setValue(currentValue === value ? "" : currentValue);
     setOpen(false);
   };
 
   useEffect(() => {
-    if (!value) removeFilters();
+    if (!value) setRestaurantTypeFilter([]);
   }, [value]);
 
   const currentFilter = value
