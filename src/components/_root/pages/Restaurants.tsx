@@ -1,12 +1,13 @@
 import RestaurantsList from "@/components/custom/restaurants/RestaurantsList";
 import FiltersDropdown from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
+import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
 import { useAddress } from "@/contexts/AddressContext";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { useGetRestaurants } from "@/lib/react-query/queries";
-import { getInvalidAddressErrProps } from "@/lib/utils";
+import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
 import { useEffect } from "react";
 
 const Restaurants = () => {
@@ -23,29 +24,49 @@ const Restaurants = () => {
     return () => removeFilters();
   }, []);
 
-  // TODO: add error widget
-
-  const invalidAddressProps = getInvalidAddressErrProps(
+  const invalidAddressErrProps = getInvalidAddressProps(
     removeSelectedAddress,
     error
   );
+
+  const noRestaurantsErrProps = getNoRestaurantsProps(
+    removeFilters,
+    removeSelectedAddress
+  );
+
+  const restaurants = data?.pages.flatMap((p) => p.restaurants) ?? [];
+
+  const noRestaurantsFound = !!!restaurants.length && !isFetching && !isError;
+  const canShowRestaurants = !isError && (isFetching || !!restaurants.length);
 
   return (
     <section className="all-restaurants">
       <Navbar pageNum={3} />
       <main className="flex flex-col items-center gap-3">
         <RestaurantsWidget />
-        {isError ? (
-          <ErrorWidget {...invalidAddressProps} />
-        ) : (
+        {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
+        {isError && <ErrorWidget {...invalidAddressErrProps} />}
+        {canShowRestaurants && (
           <>
-            <FiltersDropdown />
-            <RestaurantsList
-              data={data}
-              error={error}
-              isFetching={isFetching}
-              fetchNextPage={fetchNextPage}
-            />
+            {!isFetching && <FiltersDropdown />}
+            <div
+              className="primary-widget-bg border border-primary-20 min-w-[900px]
+        rounded-[30px] overflow-hidden"
+            >
+              <ul className="restaurants__list">
+                {isFetching && !!!restaurants.length ? (
+                  Array.from({ length: 5 }, (_, i) => (
+                    <RestaurantSkeleton key={i} />
+                  ))
+                ) : (
+                  <RestaurantsList
+                    restaurants={restaurants}
+                    // isFetching={isFetching}
+                    fetchNextPage={fetchNextPage}
+                  />
+                )}
+              </ul>
+            </div>
           </>
         )}
       </main>

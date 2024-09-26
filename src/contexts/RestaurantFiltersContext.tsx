@@ -1,6 +1,6 @@
 import {
   FoodType,
-  RestaurantType,
+  RestaurantTypeFilter,
   type RestaurantFilters,
 } from "@/types/restaurantTypes";
 import { createContext, ReactNode, useContext, useState } from "react";
@@ -9,7 +9,9 @@ interface RestaurantFiltersContext {
   filters: RestaurantFilters;
   setNameFilter: (name: string | null) => void;
   setFoodTypeFilter: (foodType: FoodType[] | null) => void;
-  setRestaurantTypeFilter: (restaurantType: RestaurantType[] | null) => void;
+  setRestaurantTypeFilter: (
+    restaurantType: RestaurantTypeFilter[] | null
+  ) => void;
   removeFilters: () => void;
 }
 
@@ -30,8 +32,9 @@ const RestaurantFiltersProvider = ({ children }: { children: ReactNode }) => {
   const setFoodTypeFilter = (foodType: FoodType[] | null) =>
     setFilters({ ...filters, foodType });
 
-  const setRestaurantTypeFilter = (restaurantType: RestaurantType[] | null) =>
-    setFilters({ ...filters, restaurantType });
+  const setRestaurantTypeFilter = (
+    restaurantType: RestaurantTypeFilter[] | null
+  ) => setFilters({ ...filters, restaurantType });
 
   const removeFilters = () => setFilters(restaurantFilters);
 

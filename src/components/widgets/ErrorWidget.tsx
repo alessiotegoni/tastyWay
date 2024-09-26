@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ApiError } from "@/types/apiTypes";
 
-interface btn {
+export interface btn {
+  id: string;
   value: string;
   icon: string;
   goto?: string;
@@ -10,7 +11,7 @@ interface btn {
   handleClick?: () => void;
 }
 
-interface ErrorWidgetProps {
+export interface ErrorWidgetProps {
   error?: ApiError | null;
   title?: string;
   subtitle: string;
@@ -25,26 +26,40 @@ const ErrorWidget = ({
   className,
   btns,
 }: ErrorWidgetProps) => {
-  const btnsEl = btns.map((btn) => (
-    <Link to={`/${btn.goto ?? ""}`}>
+  const navigate = useNavigate();
+
+  const btnsEl = btns.map((btn) => {
+    const handleClick = () => {
+      if (btn.handleClick) btn.handleClick();
+      if (btn.goto) navigate(btn.goto);
+    };
+
+    return (
       <Button
-        onClick={btn.handleClick}
+        key={btn.id}
+        onClick={handleClick}
         className={`font-semibold flex-center gap-2 py-4 px-6 rounded-[30px] ${
           btn.className ?? ""
         }`}
       >
-        <img src={`/icons/${btn.icon}.png`} alt={`${btn.value}-icon`} />
+        <img
+          src={`/icons/${btn.icon}.png`}
+          alt={`${btn.value}-icon`}
+          className="w-6 h-6"
+        />
         {btn.value}
       </Button>
-    </Link>
-  ));
+    );
+  });
 
   return (
     <div
-      className={`sm:w-[600px] sm:px-20 py-8 text-center ${className ?? ""}`}
+      className={`sm:w-[700px] sm:px-20 py-8 text-center ${className ?? ""}`}
     >
-      <h1 className="text-[30px]">{title}</h1>
-      <p className="font-normal mb-9 my-3">{subtitle}</p>
+      <h1 className="text-[29px]">{title}</h1>
+      <p className="font-normal mb-14 my-3 w-full mx-auto max-w-[510px]">
+        {subtitle}
+      </p>
       <div className={`flex-center ${btns.length > 1 ? "gap-6" : ""}`}>
         {btnsEl}
       </div>

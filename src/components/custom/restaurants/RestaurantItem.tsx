@@ -18,7 +18,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       className="py-2 px-5 bg-home-widget-border-40
       rounded-[40px] font-medium text-[12px]"
     >
-      {c}
+      {c.replace("_", " ")}
     </li>
   ));
 
