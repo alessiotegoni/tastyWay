@@ -40,42 +40,45 @@ const Restaurants = () => {
   const canShowRestaurants = !isError && (isFetching || !!restaurants.length);
 
   return (
-    <section className="all-restaurants">
-      <img
-        src="/imgs/restaurants-bg.png"
-        alt="restaurants-bg-img"
-        className="bg-img"
-      />
+    <div className="hero">
       <Navbar pageNum={3} />
-      <main className="flex flex-col items-center gap-3">
-        <RestaurantsWidget />
-        {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
-        {isError && <ErrorWidget {...invalidAddressErrProps} />}
-        {canShowRestaurants && (
-          <>
-            <FiltersPopover />
-            <div
-              className="primary-widget-bg border border-primary-20 min-w-[900px]
-        rounded-[30px] overflow-hidden"
-            >
-              <ul className="restaurants__list">
-                {isFetching && !!!restaurants.length ? (
-                  Array.from({ length: 5 }, (_, i) => (
-                    <RestaurantSkeleton key={i} />
-                  ))
-                ) : (
-                  <RestaurantsList
-                    restaurants={restaurants}
-                    // isFetching={isFetching}
-                    fetchNextPage={fetchNextPage}
-                  />
-                )}
-              </ul>
-            </div>
-          </>
-        )}
+      <main className="restaurants pt-0">
+        <img
+          src="/imgs/restaurants-bg.png"
+          alt="restaurants-bg-img"
+          className="bg-img"
+        />
+        <div className="container">
+          <div className="flex flex-col items-center gap-3">
+            <RestaurantsWidget />
+            {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
+            {isError && <ErrorWidget {...invalidAddressErrProps} />}
+            {canShowRestaurants && (
+              <>
+                <FiltersPopover />
+                <div
+                  className="primary-widget-bg border border-primary-20 min-w-[900px]
+                     rounded-[30px] overflow-hidden"
+                >
+                  <ul className="restaurants__list">
+                    {isFetching && !!!restaurants.length ? (
+                      Array.from({ length: 5 }, (_, i) => (
+                        <RestaurantSkeleton key={i} />
+                      ))
+                    ) : (
+                      <RestaurantsList
+                        restaurants={restaurants}
+                        fetchNextPage={fetchNextPage}
+                      />
+                    )}
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </main>
-    </section>
+    </div>
   );
 };
 export default Restaurants;

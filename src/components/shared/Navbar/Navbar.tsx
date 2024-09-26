@@ -30,7 +30,7 @@ const Navbar = ({ pageNum }: NavbarProps) => {
     <UserDropdown user={user} logoutFn={logout} />
   ) : (
     <Link to="/signin">
-      <Button className="login-btn user-btn-bg">Login</Button>
+      <Button className="btn login-btn user-btn-bg">Login</Button>
     </Link>
   );
 
@@ -39,15 +39,19 @@ const Navbar = ({ pageNum }: NavbarProps) => {
   switch (pageNum) {
     case PAGES.HOME:
       content = (
-        <header className="flex-between">
-          <Link to="/" className="-ml-10">
-            <img
-              src={tastyWayLogo}
-              alt="Tasty-way-logo"
-              className="w-[200px] h-[50px] md:w-[280px] md:h-[98px] object-cover"
-            />
-          </Link>
-          {navRigthBtn}
+        <header className="home-header">
+          <div className="container">
+            <div className="row flex-between">
+              <Link to="/">
+                <img
+                  src={tastyWayLogo}
+                  alt="Tasty-way-logo"
+                  className="w-[170px]"
+                />
+              </Link>
+              {navRigthBtn}
+            </div>
+          </div>
         </header>
       );
       break;
@@ -59,25 +63,27 @@ const Navbar = ({ pageNum }: NavbarProps) => {
       break;
     case PAGES.ALL_RESTAURANTS:
       content = (
-        <header className="flex-between">
-          <Link to="/" className="-ml-10">
-            <img
-              src={tastyWayLogo}
-              alt="Tasty-way-logo"
-              className="w-[200px] h-[50px] md:w-[280px] md:h-[98px] object-cover"
-            />
-          </Link>
-          <Link
-            to="/"
-            onClick={() => removeSelectedAddress()}
-            className="gap-3 py-3 px-5 border flex-center
-            bg-home-widget-border-30 border-primary-80
-            rounded-[50px] hover:bg-home-widget-border-80 transition-colors"
-          >
-            <img src="/icons/home-icon.png" alt="home-icon" />
-            <p>Home</p>
-          </Link>
-          {navRigthBtn}
+        <header className="restaurants-header">
+          <div className="container">
+            <div className="row flex-between">
+              <Link to="/">
+                <img
+                  src={tastyWayLogo}
+                  alt="Tasty-way-logo"
+                  className="w-[170px]"
+                />
+              </Link>
+              <Link
+                to="/"
+                onClick={() => removeSelectedAddress()}
+                className="btn home-btn"
+              >
+                <img src="/icons/home-icon.png" alt="home-icon" className="w-5 h-5" />
+                <p>Home</p>
+              </Link>
+              {navRigthBtn}
+            </div>
+          </div>
         </header>
       );
       break;

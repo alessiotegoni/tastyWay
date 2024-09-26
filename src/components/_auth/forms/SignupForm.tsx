@@ -1,4 +1,4 @@
-import { useFormContext, SubmitHandler, useWatch } from "react-hook-form";
+import { useFormContext, SubmitHandler } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -43,10 +43,7 @@ const SignupForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full px-6 pb-5 md:px-9 md:pb-8"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-3 my-5">
           <div className="gap-3 flex-between">
             <FormField

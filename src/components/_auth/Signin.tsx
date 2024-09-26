@@ -24,24 +24,24 @@ const Signin = () => {
   });
 
   return (
-    <section className="bg-auth flex flex-col items-center gap-5 pt-[80px]">
+    <div className="hero">
       <Navbar pageNum={1} />
-      <main
-        className="primary-widget-bg
-      mx-auto w-full max-w-[540px] rounded-[69px]
-      flex flex-col items-center border border-primary-20"
-      >
-        <img
-          src={tastyWayLogo}
-          alt="Tasty-way-logo"
-          className="text-center h-[155px] w-[396px] object-cover"
-        />
-        <h1 className="text-[42px] font-semibold">Login</h1>
-        <FormProvider {...methods}>
-          <SigninForm />
-        </FormProvider>
+      <main className="signin">
+        <div className="container">
+          <div className="col card">
+            <figure className="flex-center">
+              <img src={tastyWayLogo} alt="Tasty-way-logo" />
+            </figure>
+            <figcaption className="text-[42px] font-semibold mt-2">
+              Login
+            </figcaption>
+            <FormProvider {...methods}>
+              <SigninForm />
+            </FormProvider>
+          </div>
+        </div>
       </main>
-    </section>
+    </div>
   );
 };
 export default Signin;

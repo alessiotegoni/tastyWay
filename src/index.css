@@ -41,17 +41,17 @@
     @apply font-inter text-white;
   }
 
-  section {
-    @apply min-h-screen font-bold p-5 sm:p-9;
-  }
-
-  button {
-    transition: all 0.1s ease;
-    @apply active:scale-95;
+  header,
+  main {
+    @apply font-bold p-5 sm:p-9;
   }
 }
 
 @layer utilities {
+  .container {
+    @apply w-full mx-auto;
+  }
+
   .flex-between {
     @apply flex justify-between items-center gap-2;
   }
@@ -61,34 +61,78 @@
   }
 
   .bg-img {
-    @apply fixed inset-0 w-full h-full -z-10;
+    @apply fixed inset-0 w-full h-full -z-10
+    object-cover object-center;
   }
 }
 
 @layer components {
-  .bg-home {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
-      url("/imgs/home-bg.png") no-repeat;
-    background-size: cover;
-    background-position: 50% 90%;
+  .btn {
+    @apply rounded-[47px] font-bold active:scale-95
+    text-[17px] border border-primary-80 transition-all;
   }
 
-  .bg-auth {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      url("/imgs/auth-bg.png") no-repeat;
+  .hero {
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 90%;
+    min-height: 100dvh;
+  }
+
+  .hero:has(.home) {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
+      url("/imgs/home-bg.png");
+  }
+
+  .hero:has(.signin, .signup) {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("/imgs/auth-bg.png");
+  }
+
+  .home {
+    @apply md:pt-0;
+
+    .container {
+      @apply max-w-[600px];
+    }
+  }
+
+  .signin,
+  .signup {
+    @apply pt-0;
+
+    .container {
+      @apply max-w-[540px];
+    }
+
+    .card {
+      @apply primary-widget-bg rounded-[69px]
+      border border-primary-20 text-center
+      px-[33px] py-[30px] md:px-[50px] md:py-[40px];
+    }
+  }
+
+  .signup {
+    .container {
+      @apply max-w-[630px];
+    }
   }
 
   .login-btn {
-    @apply rounded-[47px] border border-primary-80
-    font-bold text-[17px] w-[100px] h-[45px] sm:w-[123px] sm:h-[45px];
+    @apply px-[32px] h-[45px] sm:px-[38px];
   }
 
   .logout-btn {
     @apply m-2 mt-3 gap-3 bg-[#ed00009c]
     border border-[#ed0000cf] rounded-[8px] cursor-pointer
     hover:bg-[#ed0000];
+  }
+
+  .home-btn {
+    @apply gap-3 flex-center
+    bg-home-widget-border-30
+    hover:bg-home-widget-border-80
+    px-6 h-[45px]
   }
 
   .user-btn-bg {
@@ -123,7 +167,7 @@
 
   .home-widget {
     @apply w-full px-5 py-5 rounded-[30px] bg-home-widget
-    border border-primary-10 sm:w-[600px] backdrop-blur-[123px]
+    border border-primary-10 backdrop-blur-[123px]
     flex flex-col text-center;
   }
 

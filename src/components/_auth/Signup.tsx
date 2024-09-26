@@ -14,24 +14,24 @@ const Signup = () => {
   });
 
   return (
-    <section className="bg-auth flex flex-col items-center gap-5 pb-0">
+    <div className="hero">
       <Navbar pageNum={2} />
-      <main
-        className="primary-widget-bg
-      mx-auto w-full max-w-[650px] rounded-[69px]
-      flex flex-col items-center border border-primary-20"
-      >
-          <img
-            src={tastyWayLogo}
-            alt="Tasty-way-logo"
-            className="text-center w-[350px] h-[120px] object-cover mt-2"
-          />
-          <h1 className="text-[35px] font-semibold">Registrazione</h1>
-        <FormProvider {...methods}>
-          <SignupForm />
-        </FormProvider>
+      <main className="signup">
+        <div className="container">
+          <div className="col card">
+            <figure className="flex-center">
+              <img src={tastyWayLogo} alt="Tasty-way-logo" className="w-[150px]" />
+            </figure>
+            <figcaption className="text-[42px] font-semibold mt-2">
+              Registrazione
+            </figcaption>
+            <FormProvider {...methods}>
+              <SignupForm />
+            </FormProvider>
+          </div>
+        </div>
       </main>
-    </section>
+    </div>
   );
 };
 export default Signup;

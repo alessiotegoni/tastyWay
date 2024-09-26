@@ -37,14 +37,12 @@ const SigninForm = () => {
     await signin(data)
 
     toast({ title: "Accesso effetuato con successo" })
-
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full px-[33px] pb-[30px] md:px-[50px] md:pb-[40px]"
       >
         <div className="flex flex-col my-5 gap-[15px]">
           <FormField
