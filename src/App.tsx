@@ -4,6 +4,7 @@ import Signin from "./components/_auth/Signin";
 import Signup from "./components/_auth/Signup";
 import Restaurants from "./components/_root/pages/Restaurants";
 import FilterRoutes from "./components/custom/FilterRoutes";
+import Restaurant from "./components/_root/pages/Restaurant";
 
 function App() {
   return (
@@ -15,7 +16,10 @@ function App() {
 
         <Route element={<FilterRoutes />}>
           <Route index element={<Home />} />
-          <Route path="restaurants" element={<Restaurants />} />
+          <Route path="restaurants">
+            <Route index element={<Restaurants />} />
+            <Route path=":restaurantName" element={<Restaurant />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

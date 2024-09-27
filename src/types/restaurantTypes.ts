@@ -15,6 +15,18 @@ export type RestaurantsRes = {
   restaurants: RestaurantsType[];
 };
 
+export type RestaurantItem = {
+  name: string;
+  price: number;
+  img: string;
+  description: string;
+};
+
+export type RestaurantType = {
+  createdAt: string;
+  items: RestaurantItem[];
+} & Omit<RestaurantsType, "cuisine">;
+
 // export enum FoodType {
 //   PIZZA = "pizza",
 //   SUSHI = "sushi",

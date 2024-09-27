@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "../../ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { tastyWayLogo } from "@/constants";
 import UserDropdown from "../../custom/UserDropdown";
 import { useLogout } from "@/lib/react-query/mutations";
 import AuthNavbar from "./AuthNavbar";
-import { useAddress } from "@/contexts/AddressContext";
 import DefaultNavbar from "./DefaultNavbar";
 
 interface NavbarProps {

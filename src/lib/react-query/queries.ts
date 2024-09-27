@@ -3,9 +3,18 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { getMyAddress, getRestaurants, refreshToken } from "../api/api";
+import {
+  getMyAddress,
+  getRestaurant,
+  getRestaurants,
+  refreshToken,
+} from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
-import { RestaurantsRes, RestaurantFilters } from "@/types/restaurantTypes";
+import {
+  RestaurantsRes,
+  RestaurantFilters,
+  RestaurantType,
+} from "@/types/restaurantTypes";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -34,7 +43,7 @@ export const useRefreshToken = () => {
     queryKey: ["accessToken"],
     queryFn: refreshToken,
     enabled: !hasToken,
-    retry: false,
+    retry: 1
   });
 };
 
@@ -48,5 +57,11 @@ export const useGetRestaurants = (
     enabled: !!address,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
-    retry: 1,
+  });
+
+export const useGetRestaurant = (restaurantName: string | undefined) =>
+  useQuery<RestaurantType, ApiError>({
+    queryKey: ["restaurant", restaurantName],
+    queryFn: () => getRestaurant(restaurantName!),
+    enabled: !!restaurantName,
   });

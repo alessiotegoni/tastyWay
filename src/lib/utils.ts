@@ -30,7 +30,7 @@ export const getCityFromAddress = (address: string) => {
 };
 
 export const formatRestaurantName = (name: string) =>
-  name.toLowerCase().replace(" ", "-");
+  name.toLowerCase().replace(/\s+/g, "-");
 
 export const getInvalidAddressProps = (
   removeSelectedAddress: () => void,
