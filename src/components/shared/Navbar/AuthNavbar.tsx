@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-interface AuthNavProps {
+interface AuthNavbarProps {
   to: "signin" | "signup";
 }
 
-const AuthNav = ({ to }: AuthNavProps) => {
+const AuthNavbar = ({ to }: AuthNavbarProps) => {
   const linkName = to === "signin" ? "Accedi" : "Registrati";
 
   return (
@@ -31,4 +31,4 @@ const AuthNav = ({ to }: AuthNavProps) => {
     </header>
   );
 };
-export default AuthNav;
+export default AuthNavbar;

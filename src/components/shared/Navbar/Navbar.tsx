@@ -4,8 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { tastyWayLogo } from "@/constants";
 import UserDropdown from "../../custom/UserDropdown";
 import { useLogout } from "@/lib/react-query/mutations";
-import AuthNav from "./AuthNav";
+import AuthNavbar from "./AuthNavbar";
 import { useAddress } from "@/contexts/AddressContext";
+import DefaultNavbar from "./DefaultNavbar";
 
 interface NavbarProps {
   pageNum: number;
@@ -15,16 +16,15 @@ enum PAGES {
   HOME,
   SIGNIN,
   SIGNUP,
-  ALL_RESTAURANTS,
-  SINGLE_RESTAURANT,
-  USER,
+  RESTAURANTS,
   RESTAURANT,
+  MANAGE_USER,
+  MANAGE_RESTAURANT,
 }
 
 const Navbar = ({ pageNum }: NavbarProps) => {
   const { isAuthenticated, user, isRefreshingToken } = useAuth();
   const { mutateAsync: logout } = useLogout();
-  const { removeSelectedAddress } = useAddress();
 
   const navRigthBtn = isAuthenticated ? (
     <UserDropdown user={user} logoutFn={logout} />
@@ -34,58 +34,25 @@ const Navbar = ({ pageNum }: NavbarProps) => {
     </Link>
   );
 
-  let content;
+  const defaultNavbar = <DefaultNavbar navRigthBtn={navRigthBtn} />;
+
+  let navbar;
 
   switch (pageNum) {
     case PAGES.HOME:
-      content = (
-        <header className="home-header">
-          <div className="container">
-            <div className="row flex-between">
-              <Link to="/">
-                <img
-                  src={tastyWayLogo}
-                  alt="Tasty-way-logo"
-                  className="w-[170px]"
-                />
-              </Link>
-              {navRigthBtn}
-            </div>
-          </div>
-        </header>
-      );
+      navbar = defaultNavbar;
       break;
     case PAGES.SIGNIN:
-      content = <AuthNav to="signup" />;
+      navbar = <AuthNavbar to="signup" />;
       break;
     case PAGES.SIGNUP:
-      content = <AuthNav to="signin" />;
+      navbar = <AuthNavbar to="signin" />;
       break;
-    case PAGES.ALL_RESTAURANTS:
-      content = (
-        <header className="restaurants-header">
-          <div className="container">
-            <div className="row flex-between">
-              <Link to="/">
-                <img
-                  src={tastyWayLogo}
-                  alt="Tasty-way-logo"
-                  className="w-[170px]"
-                />
-              </Link>
-              <Link
-                to="/"
-                onClick={() => removeSelectedAddress()}
-                className="btn home-btn"
-              >
-                <img src="/icons/home-icon.png" alt="home-icon" className="w-5 h-5" />
-                <p>Home</p>
-              </Link>
-              {navRigthBtn}
-            </div>
-          </div>
-        </header>
-      );
+    case PAGES.RESTAURANTS:
+      navbar = defaultNavbar;
+      break;
+    case PAGES.RESTAURANT:
+      navbar = defaultNavbar;
       break;
     default:
       console.error(`Il numero ${pageNum} non corrisponde a nessuna pagina`);
@@ -93,6 +60,6 @@ const Navbar = ({ pageNum }: NavbarProps) => {
       break;
   }
 
-  return content;
+  return navbar;
 };
 export default Navbar;
