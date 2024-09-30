@@ -293,4 +293,19 @@
   .restaurants__list::-webkit-scrollbar-thumb:hover {
     @apply cursor-pointer bg-primary-60;
   }
+
+  .restaurant__header {
+    @apply flex justify-between bg-home-widget border
+    border-primary-20 rounded-[30px] p-4 gap-3
+    backdrop-blur-[123px]
+  }
+
+  .restaurant__items__list {
+    @apply bg-home-widget backdrop-blur-[123px] rounded-[30px]
+    overflow-hidden
+  }
+
+  .restaurant__item {
+    @apply  flex justify-between relative m-5
+  }
 }
