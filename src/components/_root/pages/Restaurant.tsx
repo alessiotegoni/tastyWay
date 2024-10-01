@@ -1,4 +1,5 @@
-import RestauranItemsList from "@/components/custom/RestaurantItems/RestaurantItemsList";
+import RestaurantHeader from "@/components/custom/Restaurant/RestaurantHeader";
+import RestauranItemsList from "@/components/custom/Restaurant/RestaurantItemsList";
 import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import { Button } from "@/components/ui/button";
@@ -30,11 +31,6 @@ const Restaurant = () => {
   // TODO: gli items del ristorante li fetcho a parte nel componente apposito
   // RestauranItemsList (creare route e controller cosi' da far funzionare anche i filtri)
 
-  const restaurantImg = "/imgs/default-restaurant.png";
-  const restautantCity = (
-    getCityFromAddress(restaurant?.address ?? "") + ", italia"
-  ).replace("a", "");
-
   return (
     <div className="hero">
       <Navbar pageNum={4} />
@@ -47,44 +43,13 @@ const Restaurant = () => {
         <div className="container max-w-[1200px]">
           <div className="row flex">
             <div className="col min-w-[800px]">
-              <div className="restaurant__header">
-                <div className="flex gap-3">
-                  <figure className="">
-                    <img
-                      src={restaurantImg}
-                      alt={`${restaurant?.name}-img`}
-                      className="w-[150px] h-[150px] object-cover rounded-[20px]"
-                    />
-                  </figure>
-                  <div className="">
-                    <h1 className="text-[30px]">{restaurant?.name}</h1>
-                    <p className="font-normal text-white/70">
-                      {restautantCity}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex justify-end items-end gap-3">
-                  <Button
-                    onClick={() => navigate(-1)}
-                    className="btn
-                    bg-home-widget-border-30 border border-primary-80
-                    p-3 px-6 rounded-[15px] hover:bg-home-widget-border-80"
-                  >
-                    Vedi altri ristoranti
-                  </Button>
-                  <Button
-                    className="btn bg-[#00d0925d] border border-[#00D394]
-                    h-[51.5px] w-[51.5px] rounded-[15px] hover:bg-[#00d092ad]"
-                  >
-                    <img
-                      src="/icons/thumb-icon.png"
-                      alt="thumb-img"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
-                </div>
-              </div>
+              {!isLoading && !!restaurant && (
+                <RestaurantHeader
+                  restaurantName={restaurant.name}
+                  restaurantImg={restaurant.imageUrl}
+                  restaurantAddress={restaurant.address}
+                />
+              )}
               <div className="flex-between">
                 <div
                   className="bg-home-widget border border-home-widget-border-30
