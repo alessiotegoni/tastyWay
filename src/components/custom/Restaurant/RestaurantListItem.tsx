@@ -17,7 +17,9 @@ const RestaurantListItem = ({ item }: { item: RestaurantItem }) => {
         </figure>
         <div className="">
           <figcaption className="text-[25px]">{item.name}</figcaption>
-          <p className="text-[14px] font-normal mt-1">{item.description}</p>
+          <p className="text-[14px] max-w-[280px] font-normal mt-1">
+            {item.description}
+          </p>
         </div>
       </div>
       <div className="item__info flex flex-col justify-between">

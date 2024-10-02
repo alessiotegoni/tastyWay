@@ -1,8 +1,10 @@
+import RestaurantCart from "@/components/custom/Restaurant/RestaurantCart";
 import RestaurantHeader from "@/components/custom/Restaurant/RestaurantHeader";
 import RestauranItemsList from "@/components/custom/Restaurant/RestaurantItemsList";
 import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetRestaurant } from "@/lib/react-query/queries";
 import { SearchIcon } from "lucide-react";
@@ -28,6 +30,8 @@ const Restaurant = () => {
   // TODO: gli items del ristorante li fetcho a parte nel componente apposito
   // RestauranItemsList (creare route e controller cosi' da far funzionare anche i filtri)
 
+  // TODO: useCart hook
+
   return (
     <div className="hero">
       <Navbar pageNum={4} />
@@ -37,9 +41,9 @@ const Restaurant = () => {
           alt="restaurants-bg-img"
           className="bg-img"
         />
-        <div className="container max-w-[1200px]">
-          <div className="row flex">
-            <div className="col min-w-[800px]">
+        <div className="container max-w-[1000px]">
+          <div className="row flex gap-3">
+            <div className="col basis-[640px]">
               {!isLoading && !!restaurant ? (
                 <RestaurantHeader
                   restaurantName={restaurant.name}
@@ -64,7 +68,12 @@ const Restaurant = () => {
                 <RestauranItemsList restaurant={restaurant} />
               )}
             </div>
-            <div className="col"></div>
+            <div
+              className="col sticky top-0 bg-home-widget border border-primary-20
+            backdrop-blur-[123px] rounded-[30px] p-5 h-fit basis-[350px]"
+            >
+              <RestaurantCart deliveryPrice={restaurant?.deliveryInfo.price!} />
+            </div>
           </div>
         </div>
       </main>

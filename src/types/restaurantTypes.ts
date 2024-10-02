@@ -16,6 +16,7 @@ export type RestaurantsRes = {
 };
 
 export type RestaurantItem = {
+  _id: string;
   name: string;
   price: number;
   img: string;

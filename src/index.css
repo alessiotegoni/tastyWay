@@ -295,7 +295,7 @@
   }
 
   .restaurant__header {
-    @apply flex justify-between bg-home-widget border
+    @apply bg-home-widget border
     border-primary-20 rounded-[30px] p-4 gap-3
     backdrop-blur-[123px]
   }
@@ -308,5 +308,15 @@
   .restaurant__item {
     @apply  flex justify-between relative m-5
     before:-top-[10px]
+  }
+
+  .items__list {
+    @apply flex flex-col gap-2
+  }
+
+  .item {
+    @apply flex-between p-3 bg-x-icon-bg-40
+    rounded-[25px];
+    align-items: unset;
   }
 }
