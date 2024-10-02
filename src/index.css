@@ -266,7 +266,7 @@
   }
 
   .restaurant-separator {
-    @apply first:before:hidden before:h-[1px] before:w-[calc(100%+32px)]
+    @apply first:before:hidden before:h-[1px] before:w-[110%]
     before:absolute before:-top-4 before:left-1/2 before:-translate-x-1/2
     before:bg-white/10;
   }
@@ -307,5 +307,6 @@
 
   .restaurant__item {
     @apply  flex justify-between relative m-5
+    before:-top-[10px]
   }
 }

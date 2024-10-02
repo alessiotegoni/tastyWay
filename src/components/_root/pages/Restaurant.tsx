@@ -2,17 +2,14 @@ import RestaurantHeader from "@/components/custom/Restaurant/RestaurantHeader";
 import RestauranItemsList from "@/components/custom/Restaurant/RestaurantItemsList";
 import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
-import { Button } from "@/components/ui/button";
+import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
 import { useGetRestaurant } from "@/lib/react-query/queries";
-import { getCityFromAddress } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Restaurant = () => {
   const { restaurantName } = useParams();
-
-  const navigate = useNavigate();
 
   const {
     data: restaurant,
@@ -43,12 +40,14 @@ const Restaurant = () => {
         <div className="container max-w-[1200px]">
           <div className="row flex">
             <div className="col min-w-[800px]">
-              {!isLoading && !!restaurant && (
+              {!isLoading && !!restaurant ? (
                 <RestaurantHeader
                   restaurantName={restaurant.name}
                   restaurantImg={restaurant.imageUrl}
                   restaurantAddress={restaurant.address}
                 />
+              ) : (
+                <RestaurantHeaderSkeleton />
               )}
               <div className="flex-between">
                 <div

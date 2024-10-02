@@ -12,19 +12,20 @@ const RestaurantListItem = ({ item }: { item: RestaurantItem }) => {
           <img
             src={itemImg}
             alt={`${item.name}-img`}
-            className="w-[130px] h-[130px] object-cover rounded-[30px]"
+            className="w-[130px] h-[130px] object-cover rounded-[20px]"
           />
         </figure>
         <div className="">
-          <figcaption className="text-[23px]">{item.name}</figcaption>
+          <figcaption className="text-[25px]">{item.name}</figcaption>
           <p className="text-[14px] font-normal mt-1">{item.description}</p>
         </div>
       </div>
       <div className="item__info flex flex-col justify-between">
-        <h2>{item.price}$</h2>
+        <h2 className="text-[25px]">{item.price}$</h2>
         <Button
-          className="btn bg-[#EC0101] font-normal text-[30px]
-        border border-[#FE0000] w-[50px] h-[50px] rounded-full"
+          className="btn bg-[#ec01018a] hover:bg-[#ec0101d7]
+           font-normal text-[30px] border border-[#FE0000]
+           w-[50px] h-[50px] rounded-full"
         >
           <PlusIcon />
         </Button>
