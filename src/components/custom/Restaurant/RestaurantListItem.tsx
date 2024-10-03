@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 import { RestaurantItem } from "@/types/restaurantTypes";
 import { PlusIcon } from "lucide-react";
 
@@ -13,6 +14,7 @@ const RestaurantListItem = ({
 }: RestaurantListItemProps) => {
   const itemImg = "/imgs/default-restaurant.png";
 
+  const { handleSetCart } = useCart();
 
   return (
     <li className="restaurant__item restaurant-separator">

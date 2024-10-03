@@ -90,6 +90,7 @@ interface CartActionsParams {
 interface AddCartItemParams extends CartActionsParams {
   restaurantId?: string;
   defaultItem: CartItem;
+  cartItemIndex?: number;
 }
 
 export const addCartItem = ({
@@ -98,6 +99,7 @@ export const addCartItem = ({
   defaultItem,
   cartItem,
   cartItems,
+  cartItemIndex,
 }: AddCartItemParams): CartItemType[] => {
   if (!cartItem)
     return [
@@ -120,7 +122,7 @@ export const addCartItem = ({
     newCartItems = [...cartItem.items, defaultItem];
   }
 
-  return cartItems.with(itemIndex, {
+  return cartItems.with(cartItemIndex!, {
     ...cartItem,
     items: newCartItems,
   });

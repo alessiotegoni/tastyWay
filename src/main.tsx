@@ -9,6 +9,7 @@ import { Toaster } from "./components/ui/toaster.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import AddressProvider from "./contexts/AddressContext.tsx";
 import { queryClientConfig } from "./lib/react-query/config.ts";
+import CartProvider from "./contexts/CartContext.tsx";
 
 const client = new QueryClient(queryClientConfig);
 
@@ -17,11 +18,13 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={client}>
       <AuthProvider>
         <AddressProvider>
-          <Router>
-            <Routes>
-              <Route path="/*" element={<App />} />
-            </Routes>
-          </Router>
+          <CartProvider>
+            <Router>
+              <Routes>
+                <Route path="/*" element={<App />} />
+              </Routes>
+            </Router>
+          </CartProvider>
         </AddressProvider>
       </AuthProvider>
       <ReactQueryDevtools />

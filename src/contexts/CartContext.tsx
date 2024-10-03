@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 import { RestaurantItem } from "@/types/restaurantTypes";
 import { addCartItem, removeCartItem } from "@/lib/utils";
@@ -13,28 +13,28 @@ export type CartItemType = {
   items: CartItem[];
 };
 
-type HandleSetCartParams = {
-  restaurantId: string;
-  itemId: string;
+type AddCartItemParams = {
+  type: "ADD";
   name: string;
   img: string;
   price: number;
-  type: "ADD" | "REMOVE";
 };
+
+type RemoveCartItemParams = {
+  type: "REMOVE";
+};
+
+type HandleSetCartParams = {
+  restaurantId: string;
+  itemId: string;
+} & (AddCartItemParams | RemoveCartItemParams);
 
 interface CartContextValues {
   cartItems: CartItemType[];
-  handleSetCart: ({
-    restaurantId,
-    itemId,
-    name,
-    img,
-    price,
-    type,
-  }: HandleSetCartParams) => void;
+  handleSetCart: (params: HandleSetCartParams) => void;
 }
 
-const CartContext = createContext<CartContextValues | null>(null);
+export const CartContext = createContext<CartContextValues | null>(null);
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
   const storedCartItems: CartItemType[] =
@@ -42,14 +42,9 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const [cartItems, setCartItems] = useState(storedCartItems);
 
-  const handleSetCart = ({
-    restaurantId,
-    itemId,
-    name,
-    img,
-    price,
-    type,
-  }: HandleSetCartParams) => {
+  const handleSetCart = (params: HandleSetCartParams) => {
+    const { restaurantId, itemId, type } = params;
+
     console.log(cartItems);
 
     const itemIndex = cartItems.findIndex(
@@ -59,21 +54,32 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     const cartItem = itemIndex === -1 ? undefined : cartItems.at(itemIndex);
 
     let newItems = [...cartItems];
-    const defaultItem = { _id: itemId, name, img, price, qnt: 1 };
 
-    if (!cartItem && type === "ADD")
-      newItems = addCartItem({
-        restaurantId,
-        itemId,
-        defaultItem,
-        cartItems,
-      });
+    if (type === "ADD") {
+      const { name, img, price } = params;
+      const defaultItem = { _id: itemId, name, img, price, qnt: 1 };
 
-    if (cartItem && type === "ADD")
-      newItems = addCartItem({ itemId, defaultItem, cartItem, cartItems });
+      if (!cartItem) {
+        newItems = addCartItem({
+          restaurantId,
+          itemId,
+          defaultItem,
+          cartItems,
+        });
+      } else {
+        newItems = addCartItem({
+          itemId,
+          defaultItem,
+          cartItem,
+          cartItems,
+          cartItemIndex: itemIndex,
+        });
+      }
+    }
 
-    if (cartItem && type === "REMOVE")
+    if (type === "REMOVE" && cartItem) {
       newItems = removeCartItem({ itemId, itemIndex, cartItem, cartItems });
+    }
 
     try {
       localStorage.setItem("cartItems", JSON.stringify(newItems));
@@ -95,17 +101,3 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 export default CartProvider;
-
-export const useCart = (restaurantId: string) => {
-  const context = useContext(CartContext);
-
-  if (!context) throw new Error("Must be inside of CartProvider");
-
-  const restaurantCart =
-    context.cartItems.find((ci) => ci.restaurantId === restaurantId)?.items ??
-    [];
-
-  console.log(restaurantCart);
-
-  return { ...context, restaurantCart };
-};
