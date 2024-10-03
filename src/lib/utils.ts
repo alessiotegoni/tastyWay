@@ -1,4 +1,5 @@
 import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
+import { CartItem, CartItemType } from "@/contexts/CartContext";
 import { ApiError } from "@/types/apiTypes";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -79,3 +80,79 @@ export const getNoRestaurantsProps = (
     },
   ],
 });
+
+interface CartActionsParams {
+  itemId: string;
+  cartItem?: CartItemType;
+  cartItems: CartItemType[];
+}
+
+interface AddCartItemParams extends CartActionsParams {
+  restaurantId?: string;
+  defaultItem: CartItem;
+}
+
+export const addCartItem = ({
+  restaurantId,
+  itemId,
+  defaultItem,
+  cartItem,
+  cartItems,
+}: AddCartItemParams): CartItemType[] => {
+  if (!cartItem)
+    return [
+      ...cartItems,
+      { restaurantId: restaurantId!, items: [defaultItem] },
+    ];
+
+  const itemIndex = cartItem.items.findIndex((ci) => ci._id === itemId);
+
+  let newCartItems: CartItem[] = [];
+
+  if (itemIndex !== -1) {
+    const item = cartItem.items.at(itemIndex)!;
+
+    newCartItems = cartItem.items.with(itemIndex, {
+      ...item,
+      qnt: item.qnt + 1,
+    });
+  } else {
+    newCartItems = [...cartItem.items, defaultItem];
+  }
+
+  return cartItems.with(itemIndex, {
+    ...cartItem,
+    items: newCartItems,
+  });
+};
+
+interface RemoveCartItemParams extends CartActionsParams {
+  itemIndex: number;
+}
+
+export const removeCartItem = ({
+  itemId,
+  itemIndex,
+  cartItem,
+  cartItems,
+}: RemoveCartItemParams): CartItemType[] => {
+  const cartItemIndex = cartItem!.items.findIndex((ci) => ci._id === itemId);
+
+  if (cartItemIndex === -1) return cartItems;
+
+  const cartItemPlate = cartItem!.items.at(cartItemIndex)!;
+
+  let newCartItemPlate = [];
+
+  if (cartItemPlate.qnt <= 1)
+    newCartItemPlate = cartItem!.items.filter((i) => i._id !== itemId);
+  else
+    newCartItemPlate = cartItem!.items.map((i) =>
+      i._id === itemId ? { ...i, qnt: i.qnt - 1 } : i
+    );
+
+  return cartItems.with(itemIndex, {
+    ...cartItem!,
+    items: newCartItemPlate,
+  });
+};

@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 
 interface RestaurantCartProps {
+  restaurantId: string;
   deliveryPrice: number;
 }
 
-const RestaurantCart = ({ deliveryPrice }: RestaurantCartProps) => {
-    
+const RestaurantCart = ({
+  restaurantId,
+  deliveryPrice,
+}: RestaurantCartProps) => {
+
   return (
     <>
       <h1 className="text-[30px]">Il tuo ordine</h1>

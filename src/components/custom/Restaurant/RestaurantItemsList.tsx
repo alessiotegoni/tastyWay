@@ -6,8 +6,12 @@ const RestauranItemsList = ({ restaurant }: { restaurant: RestaurantType }) => {
 
   return (
     <ul className="restaurant__items__list">
-      {restaurant.items.map((item, i) => (
-        <RestaurantListItem key={i} item={item} />
+      {restaurant.items.map((item) => (
+        <RestaurantListItem
+          key={item._id}
+          item={item}
+          restaurantId={restaurant._id}
+        />
       ))}
     </ul>
   );

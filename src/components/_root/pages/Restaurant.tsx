@@ -4,7 +4,6 @@ import RestauranItemsList from "@/components/custom/Restaurant/RestaurantItemsLi
 import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetRestaurant } from "@/lib/react-query/queries";
 import { SearchIcon } from "lucide-react";
@@ -22,15 +21,12 @@ const Restaurant = () => {
 
   console.log(restaurant);
 
-  // TODO: restaurant ui
   // TODO: Filter item logic, aggiungere che ad ogni item corrisponde una categoria
   // che ovviamente il titolare immettera' nella creazione dell'item
   // quindi aggiungere anche un menu a sinstra che ti permette di scrollare
   // tramite un link  fino alla categoria desiderata
   // TODO: gli items del ristorante li fetcho a parte nel componente apposito
   // RestauranItemsList (creare route e controller cosi' da far funzionare anche i filtri)
-
-  // TODO: useCart hook
 
   return (
     <div className="hero">
@@ -72,7 +68,10 @@ const Restaurant = () => {
               className="col sticky top-0 bg-home-widget border border-primary-20
             backdrop-blur-[123px] rounded-[30px] p-5 h-fit basis-[350px]"
             >
-              <RestaurantCart deliveryPrice={restaurant?.deliveryInfo.price!} />
+              <RestaurantCart
+                restaurantId={restaurant?._id!}
+                deliveryPrice={restaurant?.deliveryInfo.price!}
+              />
             </div>
           </div>
         </div>
