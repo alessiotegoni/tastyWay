@@ -4,9 +4,7 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
-import {
-  restaurantsFilters,
-} from "@/config/filtersConfig";
+import { restaurantsFilters } from "@/config/filtersConfig";
 import { useAddress } from "@/contexts/AddressContext";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { useGetRestaurants } from "@/lib/react-query/queries";
@@ -20,8 +18,13 @@ const Restaurants = () => {
   const { filters, removeFilters, setRestaurantTypeFilter } =
     useRestaurantFilters();
 
-  const handleSetFilters = (currentValue: RestaurantTypeFilter) =>
-    setRestaurantTypeFilter([currentValue]);
+  const handleSetFilters = (currentValue?: RestaurantTypeFilter) => {
+    let restaurantType: [] | [RestaurantTypeFilter] = [];
+
+    if (currentValue) restaurantType = [currentValue];
+
+    setRestaurantTypeFilter(restaurantType);
+  };
 
   const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
     selectedAddress,

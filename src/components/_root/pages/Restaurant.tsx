@@ -27,8 +27,13 @@ const Restaurant = () => {
 
   console.log(itemsFilters);
 
-  const handleSetFilters = (currentValue: RestaurantItemsTypes) =>
-    setItemsFilters({ ...itemsFilters, itemsType: [currentValue] });
+  const handleSetFilters = (currentValue?: RestaurantItemsTypes) => {
+    let itemsType = null;
+
+    if (currentValue) itemsType = [currentValue];
+
+    setItemsFilters({ ...itemsFilters, itemsType });
+  };
 
   const {
     data: restaurant,
@@ -36,6 +41,11 @@ const Restaurant = () => {
     isError,
     error,
   } = useGetRestaurantInfo(restaurantName);
+
+  // FIXME: mettere filtri ritornati dall'api
+  // tramite un map del tipo di ogni item
+  // quindi i filtri saranno tutti i tipi di
+  // ogni item di quel ristorante
 
   return (
     <div className="hero">

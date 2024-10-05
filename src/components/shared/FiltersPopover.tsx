@@ -17,15 +17,15 @@ import { useEffect, useState } from "react";
 
 type Filter = { value: string; label: string };
 
-interface FiltersPopoverProps<T> {
+interface FiltersPopoverProps {
   filters: Filter[];
-  setFilters: (currentValue: T) => void;
+  setFilters: (currentValue?: any) => void;
 }
 
-export const FiltersPopover = <T,>({
+export const FiltersPopover = ({
   filters,
   setFilters,
-}: FiltersPopoverProps<T>) => {
+}: FiltersPopoverProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -38,9 +38,9 @@ export const FiltersPopover = <T,>({
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   if (!value) setRestaurantTypeFilter([]);
-  // }, [value]);
+  useEffect(() => {
+    if (!value) setFilters();
+  }, [value]);
 
   const currentFilter = value
     ? filters.find((filter) => filter.value === value)?.label

@@ -50,7 +50,7 @@ export const getRestaurants = async (
       pageParam,
       address,
       filters,
-      limit: RESTAURANT_ITEMS_LIMIT,
+      limit: RESTAURANTS_LIMIT,
     },
   });
 
