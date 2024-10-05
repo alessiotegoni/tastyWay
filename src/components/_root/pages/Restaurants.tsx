@@ -4,16 +4,24 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
+import {
+  restaurantsFilters,
+} from "@/config/filtersConfig";
 import { useAddress } from "@/contexts/AddressContext";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { useGetRestaurants } from "@/lib/react-query/queries";
 import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
+import { RestaurantTypeFilter } from "@/types/restaurantTypes";
 import { useEffect } from "react";
 
 const Restaurants = () => {
   const { selectedAddress, removeSelectedAddress } = useAddress();
 
-  const { filters, removeFilters } = useRestaurantFilters();
+  const { filters, removeFilters, setRestaurantTypeFilter } =
+    useRestaurantFilters();
+
+  const handleSetFilters = (currentValue: RestaurantTypeFilter) =>
+    setRestaurantTypeFilter([currentValue]);
 
   const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
     selectedAddress,
@@ -55,7 +63,10 @@ const Restaurants = () => {
             {isError && <ErrorWidget {...invalidAddressErrProps} />}
             {canShowRestaurants && (
               <>
-                <FiltersPopover />
+                <FiltersPopover
+                  filters={restaurantsFilters}
+                  setFilters={handleSetFilters}
+                />
                 <div
                   className="primary-widget-bg border border-primary-20 min-w-[900px]
                      rounded-[30px] overflow-hidden"

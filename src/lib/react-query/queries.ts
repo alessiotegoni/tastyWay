@@ -70,13 +70,13 @@ export const useGetRestaurantInfo = (restaurantName: string | undefined) =>
   });
 
 export const useGetRestaurantItems = (
-  restaurantId: string,
+  restaurantId: string | undefined,
   filters: RestaurantItemsFilters
 ) =>
   useInfiniteQuery<RestaurantItemRes, ApiError>({
     queryKey: ["restaurantItems", restaurantId, filters],
     queryFn: ({ pageParam }) =>
-      getRestaurantItems(restaurantId, pageParam, filters),
+      getRestaurantItems(restaurantId!, pageParam, filters),
     enabled: !!restaurantId,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,

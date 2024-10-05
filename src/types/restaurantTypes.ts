@@ -33,37 +33,11 @@ export type RestaurantItemRes = {
   restaurantItems: RestaurantItem[];
 };
 
-// export enum FoodType {
-//   PIZZA = "pizza",
-//   SUSHI = "sushi",
-//   BURGER = "burger",
-//   DESSERT = "dessert",
-//   ITALIAN = "italian",
-//   AMERICAN = "american",
-//   CHINESE = "chinese",
-//   MEXICAN = "mexican",
-//   INDIAN = "indian",
-//   THAI = "thai",
-//   MEDITERRANEAN = "mediterranean",
-//   VEGETARIAN = "vegetarian",
-//   VEGAN = "vegan",
-//   FAST_FOOD = "fast_food",
-//   SEAFOOD = "seafood",
-//   BBQ = "bbq",
-//   HEALTHY = "healthy",
-//   STEAKHOUSE = "steakhouse",
-//   BREAKFAST = "breakfast",
-//   BAKERY = "bakery",
-// }
-
-// export enum RestaurantType {
-//   CHEAP = "cheap",
-//   EXPENSIVE = "expensive",
-//   TOP_RATED = "top_rated",
-//   FAST_DELIVERY = "fast_delivery",
-//   NEW = "new",
-//   TRENDING = "trending",
-// }
+export type FoodFilters = {
+  img: string;
+  name: string;
+  value: FoodType;
+};
 
 export type FoodType =
   | "pizza"
@@ -86,12 +60,6 @@ export type FoodType =
   | "steakhouse"
   | "breakfast"
   | "bakery";
-
-export type FoodFilters = {
-  img: string;
-  name: string;
-  value: FoodType;
-};
 
 export type RestaurantTypeFilter =
   | "cheap"

@@ -5,8 +5,12 @@ import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
+import { restaurantItemFilters } from "@/config/filtersConfig";
 import { useGetRestaurantInfo } from "@/lib/react-query/queries";
-import { RestaurantItemsFilters } from "@/types/restaurantTypes";
+import {
+  RestaurantItemsFilters,
+  RestaurantItemsTypes,
+} from "@/types/restaurantTypes";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -17,9 +21,14 @@ const defaultItemsFilters: RestaurantItemsFilters = {
 };
 
 const Restaurant = () => {
+  const { restaurantName } = useParams();
+
   const [itemsFilters, setItemsFilters] = useState(defaultItemsFilters);
 
-  const { restaurantName } = useParams();
+  console.log(itemsFilters);
+
+  const handleSetFilters = (currentValue: RestaurantItemsTypes) =>
+    setItemsFilters({ ...itemsFilters, itemsType: [currentValue] });
 
   const {
     data: restaurant,
@@ -27,13 +36,6 @@ const Restaurant = () => {
     isError,
     error,
   } = useGetRestaurantInfo(restaurantName);
-
-  // TODO: Filter item logic, aggiungere che ad ogni item corrisponde una categoria
-  // che ovviamente il titolare immettera' nella creazione dell'item
-  // quindi aggiungere anche un menu a sinstra che ti permette di scrollare
-  // tramite un link  fino alla categoria desiderata
-  // TODO: gli items del ristorante li fetcho a parte nel componente apposito
-  // RestauranItemsList (creare route e controller cosi' da far funzionare anche i filtri)
 
   return (
     <div className="hero">
@@ -63,16 +65,23 @@ const Restaurant = () => {
                 font-medium"
                 >
                   <SearchIcon />
-                  <Input placeholder="Cerca" className="bg-transparent" />
+                  <Input
+                    onChange={(e) =>
+                      setItemsFilters({ ...itemsFilters, name: e.target.value })
+                    }
+                    placeholder="Cerca"
+                    className="bg-transparent"
+                  />
                 </div>
-                <FiltersPopover />
-              </div>
-              {!!restaurant && (
-                <RestauranItemsList
-                  restaurantId={restaurant._id}
-                  itemsFilters={itemsFilters}
+                <FiltersPopover
+                  filters={restaurantItemFilters}
+                  setFilters={handleSetFilters}
                 />
-              )}
+              </div>
+              <RestauranItemsList
+                restaurantId={restaurant?._id}
+                itemsFilters={itemsFilters}
+              />
             </div>
             <div
               className="col sticky top-0 bg-home-widget border border-primary-20

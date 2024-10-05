@@ -14,62 +14,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
-import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
-import { RestaurantTypeFilter } from "@/types/restaurantTypes";
 
-interface FiltersType {
-  value: RestaurantTypeFilter;
-  label: string;
+type Filter = { value: string; label: string };
+
+interface FiltersPopoverProps<T> {
+  filters: Filter[];
+  setFilters: (currentValue: T) => void;
 }
 
-const restaurantsFilters: FiltersType[] = [
-  {
-    value: "cheap",
-    label: "Economico",
-  },
-  {
-    value: "expensive",
-    label: "Costoso",
-  },
-  {
-    value: "top_rated",
-    label: "Migliori recensioni",
-  },
-  {
-    value: "fast_delivery",
-    label: "Consegna rapida",
-  },
-  {
-    value: "new",
-    label: "Nuovo",
-  },
-  {
-    value: "trending",
-    label: "Di tendenza",
-  },
-];
-
-export const FiltersPopover = () => {
-  const { setRestaurantTypeFilter } = useRestaurantFilters();
-
+export const FiltersPopover = <T,>({
+  filters,
+  setFilters,
+}: FiltersPopoverProps<T>) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<RestaurantTypeFilter | "">("");
+  const [value, setValue] = useState("");
 
   // FIXME: add icons to popover content
 
-  const handleSelect = (value: string) => {
-    const currentValue = value as RestaurantTypeFilter;
-    setRestaurantTypeFilter([currentValue]);
+  const handleSelect = (currentValue: string) => {
+    setFilters(currentValue);
+
     setValue(currentValue === value ? "" : currentValue);
     setOpen(false);
   };
 
-  useEffect(() => {
-    if (!value) setRestaurantTypeFilter([]);
-  }, [value]);
+  // useEffect(() => {
+  //   if (!value) setRestaurantTypeFilter([]);
+  // }, [value]);
 
   const currentFilter = value
-    ? restaurantsFilters.find((filter) => filter.value === value)?.label
+    ? filters.find((filter) => filter.value === value)?.label
     : "Filtra";
 
   return (
@@ -99,7 +73,7 @@ export const FiltersPopover = () => {
         <Command>
           <CommandList>
             <CommandGroup>
-              {restaurantsFilters.map((filter) => (
+              {filters.map((filter) => (
                 <CommandItem
                   key={filter.value}
                   value={filter.value}

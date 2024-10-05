@@ -8,8 +8,8 @@ import "./index.css";
 import { Toaster } from "./components/ui/toaster.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import AddressProvider from "./contexts/AddressContext.tsx";
-import { queryClientConfig } from "./lib/react-query/config.ts";
 import CartProvider from "./contexts/CartContext.tsx";
+import { queryClientConfig } from "./config/reactQueryConfig.ts";
 
 const client = new QueryClient(queryClientConfig);
 
