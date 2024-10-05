@@ -1,18 +1,33 @@
-import { RestaurantType } from "@/types/restaurantTypes";
+import { useGetRestaurantItems } from "@/lib/react-query/queries";
 import RestaurantListItem from "./RestaurantListItem";
+import { RestaurantItemsFilters } from "@/types/restaurantTypes";
 
-const RestauranItemsList = ({ restaurant }: { restaurant: RestaurantType }) => {
-  // TODO: fetchare items a parte (creare router e controller)
+interface RestaurantItemsListProps {
+  restaurantId: string;
+  itemsFilters: RestaurantItemsFilters;
+}
+
+const RestauranItemsList = ({
+  restaurantId,
+  itemsFilters,
+}: RestaurantItemsListProps) => {
+  const { data, isLoading, isError, error } = useGetRestaurantItems(
+    restaurantId,
+    itemsFilters
+  );
+
+  const restaurantItems = data?.pages.flatMap((p) => p.restaurantItems) ?? [];
 
   return (
     <ul className="restaurant__items__list">
-      {restaurant.items.map((item) => (
-        <RestaurantListItem
-          key={item._id}
-          item={item}
-          restaurantId={restaurant._id}
-        />
-      ))}
+      {!!restaurantItems?.length &&
+        restaurantItems.map((item) => (
+          <RestaurantListItem
+            key={item._id}
+            item={item}
+            restaurantId={restaurantId}
+          />
+        ))}
     </ul>
   );
 };

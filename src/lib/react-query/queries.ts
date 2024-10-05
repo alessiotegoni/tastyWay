@@ -5,7 +5,8 @@ import {
 } from "@tanstack/react-query";
 import {
   getMyAddress,
-  getRestaurant,
+  getRestaurantInfo,
+  getRestaurantItems,
   getRestaurants,
   refreshToken,
 } from "../api/api";
@@ -13,7 +14,9 @@ import { ApiError, AuthRes } from "@/types/apiTypes";
 import {
   RestaurantsRes,
   RestaurantFilters,
-  RestaurantType,
+  RestaurantItemsFilters,
+  RestaurantRes,
+  RestaurantItemRes,
 } from "@/types/restaurantTypes";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
@@ -43,7 +46,7 @@ export const useRefreshToken = () => {
     queryKey: ["accessToken"],
     queryFn: refreshToken,
     enabled: !hasToken,
-    retry: 1
+    retry: 1,
   });
 };
 
@@ -59,9 +62,22 @@ export const useGetRestaurants = (
     initialPageParam: null,
   });
 
-export const useGetRestaurant = (restaurantName: string | undefined) =>
-  useQuery<RestaurantType, ApiError>({
-    queryKey: ["restaurant", restaurantName],
-    queryFn: () => getRestaurant(restaurantName!),
+export const useGetRestaurantInfo = (restaurantName: string | undefined) =>
+  useQuery<RestaurantRes, ApiError>({
+    queryKey: ["restaurantInfo", restaurantName],
+    queryFn: () => getRestaurantInfo(restaurantName!),
     enabled: !!restaurantName,
+  });
+
+export const useGetRestaurantItems = (
+  restaurantId: string,
+  filters: RestaurantItemsFilters
+) =>
+  useInfiniteQuery<RestaurantItemRes, ApiError>({
+    queryKey: ["restaurantItems", restaurantId, filters],
+    queryFn: ({ pageParam }) =>
+      getRestaurantItems(restaurantId, pageParam, filters),
+    enabled: !!restaurantId,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: null,
   });

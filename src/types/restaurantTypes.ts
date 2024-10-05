@@ -18,15 +18,20 @@ export type RestaurantsRes = {
 export type RestaurantItem = {
   _id: string;
   name: string;
+  type: string;
   price: number;
   img: string;
   description: string;
 };
 
-export type RestaurantType = {
+export type RestaurantRes = {
   createdAt: string;
-  items: RestaurantItem[];
 } & Omit<RestaurantsType, "cuisine">;
+
+export type RestaurantItemRes = {
+  nextCursor: string | null;
+  restaurantItems: RestaurantItem[];
+};
 
 // export enum FoodType {
 //   PIZZA = "pizza",
@@ -100,4 +105,35 @@ export type RestaurantFilters = {
   name: string | null;
   foodType: FoodType[] | null;
   restaurantType: RestaurantTypeFilter[] | null;
+};
+
+export type RestaurantItemsTypes =
+  | "pizza"
+  | "burger"
+  | "pasta"
+  | "salad"
+  | "sandwich"
+  | "flatbread"
+  | "fried_food"
+  | "sushi"
+  | "appetizers"
+  | "desserts"
+  | "drinks"
+  | "bbq"
+  | "seafood"
+  | "meat"
+  | "soup"
+  | "vegan"
+  | "vegetarian"
+  | "gluten_free"
+  | "fruit"
+  | "tapas"
+  | "sandwiches"
+  | "rice"
+  | "poke"
+  | "main_course";
+
+export type RestaurantItemsFilters = {
+  name: string | null;
+  itemsType: RestaurantItemsTypes[] | null;
 };

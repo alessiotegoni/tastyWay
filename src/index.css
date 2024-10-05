@@ -132,7 +132,7 @@
     @apply gap-3 flex-center
     bg-home-widget-border-30
     hover:bg-home-widget-border-80
-    px-6 h-[45px]
+    px-6 h-[45px];
   }
 
   .user-btn-bg {
@@ -272,7 +272,7 @@
   }
 
   .restaurants__list {
-    @apply overflow-auto flex flex-col;
+    @apply flex flex-col;
   }
 
   .restaurants__list::-webkit-scrollbar {
@@ -297,21 +297,21 @@
   .restaurant__header {
     @apply bg-home-widget border
     border-primary-20 rounded-[30px] p-4 gap-3
-    backdrop-blur-[123px]
+    backdrop-blur-[123px];
   }
 
   .restaurant__items__list {
     @apply bg-home-widget backdrop-blur-[123px] rounded-[30px]
-    overflow-hidden
+    overflow-hidden;
   }
 
   .restaurant__item {
-    @apply  flex justify-between relative m-5
-    before:-top-[10px]
+    @apply flex justify-between relative m-5
+    before:-top-[10px];
   }
 
   .items__list {
-    @apply flex flex-col gap-2
+    @apply flex flex-col gap-2;
   }
 
   .item {

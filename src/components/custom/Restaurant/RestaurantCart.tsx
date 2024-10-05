@@ -63,6 +63,7 @@ const RestaurantCart = ({
         <p className="text-[30px]">${totalPrice + deliveryPrice}</p>
       </div>
       <Button
+        disabled={!!!restaurantCart.length}
         className="btn mt-4 bg-[#ec01017e] w-full py-[14px]
               rounded-xl border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
       >

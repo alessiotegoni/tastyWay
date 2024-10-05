@@ -1,10 +1,12 @@
 import axios from "axios";
 import { SigninType, SignupType } from "../validations/authSchemas";
-import { api, RESTAURANTS_LIMIT } from "./config";
+import { api, RESTAURANT_ITEMS_LIMIT, RESTAURANTS_LIMIT } from "./config";
 import {
   RestaurantsRes,
   RestaurantFilters,
   RestaurantType,
+  RestaurantItemsFilters,
+  RestaurantItemRes,
 } from "@/types/restaurantTypes";
 
 export const getMyAddress = async (lat: number, lng: number) => {
@@ -54,11 +56,30 @@ export const getRestaurants = async (
   return data;
 };
 
-export const getRestaurant = async (restaurantName: string) => {
+export const getRestaurantInfo = async (restaurantName: string) => {
   restaurantName = restaurantName.replace(/-/g, " ");
 
   const { data } = await api.get<RestaurantType>(
     `/restaurants/${restaurantName}`
+  );
+
+  return data;
+};
+
+export const getRestaurantItems = async (
+  restaurantId: string,
+  pageParam: unknown,
+  filters: RestaurantItemsFilters
+) => {
+  const { data } = await api.get<RestaurantItemRes>(
+    `/restaurants/${restaurantId}/items`,
+    {
+      params: {
+        pageParam,
+        filters,
+        limit: RESTAURANT_ITEMS_LIMIT,
+      },
+    }
   );
 
   return data;

@@ -5,11 +5,20 @@ import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
-import { useGetRestaurant } from "@/lib/react-query/queries";
+import { useGetRestaurantInfo } from "@/lib/react-query/queries";
+import { RestaurantItemsFilters } from "@/types/restaurantTypes";
 import { SearchIcon } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
+const defaultItemsFilters: RestaurantItemsFilters = {
+  name: null,
+  itemsType: null,
+};
+
 const Restaurant = () => {
+  const [itemsFilters, setItemsFilters] = useState(defaultItemsFilters);
+
   const { restaurantName } = useParams();
 
   const {
@@ -17,9 +26,7 @@ const Restaurant = () => {
     isLoading,
     isError,
     error,
-  } = useGetRestaurant(restaurantName);
-
-  console.log(restaurant);
+  } = useGetRestaurantInfo(restaurantName);
 
   // TODO: Filter item logic, aggiungere che ad ogni item corrisponde una categoria
   // che ovviamente il titolare immettera' nella creazione dell'item
@@ -60,8 +67,11 @@ const Restaurant = () => {
                 </div>
                 <FiltersPopover />
               </div>
-              {restaurant?.items.length && (
-                <RestauranItemsList restaurant={restaurant} />
+              {!!restaurant && (
+                <RestauranItemsList
+                  restaurantId={restaurant._id}
+                  itemsFilters={itemsFilters}
+                />
               )}
             </div>
             <div
