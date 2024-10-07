@@ -11,13 +11,47 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useAddress } from "@/contexts/AddressContext";
+import { CartItem } from "@/contexts/CartContext";
+import { toast } from "@/hooks/use-toast";
+import { useCreateCheckoutSession } from "@/lib/react-query/mutations";
 
 interface ConfirmAddressDialogProps {
   disabled: boolean;
+  items: CartItem[];
+  restaurantName: string;
 }
 
-const ConfirmAddressDialog = ({ disabled }: ConfirmAddressDialogProps) => {
+const ConfirmAddressDialog = ({
+  disabled,
+  items,
+  restaurantName,
+}: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
+
+  const {
+    mutateAsync: createSession,
+    isPending,
+    isError,
+    error,
+  } = useCreateCheckoutSession();
+
+  const handleClick = async () => {
+    if (!items.length) return;
+
+    try {
+      const sessionUrl = await createSession({ items, restaurantName });
+
+      console.log(sessionUrl);
+
+      window.location.href = sessionUrl;
+    } catch (err) {
+      toast({
+        title: "Errore",
+        description: "Errore nel redirect alla pagina di pagamento",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <AlertDialog>
@@ -58,6 +92,7 @@ const ConfirmAddressDialog = ({ disabled }: ConfirmAddressDialogProps) => {
           </AlertDialogCancel>
           <AlertDialogAction
             disabled={!!!selectedAddress}
+            onClick={handleClick}
             className="btn px-4 py-3 bg-primary-70
           hover:bg-primary-90 rounded-xl font-medium border-0"
           >

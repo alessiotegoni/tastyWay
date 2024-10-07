@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout, signin, signup } from "../api/api";
-import { ApiError, AuthRes, LogoutRes } from "../../types/apiTypes";
+import { createCheckoutSessionUrl, logout, signin, signup } from "../api/api";
+import {
+  ApiError,
+  AuthRes,
+  CheckoutSessionBody,
+  LogoutRes,
+} from "../../types/apiTypes";
 import { SigninType, SignupType } from "../validations/authSchemas";
 
 export const useSignin = () => {
@@ -37,3 +42,9 @@ export const useLogout = () => {
     onSuccess: () => queryClient.setQueryData(["accessToken"], () => null),
   });
 };
+
+export const useCreateCheckoutSession = () =>
+  useMutation<string, ApiError, CheckoutSessionBody>({
+    mutationKey: ["checkoutSessionUrl"],
+    mutationFn: createCheckoutSessionUrl,
+  });

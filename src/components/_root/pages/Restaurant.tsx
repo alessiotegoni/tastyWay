@@ -99,6 +99,7 @@ const Restaurant = () => {
             >
               <RestaurantCart
                 restaurantId={restaurant?._id!}
+                restaurantName={restaurantName}
                 deliveryPrice={restaurant?.deliveryInfo.price!}
               />
             </div>

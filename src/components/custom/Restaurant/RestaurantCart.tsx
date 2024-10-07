@@ -4,11 +4,13 @@ import ConfirmAddressDialog from "./ConfirmAddressDialog";
 
 interface RestaurantCartProps {
   restaurantId: string;
+  restaurantName: string;
   deliveryPrice: number;
 }
 
 const RestaurantCart = ({
   restaurantId,
+  restaurantName,
   deliveryPrice,
 }: RestaurantCartProps) => {
   const { restaurantCart, totalPrice, handleSetCart } = useCart(restaurantId);
@@ -63,7 +65,11 @@ const RestaurantCart = ({
         <h1 className="text-[25px]">Totale</h1>
         <p className="text-[30px]">${totalPrice + deliveryPrice}</p>
       </div>
-      <ConfirmAddressDialog disabled={!!!restaurantCart.length} />
+      <ConfirmAddressDialog
+        disabled={!!!restaurantCart.length}
+        items={restaurantCart}
+        restaurantName={restaurantName}
+      />
     </>
   );
 };

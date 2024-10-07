@@ -7,8 +7,14 @@ import {
   RestaurantRes,
   RestaurantItemsFilters,
   RestaurantItemRes,
+  RestaurantItem,
 } from "@/types/restaurantTypes";
-import { api, RESTAURANT_ITEMS_LIMIT, RESTAURANTS_LIMIT } from "@/config/apiConfig";
+import {
+  api,
+  RESTAURANT_ITEMS_LIMIT,
+  RESTAURANTS_LIMIT,
+} from "@/config/apiConfig";
+import { CheckoutSessionBody } from "@/types/apiTypes";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -81,6 +87,15 @@ export const getRestaurantItems = async (
         limit: RESTAURANT_ITEMS_LIMIT,
       },
     }
+  );
+
+  return data;
+};
+
+export const createCheckoutSessionUrl = async (body: CheckoutSessionBody) => {
+  const { data } = await api.post<string>(
+    "/users/orders/create-checkout-session",
+    body
   );
 
   return data;
