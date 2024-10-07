@@ -68,7 +68,8 @@
 
 @layer components {
   .btn {
-    @apply rounded-[47px] font-bold active:scale-95
+    @apply disabled:pointer-events-none disabled:opacity-50
+    rounded-[47px] font-bold active:scale-95
     text-[17px] border border-primary-80 transition-all;
   }
 
@@ -163,6 +164,25 @@
     @apply flex-center gap-[10px] py-3 px-5 bg-home-widget-border-50
     rounded-[34px] border border-home-widget-border font-semibold
     hover:bg-home-widget-border-80 transition-all;
+  }
+
+  .default-scrollbar::-webkit-scrollbar {
+    @apply w-[5px];
+  }
+
+  /* Stile per il track (sfondo della scrollbar) */
+  .default-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Stile per il thumb (parte scorrevole) */
+  .default-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-[6px] bg-home-widget-border-90;
+  }
+
+  /* Stile per il thumb quando viene attivato al passaggio del mouse */
+  .default-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply cursor-pointer bg-home-widget-border-60;
   }
 
   .home-widget {
@@ -273,25 +293,6 @@
 
   .restaurants__list {
     @apply flex flex-col;
-  }
-
-  .restaurants__list::-webkit-scrollbar {
-    @apply w-[5px];
-  }
-
-  /* Stile per il track (sfondo della scrollbar) */
-  .restaurants__list::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
-  /* Stile per il thumb (parte scorrevole) */
-  .restaurants__list::-webkit-scrollbar-thumb {
-    @apply rounded-[6px] primary-widget-bg;
-  }
-
-  /* Stile per il thumb quando viene attivato al passaggio del mouse */
-  .restaurants__list::-webkit-scrollbar-thumb:hover {
-    @apply cursor-pointer bg-primary-60;
   }
 
   .restaurant__header {

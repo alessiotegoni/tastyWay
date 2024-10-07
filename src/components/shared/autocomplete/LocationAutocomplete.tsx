@@ -20,6 +20,7 @@ interface LocationAutocompleteProps {
   placeholder: string;
   shouldShowLatestResearchs: boolean;
   className?: string;
+  inputClassName?: string;
 }
 
 const searchOptions = {
@@ -31,6 +32,7 @@ const LocationAutocomplete = ({
   placeholder,
   shouldShowLatestResearchs,
   className,
+  inputClassName,
 }: LocationAutocompleteProps) => {
   const [userInput, setUserInput] = useState("");
 
@@ -97,7 +99,7 @@ const LocationAutocomplete = ({
 
   const inputClasses = `widget-input ${
     shouldShowLatestResearchs ? "bg-transparent" : "signup-form-input pr-14"
-  }`;
+  } ${inputClassName}`;
 
   return (
     <PlacesAutocomplete
@@ -112,7 +114,7 @@ const LocationAutocomplete = ({
         const hasSeparator = checkSeparator(suggestions);
 
         return (
-          <div className={`relative ${className || ""}`}>
+          <div className={`relative ${className ?? ""}`}>
             <Command>
               <Input
                 {...getInputProps({ placeholder })}

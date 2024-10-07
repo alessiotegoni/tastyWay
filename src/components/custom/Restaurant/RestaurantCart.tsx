@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
+import ConfirmAddressDialog from "./ConfirmAddressDialog";
 
 interface RestaurantCartProps {
   restaurantId: string;
@@ -62,13 +63,7 @@ const RestaurantCart = ({
         <h1 className="text-[25px]">Totale</h1>
         <p className="text-[30px]">${totalPrice + deliveryPrice}</p>
       </div>
-      <Button
-        disabled={!!!restaurantCart.length}
-        className="btn mt-4 bg-[#ec01017e] w-full py-[14px]
-              rounded-xl border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
-      >
-        Checkout
-      </Button>
+      <ConfirmAddressDialog disabled={!!!restaurantCart.length} />
     </>
   );
 };
