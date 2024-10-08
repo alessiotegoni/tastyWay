@@ -7,7 +7,6 @@ import {
   RestaurantRes,
   RestaurantItemsFilters,
   RestaurantItemRes,
-  RestaurantItem,
 } from "@/types/restaurantTypes";
 import {
   api,

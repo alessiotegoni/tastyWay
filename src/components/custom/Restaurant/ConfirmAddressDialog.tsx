@@ -11,35 +11,44 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useAddress } from "@/contexts/AddressContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { CartItem } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { useCreateCheckoutSession } from "@/lib/react-query/mutations";
+import { Loader } from "lucide-react";
 
 interface ConfirmAddressDialogProps {
-  disabled: boolean;
-  items: CartItem[];
+  restaurantId: string;
   restaurantName: string;
+  deliveryPrice: number;
+  items: CartItem[];
+  disabled: boolean;
 }
 
 const ConfirmAddressDialog = ({
   disabled,
   items,
   restaurantName,
+  deliveryPrice,
+  restaurantId,
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
+  const { user } = useAuth();
 
-  const {
-    mutateAsync: createSession,
-    isPending,
-    isError,
-    error,
-  } = useCreateCheckoutSession();
+  const { mutateAsync: createSession, isPending } = useCreateCheckoutSession();
 
   const handleClick = async () => {
-    if (!items.length) return;
+    if (!items.length && !isPending) return;
 
     try {
-      const sessionUrl = await createSession({ items, restaurantName });
+      const sessionUrl = await createSession({
+        restaurantId,
+        restaurantName,
+        items,
+        deliveryPrice,
+        address: selectedAddress!,
+        userId: user!.id,
+      });
 
       console.log(sessionUrl);
 
@@ -91,12 +100,12 @@ const ConfirmAddressDialog = ({
             Annulla
           </AlertDialogCancel>
           <AlertDialogAction
-            disabled={!!!selectedAddress}
+            disabled={!!!selectedAddress && isPending}
             onClick={handleClick}
             className="btn px-4 py-3 bg-primary-70
           hover:bg-primary-90 rounded-xl font-medium border-0"
           >
-            Conferma
+            {isPending ? <Loader /> : "Conferma"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

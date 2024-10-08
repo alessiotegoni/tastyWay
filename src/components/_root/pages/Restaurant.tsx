@@ -93,16 +93,18 @@ const Restaurant = () => {
                 itemsFilters={itemsFilters}
               />
             </div>
-            <div
-              className="col sticky top-0 bg-home-widget border border-primary-20
+            {!isLoading && !!restaurant && (
+              <div
+                className="col sticky top-7 bg-home-widget border border-primary-20
             backdrop-blur-[123px] rounded-[30px] p-5 h-fit basis-[350px]"
-            >
-              <RestaurantCart
-                restaurantId={restaurant?._id!}
-                restaurantName={restaurantName}
-                deliveryPrice={restaurant?.deliveryInfo.price!}
-              />
-            </div>
+              >
+                <RestaurantCart
+                  restaurantId={restaurant._id}
+                  restaurantName={restaurantName!}
+                  deliveryPrice={restaurant.deliveryInfo.price}
+                />
+              </div>
+            )}
           </div>
         </div>
       </main>

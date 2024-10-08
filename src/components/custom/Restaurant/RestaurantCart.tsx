@@ -16,13 +16,7 @@ const RestaurantCart = ({
   const { restaurantCart, totalPrice, handleSetCart } = useCart(restaurantId);
 
   const restaurantItems = restaurantCart.map((item) => (
-    <li
-      className="item"
-      key={item._id}
-      onClick={() =>
-        handleSetCart({ restaurantId, itemId: item._id, type: "REMOVE" })
-      }
-    >
+    <li className="item" key={item._id}>
       <div className="flex justify-center gap-2">
         <figure className="w-[50px] h-[50px] self-center">
           <img
@@ -40,6 +34,9 @@ const RestaurantCart = ({
       <div className="flex flex-col justify-between items-end">
         <h2>${item.price}</h2>
         <Button
+          onClick={() =>
+            handleSetCart({ restaurantId, itemId: item._id, type: "REMOVE" })
+          }
           className="btn mt-3 text-[13px] font-semibold py-1 px-4 bg-[#ed00009b]
               hover:bg-[#ed0000d9] border border-[#ed0000df] rounded-2xl
               "
@@ -66,9 +63,11 @@ const RestaurantCart = ({
         <p className="text-[30px]">${totalPrice + deliveryPrice}</p>
       </div>
       <ConfirmAddressDialog
-        disabled={!!!restaurantCart.length}
-        items={restaurantCart}
+        restaurantId={restaurantId}
         restaurantName={restaurantName}
+        deliveryPrice={deliveryPrice}
+        items={restaurantCart}
+        disabled={!!!restaurantCart.length}
       />
     </>
   );

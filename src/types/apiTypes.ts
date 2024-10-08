@@ -8,6 +8,10 @@ export type AuthRes = string;
 export type LogoutRes = { message: string };
 
 export type CheckoutSessionBody = {
+  userId: string;
+  restaurantId: string;
   items: Partial<CartItem>[];
   restaurantName: string;
+  deliveryPrice: number;
+  address: string;
 };
