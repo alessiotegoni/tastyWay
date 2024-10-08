@@ -8,10 +8,14 @@ import XIconBtn from "../shared/XIconBtn";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { foodFilters } from "@/constants";
 
-const RestaurantsWidget = () => {
+interface RestaurantsWidgetProps {
+  isError?: boolean;
+}
+
+const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
   const { selectedAddress } = useAddress();
 
-  const { setNameFilter } = useRestaurantFilters()
+  const { setNameFilter } = useRestaurantFilters();
 
   const [input, setInput] = useState("");
 
@@ -22,7 +26,7 @@ const RestaurantsWidget = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (input) setNameFilter(input)
+    if (input) setNameFilter(input);
   };
 
   const handleRemoveInput = () => setInput("");
@@ -55,7 +59,7 @@ const RestaurantsWidget = () => {
           Cerca
         </Button>
       </form>
-      <FoodTypeFilters filters={foodFilters} />
+      <FoodTypeFilters filters={foodFilters} isError={isError} />
     </div>
   );
 };

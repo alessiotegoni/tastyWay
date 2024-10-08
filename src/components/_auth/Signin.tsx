@@ -6,15 +6,20 @@ import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { defaultSigninValues as defaultValues } from "../../lib/validations/authSchemas";
 
 const Signin = () => {
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
+    const queryParams = new URLSearchParams(search);
+    const redirectPath = queryParams.get("redirect");
+    
+    if (isAuthenticated) navigate(redirectPath ?? "/");
   }, [navigate, isAuthenticated]);
 
   const methods = useForm<SigninType>({

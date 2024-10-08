@@ -18,6 +18,11 @@ const Restaurants = () => {
   const { filters, removeFilters, setRestaurantTypeFilter } =
     useRestaurantFilters();
 
+  const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
+    selectedAddress,
+    filters
+  );
+
   const handleSetFilters = (currentValue?: RestaurantTypeFilter) => {
     let restaurantType: [] | [RestaurantTypeFilter] = [];
 
@@ -25,11 +30,6 @@ const Restaurants = () => {
 
     setRestaurantTypeFilter(restaurantType);
   };
-
-  const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
-    selectedAddress,
-    filters
-  );
 
   useEffect(() => {
     return () => removeFilters();
@@ -61,7 +61,7 @@ const Restaurants = () => {
         />
         <div className="container">
           <div className="flex flex-col items-center gap-3">
-            <RestaurantsWidget />
+            <RestaurantsWidget isError={isError} />
             {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
             {isError && <ErrorWidget {...invalidAddressErrProps} />}
             {canShowRestaurants && (

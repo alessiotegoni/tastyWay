@@ -25,8 +25,6 @@ const Restaurant = () => {
 
   const [itemsFilters, setItemsFilters] = useState(defaultItemsFilters);
 
-  console.log(itemsFilters);
-
   const handleSetFilters = (currentValue?: RestaurantItemsTypes) => {
     let itemsType = null;
 

@@ -13,11 +13,13 @@ import { toast } from "@/hooks/use-toast";
 interface FoodTypeFiltersProps {
   filters: FoodFilters[];
   carouselContentClasses?: string;
+  isError?: boolean;
 }
 
 const FoodTypeFilters = ({
   filters,
   carouselContentClasses,
+  isError,
 }: FoodTypeFiltersProps) => {
   const {
     filters: { foodType: foodTypeFilters },
@@ -27,6 +29,8 @@ const FoodTypeFilters = ({
   const { selectedAddress } = useAddress();
 
   const handleSetFilters = (foodType: FoodType, hasFilter: boolean) => {
+    if (isError) return;
+
     if (!selectedAddress)
       return toast({
         description: "Prima di selezionare il cibo inserisci il tuo indirizzo",
@@ -48,7 +52,9 @@ const FoodTypeFilters = ({
     return (
       <CarouselItem key={i} className="basis-1/5 select-none mt-4 pl-0">
         <figure
-          className="flex flex-col items-center justify-center cursor-pointer group"
+          className={`flex flex-col items-center justify-center group ${
+            isError ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
           onClick={() => handleSetFilters(filter.value, hasFilter)}
         >
           <div
@@ -57,6 +63,7 @@ const FoodTypeFilters = ({
                 ? "bg-home-widget-border-80"
                 : "bg-home-widget-border-30"
             }`}
+            aria-disabled={isError}
           >
             <img
               src={filter.img}

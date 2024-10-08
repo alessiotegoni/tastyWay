@@ -9,7 +9,7 @@ import {
 import { SignupType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSignup } from "@/lib/react-query/mutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
@@ -18,6 +18,9 @@ import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutoc
 // TODO: Add otp phone verification
 
 const SignupForm = () => {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
   const form = useFormContext<SignupType>();
 
   const {
@@ -28,11 +31,12 @@ const SignupForm = () => {
     isPending,
   } = useSignup();
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (isSuccess) navigate("/");
-  }, [isSuccess]);
+    const queryParams = new URLSearchParams(search);
+    const redirectPath = queryParams.get("redirect");
+
+    if (isSuccess) navigate(redirectPath ?? "/");
+  }, [navigate, isSuccess]);
 
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
     if (isPending) return;

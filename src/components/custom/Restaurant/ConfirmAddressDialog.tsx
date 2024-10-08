@@ -16,6 +16,7 @@ import { CartItem } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { useCreateCheckoutSession } from "@/lib/react-query/mutations";
 import { Loader } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ConfirmAddressDialogProps {
   restaurantId: string;
@@ -33,12 +34,28 @@ const ConfirmAddressDialog = ({
   restaurantId,
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
-  const { user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { mutateAsync: createSession, isPending } = useCreateCheckoutSession();
 
+  const gotoSignin = () => navigate(`/signin?redirect=${pathname}`);
+
   const handleClick = async () => {
+    if (!isAuthenticated) return gotoSignin();
+
     if (!items.length && !isPending) return;
+
+    // console.log(
+    //   restaurantId,
+    //   restaurantName,
+    //   items,
+    //   deliveryPrice,
+    //   selectedAddress,
+    //   user!.id
+    // );
 
     try {
       const sessionUrl = await createSession({
@@ -62,8 +79,11 @@ const ConfirmAddressDialog = ({
     }
   };
 
+  const handleOnOpen = (open: boolean) =>
+    !isAuthenticated && open && gotoSignin();
+
   return (
-    <AlertDialog>
+    <AlertDialog onOpenChange={handleOnOpen}>
       <AlertDialogTrigger
         disabled={disabled}
         className="btn mt-4 bg-[#ec01017e] w-full py-[14px]
