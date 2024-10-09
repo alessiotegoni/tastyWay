@@ -7,6 +7,7 @@ import {
   LogoutRes,
 } from "../../types/apiTypes";
 import { SigninType, SignupType } from "../validations/authSchemas";
+import useAxiosPrivate from "@/hooks/usePrivateApi";
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -43,8 +44,11 @@ export const useLogout = () => {
   });
 };
 
-export const useCreateCheckoutSession = () =>
-  useMutation<string, ApiError, CheckoutSessionBody>({
+export const useCreateCheckoutSession = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useMutation<string, ApiError, CheckoutSessionBody>({
     mutationKey: ["checkoutSessionUrl"],
-    mutationFn: createCheckoutSessionUrl,
+    mutationFn: (data) => createCheckoutSessionUrl(data, privateApi),
   });
+};

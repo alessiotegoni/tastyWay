@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { SigninType, SignupType } from "../validations/authSchemas";
 
 import {
@@ -14,6 +14,7 @@ import {
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import { CheckoutSessionBody } from "@/types/apiTypes";
+import useAxiosPrivate from "@/hooks/usePrivateApi";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -91,8 +92,11 @@ export const getRestaurantItems = async (
   return data;
 };
 
-export const createCheckoutSessionUrl = async (body: CheckoutSessionBody) => {
-  const { data } = await api.post<string>(
+export const createCheckoutSessionUrl = async (
+  body: CheckoutSessionBody,
+  privateApi: AxiosInstance
+) => {
+  const { data } = await privateApi.post<string>(
     "/users/orders/create-checkout-session",
     body
   );

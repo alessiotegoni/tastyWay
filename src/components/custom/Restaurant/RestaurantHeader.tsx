@@ -38,7 +38,7 @@ const RestaurantHeader = ({
           </div>
           <div className="flex justify-end items-end gap-3">
             <Button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/restaurants")}
               className="btn
       bg-home-widget-border-30 border border-primary-80
       p-3 px-6 rounded-[15px] hover:bg-home-widget-border-80"

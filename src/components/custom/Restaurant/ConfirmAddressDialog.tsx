@@ -34,7 +34,7 @@ const ConfirmAddressDialog = ({
   restaurantId,
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -48,15 +48,6 @@ const ConfirmAddressDialog = ({
 
     if (!items.length && !isPending) return;
 
-    // console.log(
-    //   restaurantId,
-    //   restaurantName,
-    //   items,
-    //   deliveryPrice,
-    //   selectedAddress,
-    //   user!.id
-    // );
-
     try {
       const sessionUrl = await createSession({
         restaurantId,
@@ -64,7 +55,6 @@ const ConfirmAddressDialog = ({
         items,
         deliveryPrice,
         address: selectedAddress!,
-        userId: user!.id,
       });
 
       console.log(sessionUrl);
