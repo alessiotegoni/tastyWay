@@ -1,9 +1,14 @@
-import axios from "axios";
+import axios, { CreateAxiosDefaults } from "axios";
 
-const baseURL = "http://localhost:3000/api";
+const defaultApi: CreateAxiosDefaults = {
+  baseURL: "http://localhost:3000/api",
+  withCredentials: true,
+  headers: { "Content-Type": "application/json" },
+};
 
-export const api = axios.create({ baseURL, withCredentials: true });
+export const api = axios.create(defaultApi);
+
+export const privateApi = axios.create(defaultApi);
 
 export const RESTAURANTS_LIMIT = 9;
-
 export const RESTAURANT_ITEMS_LIMIT = 15;
