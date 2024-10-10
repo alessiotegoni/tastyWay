@@ -1,5 +1,3 @@
-import { RestaurantItem } from "./restaurantTypes";
-
 export interface UserJwt {
   id: string;
   email: string;
@@ -11,16 +9,27 @@ export interface UserJwt {
   iat: number;
 }
 
+export type OrderStatus =
+  | "In attesa"
+  | "Accettato"
+  | "In preparazione"
+  | "In consegna"
+  | "Consegnato";
+
+export type ActiveOrderItem = {
+  _id: string;
+  name: string;
+  type: string;
+  price: number;
+  img: string;
+  quantity: number;
+};
+
 export type UserActiveOrder = {
   id: string;
-  status:
-    | "In attesa"
-    | "Accettato"
-    | "In preparazione"
-    | "In consegna"
-    | "Consegnato";
+  status: OrderStatus;
   expectedTime: number;
-  items: Omit<RestaurantItem, "type" | "description"> & { quantity: number };
+  items: ActiveOrderItem[];
   totalPrice: number;
   restaurant: {
     name: string;

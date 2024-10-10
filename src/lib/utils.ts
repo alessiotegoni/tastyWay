@@ -1,6 +1,7 @@
 import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
 import { CartItem, CartItemType } from "@/contexts/CartContext";
 import { ApiError } from "@/types/apiTypes";
+import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -157,4 +158,27 @@ export const removeCartItem = ({
     ...cartItem!,
     items: newCartItemPlate,
   });
+};
+
+export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
+  let msg = "Aspettando la conferma del ristorante";
+
+  switch (orderStatus) {
+    case "Accettato":
+      msg = "Il ristorante ha accettato il tuo ordine";
+      break;
+    case "In preparazione":
+      msg = "il tuo ordine e' in preparazione";
+      break;
+    case "In consegna":
+      msg = "Il corriere sta arrivando!";
+      break;
+    case "Consegnato":
+      msg = "Consegnato";
+      break;
+    default:
+      console.error("Stato dell'ordine non valido");
+  }
+
+  return msg;
 };

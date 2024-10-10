@@ -191,6 +191,12 @@
     flex flex-col text-center;
   }
 
+  .user-widget {
+    @apply w-full px-5 py-5 rounded-[30px] bg-[#ed000071]
+      border border-[#ed00006a] backdrop-blur-[180px]
+      flex flex-col items-center text-center;
+  }
+
   .primary-widget-bg {
     @apply bg-home-widget backdrop-blur-[123px];
   }
@@ -323,5 +329,10 @@
     @apply flex-between p-3 bg-x-icon-bg-40
     rounded-[25px];
     align-items: unset;
+  }
+
+  .user-widget .expected__time {
+    @apply bg-[#004D85] w-fit py-[3px] px-5 rounded-[25px]
+    border border-[#00a2ff61] mt-[15px] mb-[9px];
   }
 }
