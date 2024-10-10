@@ -3,10 +3,11 @@ import Home from "./components/_root/pages/Home";
 import Signin from "./components/_auth/Signin";
 import Signup from "./components/_auth/Signup";
 import Restaurants from "./components/_root/pages/Restaurants";
-import FilterRoutes from "./components/custom/FilterRoutes";
+import FilterRoutes from "./components/custom/routes/FilterRoutes";
 import Restaurant from "./components/_root/pages/Restaurant";
 import HomeLayout from "./components/_root/layouts/HomeLayout";
 import ActiveOrders from "./components/_root/pages/ActiveOrders";
+import ProtectedRoutes from "./components/custom/routes/ProtectedRoutes";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
         <Route element={<FilterRoutes />}>
           <Route element={<HomeLayout />}>
             <Route index element={<Home />} />
-            <Route path="active-orders" element={<ActiveOrders />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="active-orders" element={<ActiveOrders />} />
+            </Route>
           </Route>
           <Route path="restaurants">
             <Route index element={<Restaurants />} />

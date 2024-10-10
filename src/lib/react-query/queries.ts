@@ -5,9 +5,11 @@ import {
 } from "@tanstack/react-query";
 import {
   getMyAddress,
+  getRestaurantActiveOrders,
   getRestaurantInfo,
   getRestaurantItems,
   getRestaurants,
+  getUserActiveOrders,
   refreshToken,
 } from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
@@ -18,6 +20,8 @@ import {
   RestaurantRes,
   RestaurantItemRes,
 } from "@/types/restaurantTypes";
+import { useAuth } from "@/contexts/AuthContext";
+import useAxiosPrivate from "@/hooks/usePrivateApi";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -81,3 +85,25 @@ export const useGetRestaurantItems = (
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
   });
+
+export const useGetActiveOrders = (
+  isCmpAccount: boolean,
+  isAuthenticated: boolean
+) => {
+  const privateApi = useAxiosPrivate();
+
+  const queryKey = isCmpAccount
+    ? ["restaurantActiveOrders"]
+    : ["userActiveOrders"];
+
+  const queryFn = () =>
+    isCmpAccount
+      ? getRestaurantActiveOrders(privateApi)
+      : getUserActiveOrders(privateApi);
+
+  return useQuery({
+    queryKey,
+    queryFn,
+    enabled: isAuthenticated,
+  });
+};

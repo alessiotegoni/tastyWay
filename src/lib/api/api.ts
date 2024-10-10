@@ -14,7 +14,6 @@ import {
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import { CheckoutSessionBody } from "@/types/apiTypes";
-import useAxiosPrivate from "@/hooks/usePrivateApi";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -100,6 +99,18 @@ export const createCheckoutSessionUrl = async (
     "/users/orders/create-checkout-session",
     body
   );
+
+  return data;
+};
+
+export const getUserActiveOrders = async (privateApi: AxiosInstance) => {
+  const { data } = await privateApi.get("/users/active-orders");
+
+  return data;
+};
+
+export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) => {
+  const { data } = await privateApi.get("/restaurants/active-orders");
 
   return data;
 };

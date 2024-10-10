@@ -33,6 +33,15 @@ export type RestaurantItemRes = {
   restaurantItems: RestaurantItem[];
 };
 
+export type RestaurantActiveOrder = {
+  orderId: string;
+  customerSurname: string;
+  street: string;
+  status: string;
+  totalPrice: number;
+  expectedTime: Date;
+};
+
 export type FoodFilters = {
   img: string;
   name: string;

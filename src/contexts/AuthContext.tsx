@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 import { useRefreshToken } from "@/lib/react-query/queries";
 import { UserJwt } from "@/types/userTypes";
 import { jwtDecode } from "jwt-decode";
@@ -19,10 +19,10 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserJwt | null>(null);
+  // const [user, setUser] = useState<UserJwt | null>(null);
 
   // Refresh token only if it isn't stored in react-query cache
 
@@ -35,13 +35,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const isAuthenticated = !!accessToken && !isError;
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
+  let user: UserJwt | null = null;
 
-    const userDecoded = jwtDecode<UserJwt>(accessToken);
-
-    setUser(userDecoded);
-  }, [isAuthenticated]);
+  if (isAuthenticated) user = jwtDecode<UserJwt>(accessToken);
 
   return (
     <AuthContext.Provider
