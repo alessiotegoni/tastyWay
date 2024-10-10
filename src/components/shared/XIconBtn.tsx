@@ -1,3 +1,5 @@
+import { XIcon } from "lucide-react";
+
 interface XIconBtnProps {
   handleRemoveInput: () => void;
   input: string;
@@ -12,7 +14,7 @@ const XIconBtn = ({ input, handleRemoveInput, className }: XIconBtnProps) => {
       className={`x-icon
             ${input.length ? "flex" : "hidden"} ${className ?? ""}`}
     >
-      <img src="icons/x-icon.png" alt="x-icon" className="w-[10px] h-[10px]" />
+      <XIcon className="w-[10px] h-[10px]" />
     </button>
   );
 };

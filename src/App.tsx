@@ -5,6 +5,8 @@ import Signup from "./components/_auth/Signup";
 import Restaurants from "./components/_root/pages/Restaurants";
 import FilterRoutes from "./components/custom/FilterRoutes";
 import Restaurant from "./components/_root/pages/Restaurant";
+import HomeLayout from "./components/_root/layouts/HomeLayout";
+import ActiveOrders from "./components/_root/pages/ActiveOrders";
 
 function App() {
   return (
@@ -15,7 +17,10 @@ function App() {
         <Route path="signup" element={<Signup />} />
 
         <Route element={<FilterRoutes />}>
-          <Route index element={<Home />} />
+          <Route element={<HomeLayout />}>
+            <Route index element={<Home />} />
+            <Route path="active-orders" element={<ActiveOrders />} />
+          </Route>
           <Route path="restaurants">
             <Route index element={<Restaurants />} />
             <Route path=":restaurantName" element={<Restaurant />} />
