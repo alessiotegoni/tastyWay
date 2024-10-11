@@ -8,6 +8,7 @@ import {
 } from "../../types/apiTypes";
 import { SigninType, SignupType } from "../validations/authSchemas";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
+import { useNavigate } from "react-router-dom";
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -36,11 +37,15 @@ export const useSignup = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation<LogoutRes, ApiError>({
     mutationKey: ["logout"],
     mutationFn: logout,
-    onSuccess: () => queryClient.setQueryData(["accessToken"], () => null),
+    onSuccess: () => {
+      queryClient.setQueryData(["accessToken"], () => null);
+      navigate("/");
+    },
   });
 };
 

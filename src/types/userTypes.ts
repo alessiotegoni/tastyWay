@@ -28,7 +28,7 @@ export type ActiveOrderItem = {
 export type UserActiveOrder = {
   id: string;
   status: OrderStatus;
-  expectedTime: number;
+  expectedTime: string;
   items: ActiveOrderItem[];
   totalPrice: number;
   restaurant: {

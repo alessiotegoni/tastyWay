@@ -168,7 +168,7 @@ export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
       msg = "Il ristorante ha accettato il tuo ordine";
       break;
     case "In preparazione":
-      msg = "il tuo ordine e' in preparazione";
+      msg = "il tuo ordine è in preparazione";
       break;
     case "In consegna":
       msg = "Il corriere sta arrivando!";
@@ -181,4 +181,11 @@ export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
   }
 
   return msg;
+};
+
+export const getExpectedTime = (isoDate: string) => {
+  const date = new Date(isoDate);
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
 };
