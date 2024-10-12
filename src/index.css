@@ -341,4 +341,9 @@
     @apply bg-[#004D85] w-fit py-[3px] px-5 rounded-[25px]
     border border-[#00a2ff61] mt-[15px] mb-[9px];
   }
+
+  .user-order__container .order__address {
+    @apply bg-[#ed000071] border border-[#ed00006a]
+    font-semibold rounded-3xl px-6 py-2 backdrop-blur-3xl;
+  }
 }

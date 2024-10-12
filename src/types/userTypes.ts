@@ -30,6 +30,7 @@ export type UserActiveOrder = {
   status: OrderStatus;
   expectedTime: string;
   items: ActiveOrderItem[];
+  address: string;
   totalPrice: number;
   restaurant: {
     name: string;

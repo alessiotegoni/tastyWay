@@ -1,4 +1,4 @@
-import UserActiveOrderSkeleton from "@/components/skeletons/userActiveOrderSkeleton";
+import UserActiveOrderSkeleton from "@/components/skeletons/UserActiveOrderSkeleton";
 import {
   Carousel,
   CarouselContent,
@@ -36,7 +36,18 @@ const ActiveOrders = () => {
           const expectedTime = getExpectedTime(order.expectedTime);
 
           return (
-            <CarouselItem key={order.id}>
+            <CarouselItem key={order.id} className="user-order__container">
+              <div className="flex-center gap-2 mb-3">
+                <div className="order__address flex-center gap-2">
+                  <img
+                    width={25}
+                    height={25}
+                    src="/icons/delivery-truck-icon.png"
+                    alt="delivery-truck-icon"
+                  />
+                  <p className="text-sm">{order.address}</p>
+                </div>
+              </div>
               <div className="user-widget sm:px-20">
                 <h1 className="sm:text-[24px] font-semibold">{orderStatus}</h1>
                 <div className="expected__time">
