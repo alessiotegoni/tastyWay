@@ -1,4 +1,6 @@
+import RestaurantActiveOrders from "@/components/custom/activeOrders/RestaurantActiveOrders";
 import UserActiveOrders from "@/components/custom/activeOrders/UserActiveOrders";
+import RestaurantActiveOrderSkeleton from "@/components/skeletons/RestaurantActiveOrderSkeleton";
 import UserActiveOrderSkeleton from "@/components/skeletons/UserActiveOrderSkeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetActiveOrders } from "@/lib/react-query/queries";
@@ -10,17 +12,17 @@ interface ActiveOrdersProps {
 const ActiveOrders = ({ setHasActiveOrders }: ActiveOrdersProps) => {
   const { user, isAuthenticated } = useAuth();
 
-  const {
-    data: orders,
-    isLoading,
-    isError,
-    error,
-  } = useGetActiveOrders(user!.isCmpAccount, isAuthenticated);
+  const isCmpAccount = user!.isCmpAccount;
 
-  if (orders?.length && !isLoading && setHasActiveOrders)
+  const { data, isLoading, isError, error } = useGetActiveOrders(
+    isCmpAccount,
+    isAuthenticated
+  );
+
+  if (data?.length && !isLoading && setHasActiveOrders)
     setHasActiveOrders(true);
 
-  console.log(orders);
+  console.log(data, isLoading);
 
   // TODO: aggiungere un componente per la lista degli item,
   // shared tra gli item del carrello e gli item dell'ordine dell'utente
@@ -31,10 +33,20 @@ const ActiveOrders = ({ setHasActiveOrders }: ActiveOrdersProps) => {
   // <RestaurantActiveOrders /> che ovviamente avra la sua chiamata
   // api al suo interno
 
-  return isLoading ? (
-    <UserActiveOrderSkeleton />
-  ) : (
-    <UserActiveOrders orders={orders} />
+  const hasOrders = !isLoading && !!data.orders.length;
+
+  return (
+    <>
+      {isCmpAccount && isLoading && <RestaurantActiveOrderSkeleton />}
+      {!isCmpAccount && isLoading && <UserActiveOrderSkeleton />}
+
+      {hasOrders && data.type === "USER_ORDERS" && (
+        <UserActiveOrders orders={data.orders} />
+      )}
+      {hasOrders && data.type === "RESTAURANT_ORDERS" && (
+        <RestaurantActiveOrders orders={data.orders} />
+      )}
+    </>
   );
 };
 
