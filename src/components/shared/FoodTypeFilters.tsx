@@ -52,7 +52,7 @@ const FoodTypeFilters = ({
     return (
       <CarouselItem key={i} className="basis-1/5 select-none mt-4 pl-0">
         <figure
-          className={`flex flex-col items-center justify-center group ${
+          className={`flex flex-col items-center justify-center group/food-filter-item ${
             isError ? "cursor-not-allowed" : "cursor-pointer"
           }`}
           onClick={() => handleSetFilters(filter.value, hasFilter)}

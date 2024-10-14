@@ -277,7 +277,8 @@
 
   .food-filter {
     @apply border border-primary-30 w-[80px] h-[80px] rounded-full
-    transition-all flex justify-center items-center group-hover:bg-home-widget-border-80;
+    transition-all flex justify-center items-center
+    group-hover/food-filter-item:bg-home-widget-border-80;
   }
 
   .food-filter[aria-disabled="true"] {
