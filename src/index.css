@@ -7,6 +7,7 @@
 @layer base {
   :root {
     --primary-color: #ed5500;
+    --restaurant-primary: #5a0084;
 
     /* Home widget */
     --home-widget-background: linear-gradient(
@@ -22,6 +23,7 @@
     );
 
     --home-widget-border: #fc5b00;
+    --restaurant-border: #7800b0;
 
     /* Searchbar */
     --searchbar-color: #8a7575;
@@ -90,6 +92,11 @@
       url("/imgs/auth-bg.png");
   }
 
+  .hero:has(.user-orders) {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+      url("/imgs/plate-bg.png");
+  }
+
   .home {
     @apply md:pt-0;
 
@@ -125,6 +132,12 @@
     }
   }
 
+  .user-orders {
+    .container {
+      @apply max-w-[900px];
+    }
+  }
+
   .login-btn {
     @apply px-[32px] h-[45px] sm:px-[38px];
   }
@@ -140,6 +153,29 @@
     bg-home-widget-border-30
     hover:bg-home-widget-border-80
     px-6 h-[45px];
+  }
+
+  .client-nav-btn {
+    @apply gap-3 flex-center
+    px-6 h-[45px] font-semibold;
+  }
+
+  .client-nav-btn.user-btn {
+    @apply bg-[#ED0000] bg-opacity-50
+    border-[#ed00006f] hover:bg-opacity-80 hover:bg-[#ED0000];
+  }
+
+  .client-nav-btn.user-btn.active {
+    @apply bg-opacity-100;
+  }
+
+  .client-nav-btn.restaurant-btn {
+    @apply bg-restaurant-primary-70 border-restaurant-border
+    hover:bg-restaurant-primary;
+  }
+
+  .client-nav-btn.restaurant-btn.active {
+    @apply bg-[#9400DA] border-transparent;
   }
 
   .user-btn-bg {

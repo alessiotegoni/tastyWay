@@ -1,23 +1,16 @@
 import { tastyWayLogo } from "@/constants";
-import { useAddress } from "@/contexts/AddressContext";
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 interface DefaultNavbarProps {
-  navRigthBtn: ReactElement;
+  navRightBtn: ReactElement;
 }
 
-const DefaultNavbar = ({ navRigthBtn }: DefaultNavbarProps) => {
-  const { removeSelectedAddress } = useAddress();
-
+const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
   const { pathname } = useLocation();
 
   const homeBtn = pathname !== "/" && (
-    <Link
-      to="/"
-      onClick={() => removeSelectedAddress()}
-      className="btn home-btn"
-    >
+    <Link to="/" className="btn home-btn">
       <img src="/icons/home-icon.png" alt="home-icon" className="w-5 h-5" />
       <p>Home</p>
     </Link>
@@ -35,7 +28,7 @@ const DefaultNavbar = ({ navRigthBtn }: DefaultNavbarProps) => {
             />
           </Link>
           {homeBtn}
-          {navRigthBtn}
+          {navRightBtn}
         </div>
       </div>
     </header>

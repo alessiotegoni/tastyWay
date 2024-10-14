@@ -18,7 +18,7 @@ const Signin = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(search);
     const redirectPath = queryParams.get("redirect");
-    
+
     if (isAuthenticated) navigate(redirectPath ?? "/");
   }, [navigate, isAuthenticated]);
 

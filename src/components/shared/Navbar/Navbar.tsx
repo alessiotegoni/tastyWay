@@ -5,6 +5,7 @@ import UserDropdown from "../../custom/UserDropdown";
 import { useLogout } from "@/lib/react-query/mutations";
 import AuthNavbar from "./AuthNavbar";
 import DefaultNavbar from "./DefaultNavbar";
+import ClientNavbar from "./ClientNavbar";
 
 interface NavbarProps {
   pageNum: number;
@@ -16,15 +17,14 @@ enum PAGES {
   SIGNUP,
   RESTAURANTS,
   RESTAURANT,
-  MANAGE_USER,
-  MANAGE_RESTAURANT,
+  HANDLE_CLIENT,
 }
 
 const Navbar = ({ pageNum }: NavbarProps) => {
   const { isAuthenticated, user, isRefreshingToken } = useAuth();
   const { mutateAsync: logout } = useLogout();
 
-  const navRigthBtn = isAuthenticated ? (
+  const navRightBtn = isAuthenticated ? (
     <UserDropdown user={user} logoutFn={logout} />
   ) : (
     <Link to="/signin">
@@ -32,7 +32,7 @@ const Navbar = ({ pageNum }: NavbarProps) => {
     </Link>
   );
 
-  const defaultNavbar = <DefaultNavbar navRigthBtn={navRigthBtn} />;
+  const defaultNavbar = <DefaultNavbar navRightBtn={navRightBtn} />;
 
   let navbar;
 
@@ -51,6 +51,9 @@ const Navbar = ({ pageNum }: NavbarProps) => {
       break;
     case PAGES.RESTAURANT:
       navbar = defaultNavbar;
+      break;
+    case PAGES.HANDLE_CLIENT:
+      navbar = <ClientNavbar navRightBtn={navRightBtn} />;
       break;
     default:
       console.error(`Il numero ${pageNum} non corrisponde a nessuna pagina`);
