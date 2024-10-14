@@ -12,3 +12,5 @@ export const privateApi = axios.create(defaultApi);
 
 export const RESTAURANTS_LIMIT = 9;
 export const RESTAURANT_ITEMS_LIMIT = 15;
+
+export const PREV_ORDERS_LIMIT = 14;

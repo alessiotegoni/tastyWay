@@ -36,3 +36,20 @@ export type UserActiveOrder = {
     name: string;
   };
 };
+
+export type UserPrevOrder = {
+  _id: string;
+  items: { _id: string; name: string; quantity: string }[];
+  totalPrice: number;
+  createdAt: number;
+  restaurant: {
+    id: string;
+    name: string;
+    img: string;
+  };
+};
+
+export type UserPrevOrderRes = {
+  nextCursor: string | null;
+  orders: UserPrevOrder[];
+};

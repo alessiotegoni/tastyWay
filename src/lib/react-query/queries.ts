@@ -10,6 +10,7 @@ import {
   getRestaurantItems,
   getRestaurants,
   getUserActiveOrders,
+  getUserPrevOrders,
   refreshToken,
 } from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
@@ -20,8 +21,8 @@ import {
   RestaurantRes,
   RestaurantItemRes,
 } from "@/types/restaurantTypes";
-import { useAuth } from "@/contexts/AuthContext";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
+import { UserPrevOrder, UserPrevOrderRes } from "@/types/userTypes";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -85,6 +86,17 @@ export const useGetRestaurantItems = (
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
   });
+
+export const useGetPrevOrders = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useInfiniteQuery<UserPrevOrderRes, ApiError>({
+    queryKey: ["userPrevOrders"],
+    queryFn: ({ pageParam }) => getUserPrevOrders(privateApi, pageParam),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: null,
+  });
+};
 
 export const useGetActiveOrders = (
   isCmpAccount: boolean,

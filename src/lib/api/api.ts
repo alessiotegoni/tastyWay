@@ -10,10 +10,12 @@ import {
 } from "@/types/restaurantTypes";
 import {
   api,
+  PREV_ORDERS_LIMIT,
   RESTAURANT_ITEMS_LIMIT,
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import { CheckoutSessionBody } from "@/types/apiTypes";
+import { UserPrevOrder, UserPrevOrderRes } from "@/types/userTypes";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -105,6 +107,20 @@ export const createCheckoutSessionUrl = async (
 
 export const getUserActiveOrders = async (privateApi: AxiosInstance) => {
   const { data } = await privateApi.get("/users/active-orders");
+
+  return data;
+};
+
+export const getUserPrevOrders = async (
+  privateApi: AxiosInstance,
+  pageParam: unknown
+) => {
+  const { data } = await privateApi.get<UserPrevOrderRes>(`/users/orders`, {
+    params: {
+      pageParam,
+      limit: PREV_ORDERS_LIMIT,
+    },
+  });
 
   return data;
 };
