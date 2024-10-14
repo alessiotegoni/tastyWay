@@ -5,11 +5,7 @@ import UserActiveOrderSkeleton from "@/components/skeletons/UserActiveOrderSkele
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetActiveOrders } from "@/lib/react-query/queries";
 
-interface ActiveOrdersProps {
-  setHasActiveOrders?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const ActiveOrders = ({ setHasActiveOrders }: ActiveOrdersProps) => {
+const ActiveOrders = () => {
   const { user, isAuthenticated } = useAuth();
 
   const isCmpAccount = user!.isCmpAccount;
@@ -18,9 +14,6 @@ const ActiveOrders = ({ setHasActiveOrders }: ActiveOrdersProps) => {
     isCmpAccount,
     isAuthenticated
   );
-
-  if (data?.length && !isLoading && setHasActiveOrders)
-    setHasActiveOrders(true);
 
   console.log(data, isLoading);
 

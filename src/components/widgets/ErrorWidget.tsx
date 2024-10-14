@@ -5,7 +5,7 @@ import { ApiError } from "@/types/apiTypes";
 export interface btn {
   id: string;
   value: string;
-  icon: string;
+  icon?: string;
   goto?: string;
   className?: string;
   handleClick?: () => void;
@@ -39,15 +39,15 @@ const ErrorWidget = ({
         key={btn.id}
         onClick={handleClick}
         className={`font-semibold flex-center gap-2 py-4 px-6 rounded-[30px]
-          w-full max-w-[230px] ${
-          btn.className ?? ""
-        }`}
+          w-full max-w-[230px] ${btn.className ?? ""}`}
       >
-        <img
-          src={`/icons/${btn.icon}.png`}
-          alt={`${btn.value}-icon`}
-          className="w-6 h-6"
-        />
+        {btn.icon && (
+          <img
+            src={`/icons/${btn.icon}.png`}
+            alt={`${btn.value}-icon`}
+            className="w-6 h-6"
+          />
+        )}
         {btn.value}
       </Button>
     );

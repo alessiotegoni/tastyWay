@@ -41,7 +41,7 @@ export type UserPrevOrder = {
   _id: string;
   items: { _id: string; name: string; quantity: string }[];
   totalPrice: number;
-  createdAt: number;
+  createdAt: string;
   restaurant: {
     id: string;
     name: string;

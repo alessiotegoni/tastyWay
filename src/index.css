@@ -133,6 +133,8 @@
   }
 
   .user-orders {
+    @apply pt-0;
+
     .container {
       @apply max-w-[900px];
     }
@@ -382,5 +384,9 @@
   .user-order__container .order__address {
     @apply bg-[#ed000071] border border-[#ed00006a]
     font-semibold rounded-3xl px-6 py-2 backdrop-blur-3xl;
+  }
+
+  .prev-orders__container {
+    @apply mt-7
   }
 }

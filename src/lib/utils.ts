@@ -161,9 +161,12 @@ export const removeCartItem = ({
 };
 
 export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
-  let msg = "Aspettando la conferma del ristorante";
+  let msg = "";
 
   switch (orderStatus) {
+    case "In attesa":
+      msg = "Aspettando la conferma del ristorante";
+      break;
     case "Accettato":
       msg = "Il ristorante ha accettato il tuo ordine";
       break;
@@ -188,4 +191,16 @@ export const getExpectedTime = (isoDate: string) => {
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
+};
+
+export const getOrderDate = (isoDate: string): string => {
+  const date = new Date(isoDate);
+
+  const formattedDate = new Intl.DateTimeFormat("it-IT", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+
+  return formattedDate;
 };
