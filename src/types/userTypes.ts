@@ -1,3 +1,5 @@
+import { OrderItem, RestaurantItem } from "./restaurantTypes";
+
 export interface UserJwt {
   id: string;
   email: string;
@@ -39,7 +41,7 @@ export type UserActiveOrder = {
 
 export type UserPrevOrder = {
   _id: string;
-  items: { _id: string; name: string; quantity: string }[];
+  items: OrderItem[];
   totalPrice: number;
   createdAt: string;
   restaurant: {

@@ -15,6 +15,14 @@ export type RestaurantsRes = {
   restaurants: RestaurantsType[];
 };
 
+export type OrderItem = {
+  _id: string;
+  img: string | undefined;
+  price: number;
+  name: string;
+  quantity: number;
+};
+
 export type RestaurantItem = {
   _id: string;
   name: string;

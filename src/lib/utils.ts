@@ -195,6 +195,22 @@ export const getExpectedTime = (isoDate: string) => {
 
 export const getOrderDate = (isoDate: string): string => {
   const date = new Date(isoDate);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const isToday =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  const isYesterday =
+    date.getDate() === yesterday.getDate() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getFullYear() === yesterday.getFullYear();
+
+  if (isToday) return "Oggi";
+  if (isYesterday) return "Ieri";
 
   const formattedDate = new Intl.DateTimeFormat("it-IT", {
     day: "2-digit",

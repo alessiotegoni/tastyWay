@@ -15,8 +15,6 @@ const ActiveOrders = () => {
     isAuthenticated
   );
 
-  console.log(data, isLoading);
-
   // TODO: aggiungere un componente per la lista degli item,
   // shared tra gli item del carrello e gli item dell'ordine dell'utente
 

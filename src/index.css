@@ -71,7 +71,7 @@
 @layer components {
   .btn {
     @apply disabled:pointer-events-none disabled:opacity-50
-    rounded-[47px] font-bold active:scale-95
+    rounded-[47px] font-semibold active:scale-95
     text-[17px] border border-primary-80 transition-all;
   }
 
@@ -387,6 +387,10 @@
   }
 
   .prev-orders__container {
-    @apply mt-7
+    @apply mt-7;
+  }
+
+  .user-last-order {
+    align-items: unset;
   }
 }
