@@ -21,8 +21,7 @@ enum PAGES {
 }
 
 const Navbar = ({ pageNum }: NavbarProps) => {
-  const { isAuthenticated, user, isRefreshingToken } = useAuth();
-  const { mutateAsync: logout } = useLogout();
+  const { isAuthenticated, user, logout, isRefreshingToken } = useAuth();
 
   const navRightBtn = isAuthenticated ? (
     <UserDropdown user={user} logoutFn={logout} />

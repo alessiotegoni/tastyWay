@@ -2,14 +2,20 @@ import React, { createContext, useContext } from "react";
 import { useRefreshToken } from "@/lib/react-query/queries";
 import { UserJwt } from "@/types/userTypes";
 import { jwtDecode } from "jwt-decode";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { ApiError } from "@/types/apiTypes";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  UseMutateAsyncFunction,
+} from "@tanstack/react-query";
+import { ApiError, LogoutRes } from "@/types/apiTypes";
+import { useLogout } from "@/lib/react-query/mutations";
 
 interface AuthContextType {
   accessToken: string | undefined;
   user: UserJwt | null;
   isAuthenticated: boolean;
   isRefreshingToken: boolean;
+  logout: UseMutateAsyncFunction<LogoutRes, ApiError, void, unknown>;
   refreshToken: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<string, ApiError>>;
@@ -22,9 +28,9 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  // const [user, setUser] = useState<UserJwt | null>(null);
-
   // Refresh token only if it isn't stored in react-query cache
+
+  const { mutateAsync: logout } = useLogout();
 
   const {
     data: accessToken,
@@ -44,6 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         accessToken,
         isAuthenticated,
+        logout,
         refreshToken,
         isRefreshingToken,
         user,

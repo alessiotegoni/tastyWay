@@ -12,10 +12,10 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
   const isUserNavbar = pathname.includes("user");
 
   const isInOrders = pathname.includes("orders");
-  const isInProfile = pathname.includes("profile");
+  const isInProfile = ["/user/profile", "/user/security"].includes(pathname);
 
   return (
-    <header className="restaurants-header">
+    <header className="client__header">
       <div className="container">
         <div className="row flex-between">
           <Link to="/">

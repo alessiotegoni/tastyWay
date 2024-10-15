@@ -16,17 +16,17 @@ const client = new QueryClient(queryClientConfig);
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={client}>
-      <AuthProvider>
-        <AddressProvider>
-          <CartProvider>
-            <Router>
+      <Router>
+        <AuthProvider>
+          <AddressProvider>
+            <CartProvider>
               <Routes>
                 <Route path="/*" element={<App />} />
               </Routes>
-            </Router>
-          </CartProvider>
-        </AddressProvider>
-      </AuthProvider>
+            </CartProvider>
+          </AddressProvider>
+        </AuthProvider>
+      </Router>
       <ReactQueryDevtools />
     </QueryClientProvider>
     <Toaster />

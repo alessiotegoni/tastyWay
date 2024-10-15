@@ -21,7 +21,7 @@ interface UserDropdowenProps {
 // FIXME: try to fix figma bg-color
 
 const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
-  const { handleSetSelectedAddress } = useAddress();
+  const { removeSelectedAddress } = useAddress();
 
   const items = userDropdownLinks.map((i, index) => (
     <DropdownMenuItem
@@ -37,15 +37,13 @@ const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
 
   const handleLogout = async () => {
     await logout();
-    handleSetSelectedAddress("");
+    removeSelectedAddress();
     toast({ title: "Logout effettuato con successo" });
   };
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        className="user-btn user-btn-bg"
-      >
+      <DropdownMenuTrigger className="user-btn user-btn-bg">
         <img src="/icons/user-icon.png" alt="user-icon" />
 
         <p className="font-semibold text-[18px]">{user?.name}</p>

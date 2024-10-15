@@ -10,6 +10,9 @@ import ActiveOrders from "./components/_root/pages/ActiveOrders";
 import ProtectedRoutes from "./components/custom/routes/ProtectedRoutes";
 import UserPrevsOrders from "./components/_root/pages/UserPrevsOrders";
 import ClientLayout from "./components/_root/layouts/ClientLayout";
+import UserProfileLayout from "./components/_root/layouts/UserProfileLayout";
+import UserProfile from "./components/_root/pages/UserProfile";
+import UserSecurity from "./components/_root/pages/UserSecurity";
 
 function App() {
   return (
@@ -29,7 +32,10 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route element={<ClientLayout />}>
               <Route path="user/orders" element={<UserPrevsOrders />} />
-              <Route path="user/profile" element={<UserPrevsOrders />} />
+              <Route element={<UserProfileLayout />}>
+                <Route path="user/profile" element={<UserProfile />} />
+                <Route path="user/security" element={<UserSecurity />} />
+              </Route>
 
               <Route
                 path="my-restaurant/orders"
