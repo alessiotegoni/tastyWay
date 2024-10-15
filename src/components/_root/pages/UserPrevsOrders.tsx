@@ -1,16 +1,20 @@
 import UserActiveOrders from "@/components/custom/activeOrders/UserActiveOrders";
 import OrderItemsList from "@/components/shared/orderItems/OrderItemsList";
 import UserActiveOrderSkeleton from "@/components/skeletons/UserActiveOrderSkeleton";
+import UserPrevOrderSkeleton from "@/components/skeletons/UserPrevOrderSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import {
   useGetActiveOrders,
   useGetPrevOrders,
 } from "@/lib/react-query/queries";
 import { getOrderDate } from "@/lib/utils";
-import { Loader } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 const UserPrevsOrders = () => {
+  const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
+
   const { data: activeOrdersData, isLoading: areActiveOrdersLoading } =
     useGetActiveOrders(false, true);
 
@@ -20,36 +24,43 @@ const UserPrevsOrders = () => {
     fetchNextPage,
   } = useGetPrevOrders();
 
+  useEffect(() => {
+    if (inView) fetchNextPage();
+    console.log(inView);
+  }, [inView]);
+
+  const activeOrders = activeOrdersData?.orders ?? [];
   const prevOrders = prevOrdersData?.pages.flatMap((p) => p.orders) ?? [];
 
-  // TODO: last order
+  const hasNoActiveOrders = !areActiveOrdersLoading && !!!activeOrders.length;
+  const hasNoPrevOrders = !arePrevOrdersLoading && !!!prevOrders.length;
 
-  // TODO: add observer
+  const hasNoOrders = hasNoActiveOrders && hasNoPrevOrders;
 
-  // const lastOrder = prevOrders?.splice(0);
-  const lastOrder = prevOrders?.at(0);
   const canShowLastOrder =
-    !areActiveOrdersLoading &&
-    !!!activeOrdersData.orders?.length &&
-    !!lastOrder;
+    !areActiveOrdersLoading && !!!activeOrdersData.orders?.length;
+
+  const lastOrder = canShowLastOrder ? prevOrders.splice(0, 1).at(0) : null;
 
   return (
     <div className="flex flex-col items-center">
-      {/* <div className="active-orders__container max-w-[600px]">
-        {areActiveOrdersLoading ? (
+      {areActiveOrdersLoading ? (
+        <div className="active-orders__container">
           <UserActiveOrderSkeleton />
-        ) : (
-          <UserActiveOrders orders={activeOrdersData.orders} />
-        )}
-      </div> */}
-      {!canShowLastOrder && (
-        <div className="last-order__container w-full mx-auto max-w-[600px]">
+        </div>
+      ) : (
+        <div className="active-orders__container">
+          <UserActiveOrders orders={activeOrders} />
+        </div>
+      )}
+      {canShowLastOrder && !!lastOrder && (
+        <div className="last-order__container">
           <div className="user-last-order user-widget">
             <h1 className="text-2xl font-semibold self-center">
               Ultimo ordine
             </h1>
-            <div className="my-4">
-              <figure className="flex gap-3">
+            <div className="mt-4 mb-3">
+              <div className="flex gap-3">
                 <img
                   src="/imgs/default-restaurant.png"
                   alt={`${lastOrder!.restaurant.name} img`}
@@ -80,23 +91,46 @@ const UserPrevsOrders = () => {
                     </div>
                   </div>
                 </div>
-              </figure>
+              </div>
             </div>
+            <h3 className="text-xl font-semibold">Il tuo ordine</h3>
+            <ul
+              className={`flex flex-wrap gap-2 ${
+                lastOrder!.items.length <= 1 ? "justify-center" : ""
+              } mt-2 mb-4`}
+            >
+              <OrderItemsList items={lastOrder!.items} />
+            </ul>
+            <h3 className="font-semibold text-3xl">
+              Totale: <span>${lastOrder!.totalPrice}</span>
+            </h3>
           </div>
         </div>
       )}
-      <div className="prev-orders__container user-widget">
-        {arePrevOrdersLoading ? (
-          <Loader />
-        ) : !!prevOrders.length ? (
-          <>
-            <h2 className="text-2xl font-semibold mb-5">Ordini precedenti</h2>
-            <ul className="w-full">
-              {prevOrders.map((order) => {
+      {arePrevOrdersLoading && (
+        <div className="prev-orders__container user-widget mt-3">
+          <UserPrevOrderSkeleton />
+        </div>
+      )}
+      {!arePrevOrdersLoading && !!prevOrders.length && (
+        <>
+          <h2
+            className="user-widget text-xl font-semibold mt-3 pt-3 pb-1 px-6
+            w-fit border-b-0 rounded-none rounded-tr-3xl rounded-tl-3xl"
+          >
+            Ordini precedenti
+          </h2>
+          <div className="prev-orders__container user-widget border-t-0">
+            <ul className="w-full space-y-2">
+              {prevOrders.map((order, i) => {
                 const orderDate = getOrderDate(order.createdAt);
 
                 return (
-                  <li key={order._id} className="flex items-center gap-4">
+                  <li
+                    key={order._id}
+                    className="flex items-center gap-4"
+                    ref={(i + 1) % 7 === 0 ? ref : null}
+                  >
                     <figure className="shrink-0">
                       <img
                         src={"/imgs/default-restaurant.png"}
@@ -125,14 +159,14 @@ const UserPrevsOrders = () => {
                         <div className="flex-center gap-2">
                           <button
                             className="btn py-2 px-5 text-sm
-                          bg-home-widget-border-50 hover:bg-home-widget-border-80"
+                        bg-home-widget-border-50 hover:bg-home-widget-border-80"
                           >
                             Ordina ancora
                           </button>
                           <Link
-                            to={`/user/order/${order._id}`}
+                            to={`/user/orders/${order._id}`}
                             className="btn py-2 px-5 text-sm
-                          bg-home-widget-border-50 hover:bg-home-widget-border-80"
+                        bg-home-widget-border-50 hover:bg-home-widget-border-80"
                           >
                             Vedi
                           </Link>
@@ -143,23 +177,24 @@ const UserPrevsOrders = () => {
                 );
               })}
             </ul>
-          </>
-        ) : (
-          <ErrorWidget
-            className="sm:py-2"
-            title="Non ci sono ordini passati al momento. Il tuo primo ordine è in corso e presto sarà visibile qui."
-            subtitle="Non ci sono ordini passati perché il tuo primo ordine è in elaborazione. Presto potrai vedere i dettagli qui. Nel frattempo, puoi seguire lo stato del tuo ordine o esplorare altri ristoranti."
-            btns={[
-              {
-                id: "discoverRestaurants",
-                value: "Scopri i ristoranti aperti ora",
-                className: "bg-[#ec010184] border border-[#fe0000b3] px-4",
-                goto: "/restaurants",
-              },
-            ]}
-          />
-        )}
-      </div>
+          </div>
+        </>
+      )}
+      {hasNoOrders && (
+        <ErrorWidget
+          className="sm:w-[550px] sm:py-5 user-widget mt-4"
+          title="Non hai ancora effettuato nessun ordine."
+          subtitle="Nessun ordine trovato. Esplora i migliori ristoranti nella tua zona e fai il tuo primo ordine in pochi clic!"
+          btns={[
+            {
+              id: "orderNow",
+              value: "Ordina ora",
+              goto: "/restaurants",
+              className: "bg-[#ec010184] border border-[#fe0000b3] px-4",
+            },
+          ]}
+        />
+      )}
     </div>
   );
 };

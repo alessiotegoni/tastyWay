@@ -386,8 +386,9 @@
     font-semibold rounded-3xl px-6 py-2 backdrop-blur-3xl;
   }
 
-  .prev-orders__container {
-    @apply mt-7;
+  .active-orders__container,
+  .last-order__container {
+    @apply max-w-[600px] w-full mx-auto
   }
 
   .user-last-order {

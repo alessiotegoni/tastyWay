@@ -71,8 +71,8 @@ const Restaurants = () => {
                   setFilters={handleSetFilters}
                 />
                 <div
-                  className="primary-widget-bg border border-primary-20 min-w-[900px]
-                     rounded-[30px] overflow-hidden"
+                  className="primary-widget-bg border border-primary-20
+                  w-full max-w-[900px] rounded-[30px] overflow-hidden"
                 >
                   <ul className="restaurants__list">
                     {isFetching && !!!restaurants.length ? (

@@ -1,4 +1,4 @@
-import { OrderItem, RestaurantItem } from "./restaurantTypes";
+import { OrderItem } from "./restaurantTypes";
 
 export interface UserJwt {
   id: string;
