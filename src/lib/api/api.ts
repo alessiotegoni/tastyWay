@@ -15,7 +15,8 @@ import {
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import { CheckoutSessionBody } from "@/types/apiTypes";
-import { UserPrevOrder, UserPrevOrderRes } from "@/types/userTypes";
+import { UserPrevOrderRes } from "@/types/userTypes";
+import { UserProfileType } from "../validations/userProfileSchema";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -105,11 +106,11 @@ export const createCheckoutSessionUrl = async (
   return data;
 };
 
-export const getUserActiveOrders = async (privateApi: AxiosInstance) => {
-  const { data } = await privateApi.get("/users/active-orders");
+export const getUserActiveOrders = async (privateApi: AxiosInstance) =>
+  (await privateApi.get("/users/active-orders")).data;
 
-  return data;
-};
+export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
+  (await privateApi.get("/restaurants/active-orders")).data;
 
 export const getUserPrevOrders = async (
   privateApi: AxiosInstance,
@@ -125,11 +126,8 @@ export const getUserPrevOrders = async (
   return data;
 };
 
-export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) => {
-  const { data } = await privateApi.get("/restaurants/active-orders");
-
-  return data;
-};
+export const getUserProfile = async (privateApi: AxiosInstance) =>
+  (await privateApi.get<UserProfileType>("/users/profile")).data;
 
 export const signin = async (data: SigninType) =>
   (await api.post("/auth/signin", data)).data;

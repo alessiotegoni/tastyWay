@@ -11,6 +11,7 @@ import {
   getRestaurants,
   getUserActiveOrders,
   getUserPrevOrders,
+  getUserProfile,
   refreshToken,
 } from "../api/api";
 import { ApiError, AuthRes } from "@/types/apiTypes";
@@ -22,7 +23,11 @@ import {
   RestaurantItemRes,
 } from "@/types/restaurantTypes";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { UserPrevOrder, UserPrevOrderRes } from "@/types/userTypes";
+import {
+  UserPrevOrder,
+  UserPrevOrderRes,
+  UserProfileRes,
+} from "@/types/userTypes";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -38,6 +43,15 @@ export const useGetMyAddress = (lat: number, lng: number) => {
     queryFn: () => getMyAddress(lat, lng),
     enabled: !!lat && !!lng && !!!initialData,
     initialData,
+  });
+};
+
+export const useGetUserProfile = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useQuery<UserProfileRes, ApiError>({
+    queryKey: ["userProfile"],
+    queryFn: () => getUserProfile(privateApi),
   });
 };
 

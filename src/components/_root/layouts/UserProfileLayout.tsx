@@ -39,7 +39,7 @@ const UserProfileLayout = () => {
         pathname.includes(l.value) ? "bg-opacity-90" : "bg-opacity-50"
       } btn py-2 px-4 bg-[#ED0000] rounded-3xl font-semibold
       border border-[#ED0000] border-opacity-30 hover:bg-opacity-80
-      flex-center gap-2`}
+      flex-center gap-2 backdrop-blur-3xl`}
     >
       <img src={l.iconUrl} alt={`${l.value} icon`} className="w-6 h-6" />
       {l.label}
