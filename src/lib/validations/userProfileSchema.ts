@@ -13,8 +13,12 @@ export const userProfileSchema = z.object({
 export type UserProfileType = z.infer<typeof userProfileSchema>;
 
 export const userSecuritySchema = z.object({
-  newPassword: z.string({ message: "Nuova password invalida" }),
-  oldPassword: z.string({ message: "Vecchia password invalida" }),
+  oldPassword: z
+    .string()
+    .min(5, "La vecchia password deve avere almeno 5 caratteri"),
+  newPassword: z
+    .string()
+    .min(5, "La nuova password deve avere almeno 5 caratteri"),
 });
 
 export type UserSecurityType = z.infer<typeof userSecuritySchema>;

@@ -410,20 +410,23 @@
     @apply flex gap-4 *:backdrop-blur-3xl;
   }
 
-  .user-profile__body {
+  .user-profile__body,
+  .user-security__body {
     @apply text-left;
     align-items: unset;
   }
 
-  .user-profile__body label {
+  .user-profile__body label,
+  .user-security__body label {
     @apply text-xl font-semibold mt-5 mb-3 block;
   }
 
-  .user-profile__body label[for=cmpAccount] {
-    @apply flex cursor-pointer
+  .user-profile__body label[for="cmpAccount"] {
+    @apply flex cursor-pointer;
   }
 
-  .user-profile__body input {
+  .user-profile__body input,
+  .user-security__body input {
     @apply h-auto bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
     text-lg font-medium border border-[#FF0000] border-opacity-60
     hover:bg-[#ED0000] hover:bg-opacity-50;
