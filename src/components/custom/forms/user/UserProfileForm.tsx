@@ -4,19 +4,54 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
+import { useUpdateUserProfile } from "@/lib/react-query/mutations";
+import { useGetUserProfile } from "@/lib/react-query/queries";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
+import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const UserProfileForm = () => {
-  const { user } = useAuth();
+  const { user, refreshToken } = useAuth();
+
+  const navigate = useNavigate();
 
   const form = useFormContext<UserProfileType>();
 
-  const onSubmit: SubmitHandler<UserProfileType> = (data) => {
-    console.log(data);
-  };
+  const { data: userProfile, isLoading: isLoadingUP } = useGetUserProfile();
 
-  console.log(form.formState.errors);
+  useEffect(() => {
+    if (userProfile) form.reset(userProfile);
+  }, [userProfile]);
+
+  const {
+    mutateAsync: updateUserProfile,
+    isPending: isUpdatingUP,
+    error,
+  } = useUpdateUserProfile();
+
+  // isDirty = Se il form o il campo e' stato modificato (diverso da quello di prima)
+
+  const onSubmit: SubmitHandler<UserProfileType> = async (data) => {
+    if (isUpdatingUP && isLoadingUP) return;
+
+    try {
+      const res = await updateUserProfile(data);
+      await refreshToken();
+
+      toast({ description: res.message });
+
+      if (data.isCompanyAccount) navigate("/my-restaurant/profile");
+    } catch (err) {
+      toast({
+        description:
+          error!.response?.data?.message ??
+          "Errore nell'aggiornamento dell'utente",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Form {...form}>
@@ -58,7 +93,12 @@ const UserProfileForm = () => {
             render={({ field }) => (
               <div>
                 <Label htmlFor="name">Telefono</Label>
-                <Input id="name" type="number" {...field} />
+                <Input
+                  id="name"
+                  type="number"
+                  {...field}
+                  className="appearance-none"
+                />
               </div>
             )}
           />
@@ -114,22 +154,25 @@ const UserProfileForm = () => {
             </div>
           )}
         />
-        <div className="flex justify-end items-center gap-2 mt-7">
-          <Button
-            type="button"
-            className="btn py-3 px-5 font-semibold rounded-xl bg-red-700
-          text-red-950 border-red-800"
-          >
-            Annulla modifiche
-          </Button>
-          <Button
-            type="submit"
-            className="btn py-3 px-5 font-semibold rounded-xl bg-green-700
-          text-green-950 border-green-800"
-          >
-            Salva modifiche
-          </Button>
-        </div>
+        {form.formState.isDirty && (
+          <div className="flex justify-end items-center gap-2 mt-7">
+            <Button
+              type="button"
+              onClick={() => form.reset(userProfile)}
+              className="btn py-3 px-5 font-medium text-sm rounded-xl bg-red-700
+            text-red-100 border-red-800"
+            >
+              Annulla modifiche
+            </Button>
+            <Button
+              type="submit"
+              className="btn py-3 px-5 font-medium text-sm rounded-xl bg-green-700
+            text-green-100 border-green-800"
+            >
+              Salva modifiche
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

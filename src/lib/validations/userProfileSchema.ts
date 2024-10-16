@@ -17,4 +17,4 @@ export const userSecuritySchema = z.object({
   oldPassword: z.string({ message: "Vecchia password invalida" }),
 });
 
-export type UserSecuritySchema = z.infer<typeof userSecuritySchema>;
+export type UserSecurityType = z.infer<typeof userSecuritySchema>;

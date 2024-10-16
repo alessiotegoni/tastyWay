@@ -1,5 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createCheckoutSessionUrl, logout, signin, signup } from "../api/api";
+import {
+  createCheckoutSessionUrl,
+  logout,
+  signin,
+  signup,
+  updateUserProfile,
+  updateUserSecurity,
+} from "../api/api";
 import {
   ApiError,
   AuthRes,
@@ -9,6 +16,10 @@ import {
 import { SigninType, SignupType } from "../validations/authSchemas";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
 import { useNavigate } from "react-router-dom";
+import {
+  UserProfileType,
+  UserSecurityType,
+} from "../validations/userProfileSchema";
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -55,5 +66,26 @@ export const useCreateCheckoutSession = () => {
   return useMutation<string, ApiError, CheckoutSessionBody>({
     mutationKey: ["checkoutSessionUrl"],
     mutationFn: (data) => createCheckoutSessionUrl(data, privateApi),
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const privateApi = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  return useMutation<{ message: string }, ApiError, UserProfileType>({
+    mutationKey: ["updateUserProfile"],
+    mutationFn: (data) => updateUserProfile(privateApi, data),
+    onSuccess: (_, variables) =>
+      queryClient.setQueryData(["userProfile"], () => variables),
+  });
+};
+
+export const useUpdateUserSecurity = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useMutation<{ message: string }, ApiError, UserSecurityType>({
+    mutationKey: ["updateUserSecurity"],
+    mutationFn: (data) => updateUserSecurity(privateApi, data),
   });
 };

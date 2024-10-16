@@ -16,7 +16,10 @@ import {
 } from "@/config/apiConfig";
 import { CheckoutSessionBody } from "@/types/apiTypes";
 import { UserPrevOrderRes } from "@/types/userTypes";
-import { UserProfileType } from "../validations/userProfileSchema";
+import {
+  UserProfileType,
+  UserSecurityType,
+} from "../validations/userProfileSchema";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -128,6 +131,18 @@ export const getUserPrevOrders = async (
 
 export const getUserProfile = async (privateApi: AxiosInstance) =>
   (await privateApi.get<UserProfileType>("/users/profile")).data;
+
+export const updateUserProfile = async (
+  privateApi: AxiosInstance,
+  data: UserProfileType
+) => (await privateApi.patch<{ message: string }>("/users/profile", data)).data;
+
+export const updateUserSecurity = async (
+  privateApi: AxiosInstance,
+  data: UserSecurityType
+) =>
+  (await privateApi.patch<{ message: string }>("/users/profile/security", data))
+    .data;
 
 export const signin = async (data: SigninType) =>
   (await api.post("/auth/signin", data)).data;

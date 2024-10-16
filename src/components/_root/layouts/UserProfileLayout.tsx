@@ -73,7 +73,7 @@ const UserProfileLayout = () => {
             </div>
             <Button
               onClick={handleLogout}
-              className="p-2 px-3 btn logout-btn m-0 rounded-2xl self-end gap-2"
+              className="p-2 px-3 btn logout-btn m-0 rounded-xl self-end gap-2"
             >
               <img src="/icons/logout-door-icon.png" alt="logout-icon" />
               <p className="font-medium text-sm">Logout</p>

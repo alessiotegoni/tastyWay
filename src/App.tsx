@@ -45,6 +45,7 @@ function App() {
                 path="my-restaurant/profile"
                 element={<UserPrevsOrders />}
               />
+              <Route path="my-restaurant/owner" element={<UserPrevsOrders />} />
             </Route>
           </Route>
           <Route path="restaurants">

@@ -34,7 +34,7 @@ const ConfirmAddressDialog = ({
   restaurantId,
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -44,7 +44,7 @@ const ConfirmAddressDialog = ({
   const gotoSignin = () => navigate(`/signin?redirect=${pathname}`);
 
   const handleClick = async () => {
-    if (!isAuthenticated) return gotoSignin();
+    if (!isAuthenticated || !!!user) return gotoSignin();
 
     if (!items.length && !isPending) return;
 
@@ -57,13 +57,13 @@ const ConfirmAddressDialog = ({
         address: selectedAddress!,
       });
 
-      console.log(sessionUrl);
-
       window.location.href = sessionUrl;
     } catch (err) {
       toast({
         title: "Errore",
-        description: "Errore nel redirect alla pagina di pagamento",
+        description: user.isCmpAccount
+          ? "I ristoranti non possono ordinare"
+          : "Errore nel redirect alla pagina di pagamento",
         variant: "destructive",
       });
     }
