@@ -103,7 +103,7 @@
   }
 
   .hero:has(.restaurant-profile) {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+    background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
       url("/imgs/restaurant-profile-bg.png");
   }
 
@@ -118,7 +118,7 @@
   .home__subtitle {
     @apply text-[13px] max-w-[280px] sm:text-[15px] w-full mx-auto
     font-medium mt-2 md:mt-[17px] sm:max-w-[430px] leading-6
-    group-has-[[aria-roledescription='carousel']]:select-none;
+    group-aria-[roledescription=carousel]:select-none;
   }
 
   .signin,
@@ -408,7 +408,8 @@
     align-items: unset;
   }
 
-  .user-profile, .restaurant-profile {
+  .user-profile,
+  .restaurant-profile {
     @apply pt-0;
   }
 
@@ -425,7 +426,7 @@
 
   .user-profile__body label,
   .user-security__body label {
-    @apply text-xl font-semibold mt-5 mb-3 block;
+    @apply text-xl font-semibold mt-5 mb-3;
   }
 
   .user-profile__body label[for="cmpAccount"] {
@@ -433,9 +434,22 @@
   }
 
   .user-profile__body input,
-  .user-security__body input {
+  .user-security__body input,
+  .restaurant-profile__body input,
+  .restaurant-profile__body textarea {
     @apply h-auto bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
     text-lg font-medium border border-[#FF0000] border-opacity-60
     hover:bg-[#ED0000] hover:bg-opacity-50;
+  }
+
+  .restaurant-profile__body input,
+  .restaurant-profile__body textarea {
+    @apply bg-[#7800B0] bg-opacity-65 hover:bg-[#7800B0] hover:bg-opacity-70
+    border-none text-base placeholder:text-sm font-semibold;
+  }
+
+  .restaurant-profile__body {
+    @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
+    border border-restaurant-primary-90 backdrop-blur-3xl;
   }
 }

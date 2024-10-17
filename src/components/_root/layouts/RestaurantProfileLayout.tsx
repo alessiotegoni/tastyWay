@@ -23,12 +23,14 @@ const links = [
 ];
 
 const RestaurantProfileLayout = () => {
-  const { user, logout } = useAuth();
+  const { user: restaurant, logout } = useAuth();
   const { removeSelectedAddress } = useAddress();
 
   const { pathname } = useLocation();
 
-  const fullName = `${user!.name} ${user!.surname}`;
+  const fullName = restaurant?.restaurantName
+    ? restaurant.restaurantName
+    : `${restaurant!.name} ${restaurant!.surname}`;
 
   const handleLogout = async () => {
     await logout();
@@ -62,7 +64,7 @@ const RestaurantProfileLayout = () => {
           rounded-3xl border border-restaurant-primary-90"
           >
             <img
-              src="/imgs/default-restaurant.png"
+              src={`${restaurant?.imageUrl ?? "/imgs/default-restaurant.png"}`}
               alt=""
               className="w-[125px] h-[125px] object-cover rounded-2xl"
             />
@@ -75,7 +77,7 @@ const RestaurantProfileLayout = () => {
             <div>
               <h1 className="text-2xl font-semibold capitalize">{fullName}</h1>
               <p className="mt-2 text-sm font-normal text-white/80">
-                Creato il <span>10/12/2024</span>
+                Creato il <span>{restaurant?.createdAt ?? "10/10/2024"}</span>
               </p>
             </div>
             <Button
@@ -88,6 +90,8 @@ const RestaurantProfileLayout = () => {
           </div>
         </div>
         <div className="flex gap-4 mt-9 mb-3">{restaurantLinks}</div>
+      </div>
+      <div className="container max-w-[900px]">
         <Outlet />
       </div>
     </main>

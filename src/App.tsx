@@ -15,6 +15,8 @@ import UserProfile from "./components/_root/pages/UserProfile";
 import UserSecurity from "./components/_root/pages/UserSecurity";
 import RestaurantProfileLayout from "./components/_root/layouts/RestaurantProfileLayout";
 import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
+import RestaurantSecurity from "./components/_root/pages/RestaurantSecurity";
+import RestaurantOwner from "./components/_root/pages/RestaurantOwner";
 
 function App() {
   return (
@@ -50,11 +52,11 @@ function App() {
                 />
                 <Route
                   path="my-restaurant/security"
-                  element={<UserPrevsOrders />}
+                  element={<RestaurantSecurity />}
                 />
                 <Route
                   path="my-restaurant/owner"
-                  element={<UserPrevsOrders />}
+                  element={<RestaurantOwner />}
                 />
               </Route>
             </Route>

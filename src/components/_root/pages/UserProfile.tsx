@@ -1,4 +1,4 @@
-import UserProfileForm from "@/components/custom/forms/user/UserProfileForm";
+import UserProfileForm from "@/components/custom/forms/UserProfileForm";
 import {
   userProfileSchema,
   UserProfileType,
