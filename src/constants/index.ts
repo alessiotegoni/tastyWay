@@ -120,3 +120,24 @@ export const userDropdownLinks = [
     alt: "help-support-icon",
   },
 ];
+
+export const restaurantDropdownLinks = [
+  {
+    img: "/icons/restaurant-profile-icon.png",
+    name: "Il mio ristorante",
+    link: "/my-restaurant/profile",
+    alt: "profile-settings-icon",
+  },
+  {
+    img: "/icons/orders-icon.png",
+    name: "Ordini",
+    link: "/my-restaurant/orders",
+    alt: "orders-icon",
+  },
+  {
+    img: "/icons/help-icon.png",
+    name: "Aiuto e supporto",
+    link: "/help",
+    alt: "help-support-icon",
+  },
+];

@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "../../ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import UserDropdown from "../../custom/UserDropdown";
-import { useLogout } from "@/lib/react-query/mutations";
 import AuthNavbar from "./AuthNavbar";
 import DefaultNavbar from "./DefaultNavbar";
 import ClientNavbar from "./ClientNavbar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NavbarProps {
   pageNum: number;
@@ -23,7 +23,9 @@ enum PAGES {
 const Navbar = ({ pageNum }: NavbarProps) => {
   const { isAuthenticated, user, logout, isRefreshingToken } = useAuth();
 
-  const navRightBtn = isAuthenticated ? (
+  const navRightBtn = isRefreshingToken ? (
+    <Skeleton className="user-btn user-btn-bg w-[180px] h-[45px] rounded-3xl" />
+  ) : isAuthenticated && user ? (
     <UserDropdown user={user} logoutFn={logout} />
   ) : (
     <Link to="/signin">

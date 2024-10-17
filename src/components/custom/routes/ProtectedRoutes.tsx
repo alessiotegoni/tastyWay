@@ -1,19 +1,23 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader } from "lucide-react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const ProtectedRoutes = () => {
   const { user, isAuthenticated, isRefreshingToken } = useAuth();
 
   if (isRefreshingToken) return;
 
-  // <div
-  //       className="w-screen h-screen fixed top-0 left-0
-  //     grid place-content-center"
-  //     >
-  //       <Loader width={40} height={40} />
-  //     </div>
+  const { pathname } = useLocation();
 
-  return isAuthenticated && !!user ? <Outlet /> : <Navigate to="/" />;
+  let canPass = false;
+
+  if (user?.isCmpAccount && pathname.includes("/my-restaurant")) canPass = true;
+
+  if (!user?.isCmpAccount && pathname.includes("/user")) canPass = true;
+
+  return isAuthenticated && !!user && canPass ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" />
+  );
 };
 export default ProtectedRoutes;
