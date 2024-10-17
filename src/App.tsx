@@ -13,6 +13,8 @@ import ClientLayout from "./components/_root/layouts/ClientLayout";
 import UserProfileLayout from "./components/_root/layouts/UserProfileLayout";
 import UserProfile from "./components/_root/pages/UserProfile";
 import UserSecurity from "./components/_root/pages/UserSecurity";
+import RestaurantProfileLayout from "./components/_root/layouts/RestaurantProfileLayout";
+import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 
 function App() {
   return (
@@ -41,11 +43,20 @@ function App() {
                 path="my-restaurant/orders"
                 element={<UserPrevsOrders />}
               />
-              <Route
-                path="my-restaurant/profile"
-                element={<UserPrevsOrders />}
-              />
-              <Route path="my-restaurant/owner" element={<UserPrevsOrders />} />
+              <Route element={<RestaurantProfileLayout />}>
+                <Route
+                  path="my-restaurant/profile"
+                  element={<RestaurantProfile />}
+                />
+                <Route
+                  path="my-restaurant/security"
+                  element={<UserPrevsOrders />}
+                />
+                <Route
+                  path="my-restaurant/owner"
+                  element={<UserPrevsOrders />}
+                />
+              </Route>
             </Route>
           </Route>
           <Route path="restaurants">

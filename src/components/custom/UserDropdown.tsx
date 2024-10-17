@@ -21,8 +21,10 @@ interface UserDropdowenProps {
 const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
   const { removeSelectedAddress } = useAddress();
 
+  const isCmpAccount = user!.isCmpAccount;
+
   const menuItems = (
-    user!.isCmpAccount ? restaurantDropdownLinks : userDropdownLinks
+    isCmpAccount ? restaurantDropdownLinks : userDropdownLinks
   ).map((l, i) => {
     return (
       <DropdownMenuItem
@@ -46,9 +48,14 @@ const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="user-btn user-btn-bg">
-        <img src="/icons/user-icon.png" alt="user-icon" />
-
-        <p className="font-semibold text-[18px]">{user!.name}</p>
+        {isCmpAccount ? (
+          <img src="/icons/forks-icon.png" alt="forsk-icon" />
+        ) : (
+          <img src="/icons/user-icon.png" alt="user-icon" />
+        )}
+        <p className="font-semibold text-[18px]">
+          {user?.restaurantName ?? user!.name}
+        </p>
         <img src="/icons/arrow-down-icon.png" alt="arrow-down-icon" />
       </DropdownMenuTrigger>
       <DropdownMenuContent

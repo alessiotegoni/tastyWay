@@ -102,6 +102,11 @@
       url("/imgs/user-profile-bg.png");
   }
 
+  .hero:has(.restaurant-profile) {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+      url("/imgs/restaurant-profile-bg.png");
+  }
+
   .home {
     @apply md:pt-0;
 
@@ -178,7 +183,8 @@
     @apply bg-opacity-90;
   }
 
-  .client-nav-btn.restaurant-btn {
+  .client-nav-btn.restaurant-btn,
+  .restaurant-profile .restaurant-btn {
     @apply bg-restaurant-primary-70 border-restaurant-border
     hover:bg-restaurant-primary;
   }
@@ -402,11 +408,12 @@
     align-items: unset;
   }
 
-  .user-profile {
+  .user-profile, .restaurant-profile {
     @apply pt-0;
   }
 
-  .user-profile__header {
+  .user-profile__header,
+  .restaurant-profile__header {
     @apply flex gap-4 *:backdrop-blur-3xl;
   }
 

@@ -58,19 +58,13 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
                 isUserNavbar ? "user-btn" : "restaurant-btn"
               } ${isInProfile ? "active" : ""}`}
             >
-              {isUserNavbar ? (
-                <img
-                  src="/icons/handle-user-profile.png"
-                  alt="handle-user-icon"
-                  className="w-7 h-7"
-                />
-              ) : (
-                <img
-                  src="/icons/handle-restaurant-profile.png"
-                  alt="handle-restaurant-icon"
-                  className="w-6 h-6 object-contain"
-                />
-              )}
+              <img
+                src={`/icons/${
+                  isUserNavbar ? "user" : "restaurant"
+                }-profile-icon.png`}
+                alt="profile icon"
+                className="w-6 h-6 object-contain"
+              />
               <p>{isUserNavbar ? "Gestisci profilo" : "Gestisci ristorante"}</p>
             </Link>
           </div>
