@@ -100,7 +100,39 @@ export const foodFilters: FoodFilters[] = [
   },
 ];
 
-export const cuisineTypes = foodFilters.map(ft => ft.value)
+export const cuisineTypes = foodFilters.map((ft) => ft.value);
+
+export const itemsTypes = [
+  { value: "pizza", label: "Pizza" },
+  { value: "burger", label: "Hamburger" },
+  { value: "pasta", label: "Pasta" },
+  { value: "salad", label: "Insalata" },
+  { value: "sandwich", label: "Panino" },
+  { value: "flatbread", label: "Focaccia" },
+  { value: "fried_food", label: "Cibo fritto" },
+  { value: "sushi", label: "Sushi" },
+  { value: "appetizers", label: "Antipasti" },
+  { value: "desserts", label: "Dolci" },
+  { value: "drinks", label: "Bevande" },
+  { value: "bbq", label: "Barbecue" },
+  { value: "seafood", label: "Frutti di mare" },
+  { value: "meat", label: "Carne" },
+  { value: "soup", label: "Zuppa" },
+  { value: "vegan", label: "Vegano" },
+  { value: "vegetarian", label: "Vegetariano" },
+  { value: "gluten_free", label: "Senza glutine" },
+  { value: "fruit", label: "Frutta" },
+  { value: "tapas", label: "Tapas" },
+  { value: "sandwiches", label: "Panini" },
+  { value: "rice", label: "Riso" },
+  { value: "poke", label: "Poke" },
+  { value: "main_course", label: "Portata principale" },
+  { value: "breakfast", label: "Colazione" },
+  { value: "smoothies", label: "Frullati" },
+  { value: "bakery", label: "Panetteria/Pasticceria" },
+  { value: "healthy", label: "Salute" },
+  { value: "kebab", label: "Kebab/Grigliati" },
+];
 
 export const userDropdownLinks = [
   {

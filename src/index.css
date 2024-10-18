@@ -437,9 +437,12 @@
   .user-security__body input,
   .restaurant-profile__body input,
   .restaurant-profile__body textarea,
-  .cuisine-combobox__btn,
-  .cuisine-popover,
-  .cuisine-popover input {
+  .cuisine-select__btn,
+  .cuisine-select,
+  .cuisine-select input,
+  .items-select__btn,
+  .items-type-select,
+  .items-type-select input {
     @apply h-auto bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
     text-lg font-medium border border-[#FF0000] border-opacity-60
     hover:bg-[#ED0000] hover:bg-opacity-50;
@@ -447,9 +450,12 @@
 
   .restaurant-profile__body input,
   .restaurant-profile__body textarea,
-  .cuisine-combobox__btn,
-  .cuisine-popover,
-  .cuisine-popover input {
+  .cuisine-select__btn,
+  .cuisine-select,
+  .cuisine-select input,
+  .items-select__btn,
+  .items-type-select,
+  .items-type-select input {
     @apply bg-[#7800B0] bg-opacity-65 hover:bg-[#7800B0] hover:bg-opacity-70
     border-none text-base placeholder:text-sm font-semibold;
   }
@@ -459,8 +465,18 @@
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }
 
-  .cuisine-popover {
-    @apply backdrop-blur-3xl rounded-xl
+  .cuisine-select,
+  .items-type-select {
+    @apply backdrop-blur-3xl rounded-xl;
   }
 
+  .restaurant-item__table__head {
+    @apply grid mt-4 mb-3 gap-3;
+    grid-template-columns: 1fr 1.3fr 0.5fr 1fr 96.14px;
+  }
+
+  .restaurant-item__table__body {
+    @apply grid mt-4 mb-3 gap-3;
+    grid-template-columns: 1fr 1.3fr 0.5fr 1fr auto;
+  }
 }

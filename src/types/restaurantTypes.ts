@@ -92,6 +92,11 @@ export type RestaurantFilters = {
   restaurantType: RestaurantTypeFilter[] | null;
 };
 
+export type ItemsFilter = {
+  value: RestaurantItemsTypes;
+  label: string;
+};
+
 export type RestaurantItemsTypes =
   | "pizza"
   | "burger"
@@ -116,7 +121,12 @@ export type RestaurantItemsTypes =
   | "sandwiches"
   | "rice"
   | "poke"
-  | "main_course";
+  | "main_course"
+  | "breakfast"
+  | "smoothies"
+  | "bakery"
+  | "healthy"
+  | "kebab"
 
 export type RestaurantItemsFilters = {
   name: string | null;

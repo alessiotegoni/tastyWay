@@ -1,5 +1,5 @@
-import { cuisineTypes } from "@/constants";
-import { FoodType } from "@/types/restaurantTypes";
+import { cuisineTypes, itemsTypes } from "@/constants";
+import { FoodType, RestaurantItemsTypes } from "@/types/restaurantTypes";
 import { z } from "zod";
 
 const restaurantItem = z.object({
@@ -12,7 +12,16 @@ const restaurantItem = z.object({
   price: z
     .number({ message: "Prezzo del piatto obbligatorio" })
     .positive("Prezzo deve essere maggiore di 0"),
-  type: z.string({ message: "Tipo del piatto obbligatorio" }).min(2),
+  type: z
+    .custom<RestaurantItemsTypes | null>((data) => data, {
+      message: "Tipo del piatto obbligatorio",
+    })
+    .refine(
+      (itemType) => itemsTypes.map((it) => it.value).includes(itemType ?? ""),
+      {
+        message: "Tipo di piatto non valido",
+      }
+    ),
   description: z
     .string()
     .min(3, "Descrizione del piatto obbligatoria")

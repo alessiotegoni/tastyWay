@@ -24,7 +24,7 @@ import { FoodType } from "@/types/restaurantTypes";
 
 const cuisine = foodFilters.map((f) => ({ value: f.value, label: f.name }));
 
-export function CuisineTypes() {
+export function CuisineTypesSelect() {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState<FoodType[]>([]);
 
@@ -53,7 +53,7 @@ export function CuisineTypes() {
             role="combobox"
             aria-expanded={open}
             className="w-[200px] justify-between py-3 px-5
-            cuisine-combobox__btn font-semibold"
+            cuisine-select__btn font-semibold"
           >
             {/* {values.length
               ? cuisine.find((cuisine) => cuisine.value === values.at(0))?.label
@@ -62,7 +62,7 @@ export function CuisineTypes() {
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0 cuisine-popover">
+        <PopoverContent className="w-[200px] p-0 cuisine-select">
           <Command>
             <CommandInput
               placeholder="Cerca cucina..."
@@ -75,7 +75,7 @@ export function CuisineTypes() {
                   <CommandItem
                     key={cuisine.value}
                     value={cuisine.value}
-                    className="cursor-pointer font-medium"
+                    className="cursor-pointer font-medium last:mb-2 first:mt-2"
                     onSelect={handleOnSelect}
                   >
                     <Check

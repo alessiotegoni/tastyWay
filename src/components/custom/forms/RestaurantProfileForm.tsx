@@ -10,7 +10,8 @@ import {
 } from "@/lib/validations/RestaurantProfileSchema";
 import { ChangeEvent } from "react";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
-import { CuisineTypes } from "../CuisineTypes";
+import { CuisineTypesSelect } from "../CuisineTypesSelect";
+import { ItemsTypeSelect } from "../ItemsTypeSelect";
 
 const RestaurantProfileForm = () => {
   const form = useFormContext<RestaurantProfileType>();
@@ -34,6 +35,8 @@ const RestaurantProfileForm = () => {
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {};
 
   console.log(form.formState.errors);
+
+  console.log(items);
 
   return (
     <Form {...form}>
@@ -97,7 +100,7 @@ const RestaurantProfileForm = () => {
             name="cuisine"
             render={() => (
               <div className="mt-3 mb-5">
-                <CuisineTypes />
+                <CuisineTypesSelect />
               </div>
             )}
           />
@@ -115,7 +118,7 @@ const RestaurantProfileForm = () => {
                 name: "",
                 description: "",
                 price: 0,
-                type: "",
+                type: null,
               })
             }
             className="btn font-semibold mt-3
@@ -125,16 +128,16 @@ const RestaurantProfileForm = () => {
           </Button>
           {!!items.length && (
             <>
-              <div className="grid grid-cols-6 mt-4 mb-3 gap-3">
+              <div className="restaurant-item__table__head">
                 <p className="font-medium text-sm mb-2">Immagine</p>
-                <p className="font-medium text-sm mb-2 col-span-2">Nome</p>
+                <p className="font-medium text-sm mb-2">Nome</p>
                 <p className="font-medium text-sm mb-2">Prezzo</p>
                 <p className="font-medium text-sm mb-2">Tipo di piatto</p>
               </div>
               <ul className="space-y-10">
                 {items.map((item, i) => {
                   return (
-                    <li key={item.id} className="grid grid-cols-6 gap-3">
+                    <li key={item.id} className="restaurant-item__table__body">
                       <div>
                         <Label
                           htmlFor="itemImg"
@@ -152,7 +155,6 @@ const RestaurantProfileForm = () => {
                       </div>
                       <Input
                         placeholder="Nome"
-                        className="col-span-2"
                         value={item.name}
                         onChange={(e) =>
                           update(i, { ...item, name: e.target.value })
@@ -164,18 +166,13 @@ const RestaurantProfileForm = () => {
                           update(i, { ...item, price: Number(e.target.value) })
                         }
                       />
-                      <Input
-                        value={item.price}
-                        onChange={(e) =>
-                          update(i, { ...item, price: e.target.value })
-                        }
-                      />
+                      <ItemsTypeSelect />
                       <Button
                         type="button"
                         onClick={() => remove(i)}
                         className="btn bg-[#ED0000] bg-opacity-50
                         border-[#ED0000] border-opacity-60 font-semibold
-                        hover:bg-opacity-60 rounded-xl"
+                        hover:bg-opacity-60 rounded-xl px-5 text-sm"
                       >
                         Rimuovi
                       </Button>
@@ -185,7 +182,7 @@ const RestaurantProfileForm = () => {
                         onChange={(e) =>
                           update(i, { ...item, description: e.target.value })
                         }
-                        className="col-start-2 col-span-5 rounded-xl"
+                        className="col-start-2 col-span-4 rounded-xl"
                       ></Textarea>
                       {/* {TODO: Add tipo di piatto} */}
                     </li>
