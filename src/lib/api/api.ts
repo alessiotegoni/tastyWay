@@ -20,6 +20,7 @@ import {
   UserProfileType,
   UserSecurityType,
 } from "../validations/userProfileSchema";
+import { RestaurantProfileType } from "../validations/RestaurantProfileSchema";
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(
@@ -96,6 +97,10 @@ export const getRestaurantItems = async (
 
   return data;
 };
+
+export const getMyRestaurant = async (privateApi: AxiosInstance) =>
+  (await privateApi.get<RestaurantProfileType>("/restaurants/my/restaurant"))
+    .data;
 
 export const createCheckoutSessionUrl = async (
   body: CheckoutSessionBody,

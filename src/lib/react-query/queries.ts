@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import {
   getMyAddress,
+  getMyRestaurant,
   getRestaurantActiveOrders,
   getRestaurantInfo,
   getRestaurantItems,
@@ -23,11 +24,9 @@ import {
   RestaurantItemRes,
 } from "@/types/restaurantTypes";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import {
-  UserPrevOrder,
-  UserPrevOrderRes,
-  UserProfileRes,
-} from "@/types/userTypes";
+import { UserPrevOrderRes } from "@/types/userTypes";
+import { UserProfileType } from "../validations/userProfileSchema";
+import { RestaurantProfileType } from "../validations/RestaurantProfileSchema";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -49,7 +48,7 @@ export const useGetMyAddress = (lat: number, lng: number) => {
 export const useGetUserProfile = () => {
   const privateApi = useAxiosPrivate();
 
-  return useQuery<UserProfileRes, ApiError>({
+  return useQuery<UserProfileType, ApiError>({
     queryKey: ["userProfile"],
     queryFn: () => getUserProfile(privateApi),
   });
@@ -100,6 +99,15 @@ export const useGetRestaurantItems = (
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
   });
+
+export const useGetMyRestaurant = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useQuery<RestaurantProfileType, ApiError>({
+    queryKey: ["myRestaurant"],
+    queryFn: () => getMyRestaurant(privateApi),
+  });
+};
 
 export const useGetPrevOrders = () => {
   const privateApi = useAxiosPrivate();

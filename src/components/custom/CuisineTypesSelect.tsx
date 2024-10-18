@@ -1,6 +1,4 @@
-"use client";
-
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Check, ChevronsUpDown, XIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -24,9 +22,19 @@ import { FoodType } from "@/types/restaurantTypes";
 
 const cuisine = foodFilters.map((f) => ({ value: f.value, label: f.name }));
 
-export function CuisineTypesSelect() {
-  const [open, setOpen] = React.useState(false);
-  const [values, setValues] = React.useState<FoodType[]>([]);
+interface CuisineTypeSelectProps {
+  restaurantCuisine: FoodType[] | undefined;
+}
+
+export function CuisineTypesSelect({
+  restaurantCuisine,
+}: CuisineTypeSelectProps) {
+  const [open, setOpen] = useState(false);
+  const [values, setValues] = useState<FoodType[]>([]);
+
+  useEffect(() => {
+    if (restaurantCuisine?.length) setValues(restaurantCuisine);
+  }, [restaurantCuisine]);
 
   const form = useFormContext<{ cuisine: FoodType[] }>();
 

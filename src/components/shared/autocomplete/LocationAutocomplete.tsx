@@ -19,6 +19,7 @@ import XIconBtn from "../XIconBtn";
 interface LocationAutocompleteProps {
   placeholder: string;
   shouldShowLatestResearchs: boolean;
+  defaultValue?: string;
   className?: string;
   inputClassName?: string;
 }
@@ -31,6 +32,7 @@ const searchOptions = {
 const LocationAutocomplete = ({
   placeholder,
   shouldShowLatestResearchs,
+  defaultValue,
   className,
   inputClassName,
 }: LocationAutocompleteProps) => {
@@ -50,16 +52,29 @@ const LocationAutocomplete = ({
 
   const form = useFormContext<{ address: string }>();
 
-  const setFormAddress = (selectedAddress: string) => {
+  const setFormAddress = (
+    selectedAddress: string,
+    shouldDirty: boolean = false
+  ) => {
     if (form)
-      form.setValue("address", selectedAddress, { shouldValidate: true });
+      form.setValue("address", selectedAddress, {
+        shouldValidate: true,
+        shouldDirty,
+      });
   };
 
   useEffect(() => {
-    if (!selectedAddress) return;
+    if (defaultValue) {
+      setUserInput(defaultValue);
+      setFormAddress(defaultValue);
+    }
+  }, [defaultValue]);
 
-    setUserInput(selectedAddress);
-    setFormAddress(selectedAddress);
+  useEffect(() => {
+    if (selectedAddress && !defaultValue) {
+      setUserInput(selectedAddress);
+      setFormAddress(selectedAddress);
+    }
   }, [selectedAddress]);
 
   const handleSelect = async (value: string) => {
@@ -73,7 +88,7 @@ const LocationAutocomplete = ({
     saveLatestResearch(address);
     setShowLatestResearchs(false);
 
-    setFormAddress(address);
+    setFormAddress(address, true);
   };
 
   const handleChange = (value: string) => setUserInput(value);

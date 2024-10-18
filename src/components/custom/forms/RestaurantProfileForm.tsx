@@ -61,6 +61,7 @@ const RestaurantProfileForm = () => {
             <LocationAutocomplete
               placeholder=""
               shouldShowLatestResearchs={false}
+              defaultValue={form.getValues("address")}
             />
           </div>
         </div>
@@ -100,7 +101,9 @@ const RestaurantProfileForm = () => {
             name="cuisine"
             render={() => (
               <div className="mt-3 mb-5">
-                <CuisineTypesSelect />
+                <CuisineTypesSelect
+                  restaurantCuisine={form.getValues("cuisine")}
+                />
               </div>
             )}
           />
