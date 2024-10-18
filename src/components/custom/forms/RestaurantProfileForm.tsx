@@ -4,13 +4,13 @@ import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/contexts/AuthContext";
 import {
   RestaurantItemType,
   RestaurantProfileType,
 } from "@/lib/validations/RestaurantProfileSchema";
 import { ChangeEvent } from "react";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
+import { CuisineTypes } from "../CuisineTypes";
 
 const RestaurantProfileForm = () => {
   const form = useFormContext<RestaurantProfileType>();
@@ -70,7 +70,7 @@ const RestaurantProfileForm = () => {
                 <Label id="deliveryPrice" className="mb-3">
                   Prezzo di consegna
                 </Label>
-                <Input id="deliveryPrice" {...field} />
+                <Input type="number" id="deliveryPrice" {...field} />
               </div>
             )}
           />
@@ -82,7 +82,7 @@ const RestaurantProfileForm = () => {
                 <Label id="deliveryTime" className="mb-3">
                   Temo di consegna (minuti)
                 </Label>
-                <Input id="deliveryTime" {...field} />
+                <Input type="number" id="deliveryTime" {...field} />
               </div>
             )}
           />
@@ -95,9 +95,9 @@ const RestaurantProfileForm = () => {
           <FormField
             control={form.control}
             name="cuisine"
-            render={({ field }) => (
+            render={() => (
               <div className="mt-3 mb-5">
-                {/* {Add a dropdown from shadcn} */}
+                <CuisineTypes />
               </div>
             )}
           />
@@ -114,7 +114,7 @@ const RestaurantProfileForm = () => {
                 img: null,
                 name: "",
                 description: "",
-                price: "",
+                price: 0,
                 type: "",
               })
             }
@@ -161,7 +161,7 @@ const RestaurantProfileForm = () => {
                       <Input
                         value={item.price}
                         onChange={(e) =>
-                          update(i, { ...item, price: e.target.value })
+                          update(i, { ...item, price: Number(e.target.value) })
                         }
                       />
                       <Input

@@ -1,4 +1,4 @@
-import { foodFilters } from "@/constants";
+import { cuisineTypes } from "@/constants";
 import { FoodType } from "@/types/restaurantTypes";
 import { z } from "zod";
 
@@ -10,8 +10,8 @@ const restaurantItem = z.object({
     .nullable(),
   name: z.string().min(3, "Il nome del piatto deve avere almeno 2 caratteri"),
   price: z
-    .string({ message: "Prezzo del piatto obbligatorio" })
-    .min(0.1, "Prezzo Minimo: 0.10"),
+    .number({ message: "Prezzo del piatto obbligatorio" })
+    .positive("Prezzo deve essere maggiore di 0"),
   type: z.string({ message: "Tipo del piatto obbligatorio" }).min(2),
   description: z
     .string()
@@ -30,41 +30,34 @@ export const restaurantProfileSchema = z.object({
     .min(3, "Indirizzo non valido"),
   deliveryInfo: z.object({
     price: z
-      .string({ message: "Prezzo di consegna obbligatorio" })
-      .min(0.1, "Prezzo di consegna minimo: 0.10")
-      .transform((val) => Number(val)),
+      .number({ message: "Prezzo di consegna obbligatorio" })
+      .positive("Prezzo deve essere maggiore di 0"),
     time: z
-      .string({ message: "Tempo di consegna obbligatorio" })
-      .min(10, "Il Tempo di consegna minimo e' di 10 minuti")
-      .transform((val) => Number(val)),
+      .number({ message: "Tempo di consegna obbligatorio" })
+      .min(10, "Il tempo di consegna minimo è di 10 minuti"),
   }),
   cuisine: z
     .array(z.custom<FoodType>(), {
-      message: "Il tipo di cucina e' obbliagotorio",
+      message: "Il tipo di cucina è obbligatorio",
     })
     .min(1, "E' obbligatorio almeno un tipo di cucina")
     .refine(
-      (foodTypes) =>
-        foodTypes.filter((ft) =>
-          foodFilters.map((filter) => filter.value).includes(ft)
-        ).length,
+      (foodTypes) => foodTypes.filter((ft) => cuisineTypes.includes(ft)).length,
       { message: "Tipo di cucina invalido" }
     )
     .transform((foodTypes) =>
-      foodTypes.filter((ft) =>
-        foodFilters.map((filter) => filter.value).includes(ft)
-      )
+      foodTypes.filter((ft) => cuisineTypes.includes(ft))
     ),
   items: z
     .array(restaurantItem)
-    .min(3, "Il numero minimo di piatti da aggiungere e' 3"),
+    .min(3, "Il numero minimo di piatti da aggiungere è 3"),
 });
 
 export const defaultRestaurantValues = {
   name: "",
   address: "",
   deliveryInfo: {
-    price: 0,
+    price: 0.1,
     time: 10,
   },
   cuisine: [],

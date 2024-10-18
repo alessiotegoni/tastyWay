@@ -436,14 +436,20 @@
   .user-profile__body input,
   .user-security__body input,
   .restaurant-profile__body input,
-  .restaurant-profile__body textarea {
+  .restaurant-profile__body textarea,
+  .cuisine-combobox__btn,
+  .cuisine-popover,
+  .cuisine-popover input {
     @apply h-auto bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
     text-lg font-medium border border-[#FF0000] border-opacity-60
     hover:bg-[#ED0000] hover:bg-opacity-50;
   }
 
   .restaurant-profile__body input,
-  .restaurant-profile__body textarea {
+  .restaurant-profile__body textarea,
+  .cuisine-combobox__btn,
+  .cuisine-popover,
+  .cuisine-popover input {
     @apply bg-[#7800B0] bg-opacity-65 hover:bg-[#7800B0] hover:bg-opacity-70
     border-none text-base placeholder:text-sm font-semibold;
   }
@@ -452,4 +458,9 @@
     @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }
+
+  .cuisine-popover {
+    @apply backdrop-blur-3xl rounded-xl
+  }
+
 }

@@ -100,6 +100,8 @@ export const foodFilters: FoodFilters[] = [
   },
 ];
 
+export const cuisineTypes = foodFilters.map(ft => ft.value)
+
 export const userDropdownLinks = [
   {
     img: "/icons/user-profile-icon.png",
