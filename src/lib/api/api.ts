@@ -102,6 +102,11 @@ export const getMyRestaurant = async (privateApi: AxiosInstance) =>
   (await privateApi.get<RestaurantProfileType>("/restaurants/my/restaurant"))
     .data;
 
+export const updateMyRestaurant = async (
+  privateApi: AxiosInstance,
+  data: RestaurantProfileType
+) => (await privateApi.patch("/restaurants/my/restaurant", data)).data;
+
 export const createCheckoutSessionUrl = async (
   body: CheckoutSessionBody,
   privateApi: AxiosInstance

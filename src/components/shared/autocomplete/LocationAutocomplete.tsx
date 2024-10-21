@@ -96,6 +96,7 @@ const LocationAutocomplete = ({
   const handleDeleteAddress = () => {
     handleChange("");
     removeSelectedAddress();
+    setFormAddress("", true);
   };
 
   const checkSeparator = (suggestions: readonly Suggestion[]) =>

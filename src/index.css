@@ -477,6 +477,11 @@
 
   .restaurant-item__table__body {
     @apply grid mt-4 mb-3 gap-3;
-    grid-template-columns: 1fr 1.3fr 0.5fr 1fr auto;
+    grid-template-columns: 1fr auto;
+  }
+
+  .restaurant-item__info {
+    @apply grid gap-3;
+    grid-template-columns: 1fr .3fr .7fr auto;
   }
 }

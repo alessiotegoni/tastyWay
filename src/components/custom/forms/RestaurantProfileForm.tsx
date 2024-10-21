@@ -8,9 +8,15 @@ import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import { CuisineTypesSelect } from "../CuisineTypesSelect";
 import { ItemsTypeSelect } from "../ItemsTypeSelect";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+import { useUpdateMyRestaurant } from "@/lib/react-query/mutations";
+import { toast } from "@/hooks/use-toast";
 
 const RestaurantProfileForm = () => {
+  const [itemsImgUrl, setItemsImgUrl] = useState<string[]>([]);
+
+  const { mutateAsync: updateRestaurant, isPending } = useUpdateMyRestaurant();
+
   const form = useFormContext<RestaurantProfileType>();
 
   const {
@@ -24,12 +30,36 @@ const RestaurantProfileForm = () => {
     itemIndex: number
   ) => {
     const file = e.target.files?.item(0);
-    if (file)
-      form.setValue(`items.${itemIndex}.img`, file, { shouldDirty: true });
+
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    const newUrls = itemsImgUrl.toSpliced(itemIndex, 0, url);
+
+    setItemsImgUrl(newUrls);
+    form.setValue(`items.${itemIndex}.img`, file, { shouldDirty: true });
   };
 
+  console.log(itemsImgUrl);
+
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
+    if (isPending) return;
+
     console.log(data);
+
+    try {
+      await updateRestaurant(data);
+      toast({
+        description: "Ristorante aggiornato con successo",
+      });
+    } catch (err: any) {
+      toast({
+        description:
+          err.response.data.message ??
+          "Errore nell'aggiornamento del ristorante",
+        variant: "destructive",
+      });
+    }
   };
 
   console.log(form.formState.errors);
@@ -137,59 +167,75 @@ const RestaurantProfileForm = () => {
                     <FormField
                       control={form.control}
                       name={`items.${i}.img`}
-                      render={() => (
-                        <div>
-                          <Label
-                            htmlFor={`items${i}Img`}
-                            className="py-4 px-1 border border-dashed rounded-xl
+                      render={() => {
+                        const imgUrl = itemsImgUrl.at(i);
+
+                        return (
+                          <div>
+                            {imgUrl && (
+                              <img src={imgUrl} alt={item.name} className="" />
+                            )}
+                            <Label
+                              htmlFor={`items${i}Img`}
+                              className="py-4 px-1 border border-dashed rounded-xl
                           border-white/80 text-center text-xs cursor-pointer"
-                          >
-                            Aggiungi immagine
-                          </Label>
+                            >
+                              Aggiungi immagine
+                            </Label>
+                            <Input
+                              type="file"
+                              id={`items${i}Img`}
+                              className="hidden"
+                              onChange={(e) => handleUploadItemImg(e, i)}
+                            />
+                          </div>
+                        );
+                      }}
+                    />
+                    <div className="restaurant-item__info">
+                      <FormField
+                        control={form.control}
+                        name={`items.${i}.name`}
+                        render={({ field }) => (
+                          <Input placeholder="Nome" {...field} />
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`items.${i}.price`}
+                        render={({ field }) => (
                           <Input
-                            type="file"
-                            id={`items${i}Img`}
-                            className="hidden"
-                            onChange={(e) => handleUploadItemImg(e, i)}
+                            type="number"
+                            placeholder="Prezzo"
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.valueAsNumber)
+                            }
                           />
-                        </div>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`items.${i}.name`}
-                      render={({ field }) => (
-                        <Input placeholder="Nome" {...field} />
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`items.${i}.price`}
-                      render={({ field }) => (
-                        <Input type="number" placeholder="Prezzo" {...field} />
-                      )}
-                    />
-                    <ItemsTypeSelect itemIndex={i} />
-                    <Button
-                      type="button"
-                      onClick={() => remove(i)}
-                      className="btn bg-[#ED0000] bg-opacity-50
-                        border-[#ED0000] border-opacity-60 font-semibold
-                        hover:bg-opacity-60 rounded-xl px-5 text-sm"
-                    >
-                      Rimuovi
-                    </Button>
-                    <FormField
-                      control={form.control}
-                      name={`items.${i}.description`}
-                      render={({ field }) => (
-                        <Textarea
-                          placeholder="Descrizione"
-                          className="col-start-2 col-span-4 rounded-xl"
-                          {...field}
-                        ></Textarea>
-                      )}
-                    />
+                        )}
+                      />
+                      <ItemsTypeSelect itemIndex={i} />
+                      <Button
+                        type="button"
+                        onClick={() => remove(i)}
+                        className="btn bg-[#ED0000] bg-opacity-50
+                          border-[#ED0000] border-opacity-60 font-semibold
+                          hover:bg-opacity-60 rounded-xl px-5 text-sm"
+                      >
+                        Rimuovi
+                      </Button>
+                      <FormField
+                        control={form.control}
+                        name={`items.${i}.description`}
+                        render={({ field }) => (
+                          <Textarea
+                            placeholder="Descrizione"
+                            className="rounded-xl col-span-4"
+                            {...field}
+                          ></Textarea>
+                        )}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>

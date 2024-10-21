@@ -4,6 +4,7 @@ import {
   logout,
   signin,
   signup,
+  updateMyRestaurant,
   updateUserProfile,
   updateUserSecurity,
 } from "../api/api";
@@ -20,6 +21,7 @@ import {
   UserProfileType,
   UserSecurityType,
 } from "../validations/userProfileSchema";
+import { RestaurantProfileType } from "../validations/RestaurantProfileSchema";
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -87,5 +89,14 @@ export const useUpdateUserSecurity = () => {
   return useMutation<{ message: string }, ApiError, UserSecurityType>({
     mutationKey: ["updateUserSecurity"],
     mutationFn: (data) => updateUserSecurity(privateApi, data),
+  });
+};
+
+export const useUpdateMyRestaurant = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useMutation<{ message: string }, ApiError, RestaurantProfileType>({
+    mutationKey: ["myRestaurant"],
+    mutationFn: (data) => updateMyRestaurant(privateApi, data),
   });
 };
