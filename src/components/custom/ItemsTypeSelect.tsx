@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
@@ -20,10 +18,31 @@ import {
 } from "@/components/ui/popover";
 import { itemsTypes } from "@/constants";
 import { RestaurantItemsTypes } from "@/types/restaurantTypes";
+import { useFormContext } from "react-hook-form";
+import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 
-export function ItemsTypeSelect() {
+export function ItemsTypeSelect({ itemIndex }: { itemIndex: number }) {
+  const form = useFormContext<RestaurantProfileType>();
+
+  const itemType = form.getValues("items").at(itemIndex)?.type ?? null;
+
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<RestaurantItemsTypes | null>(null);
+  const [value, setValue] = React.useState<RestaurantItemsTypes | null>(
+    itemType
+  );
+
+  const handleOnSelect = (selectedValue: string) => {
+    const currentValue = selectedValue as RestaurantItemsTypes;
+    setValue(currentValue === value ? null : currentValue);
+    form.setValue(
+      `items.${itemIndex}.type`,
+      currentValue === value ? null : currentValue,
+      {
+        shouldDirty: true,
+      }
+    );
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -31,8 +50,8 @@ export function ItemsTypeSelect() {
         <Button
           role="combobox"
           aria-expanded={open}
-          className="w-full items-select__btn justify-between
-          text-white/80 text-sm font-medium"
+          className={`w-full items-select__btn justify-between
+          text-white text-sm font-medium ${!value ? "text-opacity-80" : ""}`}
         >
           {value
             ? itemsTypes.find((item) => item.value === value)?.label
@@ -49,24 +68,20 @@ export function ItemsTypeSelect() {
           <CommandList>
             <CommandEmpty>Nessun piatto trovato</CommandEmpty>
             <CommandGroup>
-              {itemsTypes.map((item) => (
+              {itemsTypes.map((itemType, i) => (
                 <CommandItem
-                  key={item.value}
-                  value={item.value}
-                  onSelect={(selectedValue) => {
-                    const currentValue = selectedValue as RestaurantItemsTypes;
-                    setValue(currentValue === value ? null : currentValue);
-                    setOpen(false);
-                  }}
+                  key={i}
+                  value={itemType.value}
+                  onSelect={handleOnSelect}
                   className="cursor-pointer font-medium last:mb-2 first:mt-2"
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === item.value ? "opacity-100" : "opacity-0"
+                      value === itemType.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {item.label}
+                  {itemType.label}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -18,10 +18,8 @@ const RestaurantProfile = () => {
     defaultValues: data ?? defaultRestaurantValues,
   });
 
-  console.log(data);
-
   useEffect(() => {
-    if (data) form.reset(data);
+    if (data) form.reset(data, { keepDirty: false });
   }, [data]);
 
   return (

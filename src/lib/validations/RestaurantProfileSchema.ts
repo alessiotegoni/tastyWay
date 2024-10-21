@@ -3,11 +3,9 @@ import { FoodType, RestaurantItemsTypes } from "@/types/restaurantTypes";
 import { z } from "zod";
 
 const restaurantItem = z.object({
-  img: z
-    .custom<File>((data) => data, {
-      message: "L'immagine del piatto e' obbligatoria",
-    })
-    .nullable(),
+  img: z.custom<File | null>((data) => data, {
+    message: "L'immagine del piatto e' obbligatoria",
+  }),
   name: z.string().min(3, "Il nome del piatto deve avere almeno 2 caratteri"),
   price: z
     .number({ message: "Prezzo del piatto obbligatorio" })

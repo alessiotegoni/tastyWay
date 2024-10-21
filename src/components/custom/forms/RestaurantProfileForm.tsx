@@ -4,14 +4,11 @@ import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  RestaurantItemType,
-  RestaurantProfileType,
-} from "@/lib/validations/RestaurantProfileSchema";
-import { ChangeEvent } from "react";
+import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import { CuisineTypesSelect } from "../CuisineTypesSelect";
 import { ItemsTypeSelect } from "../ItemsTypeSelect";
+import { ChangeEvent } from "react";
 
 const RestaurantProfileForm = () => {
   const form = useFormContext<RestaurantProfileType>();
@@ -20,23 +17,22 @@ const RestaurantProfileForm = () => {
     fields: items,
     append,
     remove,
-    update,
   } = useFieldArray({ control: form.control, name: "items" });
 
   const handleUploadItemImg = (
     e: ChangeEvent<HTMLInputElement>,
-    item: RestaurantItemType,
     itemIndex: number
   ) => {
     const file = e.target.files?.item(0);
-    if (file) update(itemIndex, { ...item, img: file });
+    if (file)
+      form.setValue(`items.${itemIndex}.img`, file, { shouldDirty: true });
   };
 
-  const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {};
+  const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
+    console.log(data);
+  };
 
   console.log(form.formState.errors);
-
-  console.log(items);
 
   return (
     <Form {...form}>
@@ -101,9 +97,7 @@ const RestaurantProfileForm = () => {
             name="cuisine"
             render={() => (
               <div className="mt-3 mb-5">
-                <CuisineTypesSelect
-                  restaurantCuisine={form.getValues("cuisine")}
-                />
+                <CuisineTypesSelect />
               </div>
             )}
           />
@@ -138,59 +132,66 @@ const RestaurantProfileForm = () => {
                 <p className="font-medium text-sm mb-2">Tipo di piatto</p>
               </div>
               <ul className="space-y-10">
-                {items.map((item, i) => {
-                  return (
-                    <li key={item.id} className="restaurant-item__table__body">
-                      <div>
-                        <Label
-                          htmlFor="itemImg"
-                          className="py-4 px-1 border border-dashed rounded-xl
-                        border-white/80 text-center text-xs cursor-pointer"
-                        >
-                          Aggiungi immagine
-                        </Label>
-                        <Input
-                          type="file"
-                          id="itemImg"
-                          className="hidden"
-                          onChange={(e) => handleUploadItemImg(e, item, i)}
-                        />
-                      </div>
-                      <Input
-                        placeholder="Nome"
-                        value={item.name}
-                        onChange={(e) =>
-                          update(i, { ...item, name: e.target.value })
-                        }
-                      />
-                      <Input
-                        value={item.price}
-                        onChange={(e) =>
-                          update(i, { ...item, price: Number(e.target.value) })
-                        }
-                      />
-                      <ItemsTypeSelect />
-                      <Button
-                        type="button"
-                        onClick={() => remove(i)}
-                        className="btn bg-[#ED0000] bg-opacity-50
+                {items.map((item, i) => (
+                  <li key={item.id} className="restaurant-item__table__body">
+                    <FormField
+                      control={form.control}
+                      name={`items.${i}.img`}
+                      render={() => (
+                        <div>
+                          <Label
+                            htmlFor={`items${i}Img`}
+                            className="py-4 px-1 border border-dashed rounded-xl
+                          border-white/80 text-center text-xs cursor-pointer"
+                          >
+                            Aggiungi immagine
+                          </Label>
+                          <Input
+                            type="file"
+                            id={`items${i}Img`}
+                            className="hidden"
+                            onChange={(e) => handleUploadItemImg(e, i)}
+                          />
+                        </div>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`items.${i}.name`}
+                      render={({ field }) => (
+                        <Input placeholder="Nome" {...field} />
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`items.${i}.price`}
+                      render={({ field }) => (
+                        <Input type="number" placeholder="Prezzo" {...field} />
+                      )}
+                    />
+                    <ItemsTypeSelect itemIndex={i} />
+                    <Button
+                      type="button"
+                      onClick={() => remove(i)}
+                      className="btn bg-[#ED0000] bg-opacity-50
                         border-[#ED0000] border-opacity-60 font-semibold
                         hover:bg-opacity-60 rounded-xl px-5 text-sm"
-                      >
-                        Rimuovi
-                      </Button>
-                      <Textarea
-                        placeholder="Descrizione"
-                        value={item.description}
-                        onChange={(e) =>
-                          update(i, { ...item, description: e.target.value })
-                        }
-                        className="col-start-2 col-span-4 rounded-xl"
-                      ></Textarea>
-                      {/* {TODO: Add tipo di piatto} */}
-                    </li>
-                  );
-                })}
+                    >
+                      Rimuovi
+                    </Button>
+                    <FormField
+                      control={form.control}
+                      name={`items.${i}.description`}
+                      render={({ field }) => (
+                        <Textarea
+                          placeholder="Descrizione"
+                          className="col-start-2 col-span-4 rounded-xl"
+                          {...field}
+                        ></Textarea>
+                      )}
+                    />
+                  </li>
+                ))}
               </ul>
             </>
           )}

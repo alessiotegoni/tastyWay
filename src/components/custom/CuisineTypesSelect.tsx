@@ -22,35 +22,41 @@ import { FoodType } from "@/types/restaurantTypes";
 
 const cuisine = foodFilters.map((f) => ({ value: f.value, label: f.name }));
 
-interface CuisineTypeSelectProps {
-  restaurantCuisine: FoodType[] | undefined;
-}
-
-export function CuisineTypesSelect({
-  restaurantCuisine,
-}: CuisineTypeSelectProps) {
+export function CuisineTypesSelect() {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<FoodType[]>([]);
+
+  const form = useFormContext<{ cuisine: FoodType[] }>();
+
+  const restaurantCuisine = form.getValues("cuisine");
 
   useEffect(() => {
     if (restaurantCuisine?.length) setValues(restaurantCuisine);
   }, [restaurantCuisine]);
 
-  const form = useFormContext<{ cuisine: FoodType[] }>();
+  const setFormValue = (newCuisine: FoodType[]) =>
+    form.setValue("cuisine", newCuisine, { shouldDirty: true });
 
   const handleOnSelect = (value: string) => {
     const selectedValue = value as FoodType;
 
-    let newValues = [...values];
+    let newCuisine = [...values];
 
     if (values.includes(selectedValue)) {
-      newValues = values.filter((v) => v !== selectedValue);
+      newCuisine = values.filter((v) => v !== selectedValue);
     } else {
-      newValues = [...values, selectedValue];
+      newCuisine = [...values, selectedValue];
     }
 
-    setValues(newValues);
-    form.setValue("cuisine", newValues, { shouldDirty: true });
+    setValues(newCuisine);
+    setFormValue(newCuisine);
+  };
+
+  const handleRemoveCuisine = (cuisine: { value: FoodType; label: string }) => {
+    const newCuisine = values.filter((v) => v !== cuisine.value);
+
+    setFormValue(newCuisine);
+    setValues(newCuisine);
   };
 
   return (
@@ -113,7 +119,7 @@ export function CuisineTypesSelect({
             >
               {c.label}
               <XIcon
-                onClick={() => setValues(values.filter((v) => v !== c.value))}
+                onClick={() => handleRemoveCuisine(c)}
                 className="cursor-pointer w-6 text-red-700"
               />
             </li>
