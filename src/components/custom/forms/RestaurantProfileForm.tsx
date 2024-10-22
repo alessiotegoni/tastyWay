@@ -11,9 +11,10 @@ import { ItemsTypeSelect } from "../ItemsTypeSelect";
 import { ChangeEvent, useState } from "react";
 import { useUpdateMyRestaurant } from "@/lib/react-query/mutations";
 import { toast } from "@/hooks/use-toast";
+import { getRestaurantFormData } from "@/lib/utils";
 
 const RestaurantProfileForm = () => {
-  const [itemsImgUrl, setItemsImgUrl] = useState<string[]>([]);
+  const [itemsImgUrl, setItemsImgUrl] = useState<(string | undefined)[]>([]);
 
   const { mutateAsync: updateRestaurant, isPending } = useUpdateMyRestaurant();
 
@@ -34,7 +35,8 @@ const RestaurantProfileForm = () => {
     if (!file) return;
 
     const url = URL.createObjectURL(file);
-    const newUrls = itemsImgUrl.toSpliced(itemIndex, 0, url);
+    const newUrls = [...itemsImgUrl];
+    newUrls[itemIndex] = url;
 
     setItemsImgUrl(newUrls);
     form.setValue(`items.${itemIndex}.img`, file, { shouldDirty: true });
@@ -44,8 +46,7 @@ const RestaurantProfileForm = () => {
 
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
     if (isPending) return;
-
-    console.log(data);
+    // const formData = getRestaurantFormData(data);
 
     try {
       await updateRestaurant(data);
@@ -168,20 +169,41 @@ const RestaurantProfileForm = () => {
                       control={form.control}
                       name={`items.${i}.img`}
                       render={() => {
-                        const imgUrl = itemsImgUrl.at(i);
+                        const imgUrl = itemsImgUrl.at(i) ?? item.img;
 
                         return (
-                          <div>
+                          <div className="flex flex-col justify-between">
                             {imgUrl && (
-                              <img src={imgUrl} alt={item.name} className="" />
+                              <figure className="flex-center mb-3">
+                                <img
+                                  src={imgUrl as string}
+                                  alt={item.name}
+                                  className="w-20 h-20 rounded-lg object-contain"
+                                />
+                              </figure>
                             )}
-                            <Label
-                              htmlFor={`items${i}Img`}
-                              className="py-4 px-1 border border-dashed rounded-xl
-                          border-white/80 text-center text-xs cursor-pointer"
-                            >
-                              Aggiungi immagine
-                            </Label>
+                            <div className="flex-between gap-2">
+                              <Label
+                                htmlFor={`items${i}Img`}
+                                className={`px-1 border border-dashed rounded-xl
+                            border-white/80 text-center text-xs cursor-pointer grow
+                            ${imgUrl ? "py-3" : "py-4"}`}
+                              >
+                                {imgUrl ? "Cambia" : "Aggiungi immagine"}
+                              </Label>
+                              {imgUrl && (
+                                <Button
+                                  onClick={() =>
+                                    setItemsImgUrl((p) => p.with(i, undefined))
+                                  }
+                                  className="btn bg-transparent text-[#ED0000]
+                          border-[#ED0000] border-opacity-60 font-semibold
+                          hover:bg-opacity-60 rounded-xl px-5 text-sm h-full"
+                                >
+                                  Rimuovi
+                                </Button>
+                              )}
+                            </div>
                             <Input
                               type="file"
                               id={`items${i}Img`}

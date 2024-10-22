@@ -4,6 +4,7 @@ import { ApiError } from "@/types/apiTypes";
 import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { RestaurantProfileType } from "./validations/RestaurantProfileSchema";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -91,7 +92,7 @@ interface CartActionsParams {
 interface AddCartItemParams extends CartActionsParams {
   restaurantId?: string;
   defaultItem: CartItem;
-  cartItemIndex?: number;
+  cartItemI?: number;
 }
 
 export const addCartItem = ({
@@ -100,7 +101,7 @@ export const addCartItem = ({
   defaultItem,
   cartItem,
   cartItems,
-  cartItemIndex,
+  cartItemI,
 }: AddCartItemParams): CartItemType[] => {
   if (!cartItem)
     return [
@@ -108,14 +109,14 @@ export const addCartItem = ({
       { restaurantId: restaurantId!, items: [defaultItem] },
     ];
 
-  const itemIndex = cartItem.items.findIndex((ci) => ci._id === itemId);
+  const itemI = cartItem.items.findIndex((ci) => ci._id === itemId);
 
   let newCartItems: CartItem[] = [];
 
-  if (itemIndex !== -1) {
-    const item = cartItem.items.at(itemIndex)!;
+  if (itemI !== -1) {
+    const item = cartItem.items.at(itemI)!;
 
-    newCartItems = cartItem.items.with(itemIndex, {
+    newCartItems = cartItem.items.with(itemI, {
       ...item,
       qnt: item.qnt + 1,
     });
@@ -123,27 +124,27 @@ export const addCartItem = ({
     newCartItems = [...cartItem.items, defaultItem];
   }
 
-  return cartItems.with(cartItemIndex!, {
+  return cartItems.with(cartItemI!, {
     ...cartItem,
     items: newCartItems,
   });
 };
 
 interface RemoveCartItemParams extends CartActionsParams {
-  itemIndex: number;
+  itemI: number;
 }
 
 export const removeCartItem = ({
   itemId,
-  itemIndex,
+  itemI,
   cartItem,
   cartItems,
 }: RemoveCartItemParams): CartItemType[] => {
-  const cartItemIndex = cartItem!.items.findIndex((ci) => ci._id === itemId);
+  const cartItemI = cartItem!.items.findIndex((ci) => ci._id === itemId);
 
-  if (cartItemIndex === -1) return cartItems;
+  if (cartItemI === -1) return cartItems;
 
-  const cartItemPlate = cartItem!.items.at(cartItemIndex)!;
+  const cartItemPlate = cartItem!.items.at(cartItemI)!;
 
   let newCartItemPlate = [];
 
@@ -154,7 +155,7 @@ export const removeCartItem = ({
       i._id === itemId ? { ...i, qnt: i.qnt - 1 } : i
     );
 
-  return cartItems.with(itemIndex, {
+  return cartItems.with(itemI, {
     ...cartItem!,
     items: newCartItemPlate,
   });
@@ -219,4 +220,30 @@ export const getOrderDate = (isoDate: string): string => {
   }).format(date);
 
   return formattedDate;
+};
+
+export const getRestaurantFormData = (data: RestaurantProfileType) => {
+  const formData = new FormData();
+
+  formData.append("name", data.name);
+  formData.append("address", data.address);
+  formData.append("deliveryInfo.price", data.deliveryInfo.price.toString());
+  formData.append("deliveryInfo.time", data.deliveryInfo.time.toString());
+
+  data.cuisine.forEach((cuisineType, i) => {
+    formData.append(`cuisine[${i}]`, cuisineType);
+  });
+
+  data.items.forEach((item, i) => {
+    formData.append(`items[${i}].name`, item.name);
+    formData.append(`items[${i}].price`, item.price.toString());
+    formData.append(`items[${i}].description`, item.description);
+    formData.append(`items[${i}].type`, item.type!);
+  });
+
+  data.items
+    .map((i) => i.img!)
+    .forEach((file) => formData.append("itemsImg", file));
+
+  return formData;
 };
