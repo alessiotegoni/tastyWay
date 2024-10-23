@@ -8,7 +8,7 @@ const links = [
   {
     iconUrl: "/icons/user-info-icon.png",
     label: "Info profilo",
-    value: "profile",
+    value: "",
   },
   {
     iconUrl: "/icons/user-security-icon.png",
@@ -34,7 +34,7 @@ const UserProfileLayout = () => {
   const userLinks = links.map((l, i) => (
     <Link
       key={i}
-      to={`user/${l.value}`}
+      to={l.value}
       className={`${
         pathname.includes(l.value) ? "bg-opacity-90" : "bg-opacity-50"
       } btn py-2 px-4 bg-[#ED0000] rounded-3xl font-semibold

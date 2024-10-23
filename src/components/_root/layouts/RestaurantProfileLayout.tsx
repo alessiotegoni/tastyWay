@@ -8,7 +8,7 @@ const links = [
   {
     iconUrl: "/icons/user-info-icon.png",
     label: "Info ristorante",
-    value: "profile",
+    value: "",
   },
   {
     iconUrl: "/icons/user-security-icon.png",
@@ -41,7 +41,7 @@ const RestaurantProfileLayout = () => {
   const restaurantLinks = links.map((l, i) => (
     <Link
       key={i}
-      to={`my-restaurant/${l.value}`}
+      to={l.value}
       className={`btn py-2 px-4 rounded-3xl font-semibold
        border border-restaurant-primary-90 hover:bg-restaurant-primary-80
       flex-center gap-2 backdrop-blur-3xl ${

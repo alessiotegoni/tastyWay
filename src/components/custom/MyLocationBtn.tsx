@@ -1,6 +1,6 @@
 import { useAddress } from "@/contexts/AddressContext";
 import { useToast } from "@/hooks/use-toast";
-import { useGetMyAddress } from "@/lib/react-query/queries";
+import { useGetMyAddress } from "@/lib/react-query/queries/userQueries";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

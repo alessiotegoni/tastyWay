@@ -42,7 +42,7 @@ const UserProfileForm = () => {
 
       toast({ description: res.message });
 
-      if (data.isCompanyAccount) navigate("/my-restaurant/profile");
+      if (data.isCompanyAccount) navigate("/my-restaurant");
     } catch (err) {
       toast({
         description:

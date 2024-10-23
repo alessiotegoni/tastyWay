@@ -12,7 +12,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
   const isUserNavbar = pathname.includes("user");
 
   const isInOrders = pathname.includes("orders");
-  const isInProfile = ["/user/profile", "/user/security"].includes(pathname);
+  const isInProfile = ["/user", "/user/security"].includes(pathname);
 
   return (
     <header className="client__header">
@@ -53,7 +53,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
               <p>Ordini</p>
             </Link>
             <Link
-              to={`/${isUserNavbar ? "user" : "restaurant"}/profile`}
+              to={`/${isUserNavbar ? "user" : "restaurant"}`}
               className={`btn client-nav-btn ${
                 isUserNavbar ? "user-btn" : "restaurant-btn"
               } ${isInProfile ? "active" : ""}`}

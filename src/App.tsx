@@ -33,37 +33,30 @@ function App() {
               <Route path="active-orders" element={<ActiveOrders />} />
             </Route>
           </Route>
-          <Route element={<ProtectedRoutes />}>
-            <Route element={<ClientLayout />}>
-              <Route path="user/orders" element={<UserPrevsOrders />} />
-              <Route element={<UserProfileLayout />}>
-                <Route path="user/profile" element={<UserProfile />} />
-                <Route path="user/security" element={<UserSecurity />} />
-              </Route>
-
-              <Route
-                path="my-restaurant/orders"
-                element={<UserPrevsOrders />}
-              />
-              <Route element={<RestaurantProfileLayout />}>
-                <Route
-                  path="my-restaurant/profile"
-                  element={<RestaurantProfile />}
-                />
-                <Route
-                  path="my-restaurant/security"
-                  element={<RestaurantSecurity />}
-                />
-                <Route
-                  path="my-restaurant/owner"
-                  element={<RestaurantOwner />}
-                />
-              </Route>
-            </Route>
-          </Route>
           <Route path="restaurants">
             <Route index element={<Restaurants />} />
             <Route path=":restaurantName" element={<Restaurant />} />
+          </Route>
+        </Route>
+
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<ClientLayout />}>
+            <Route path="user">
+              <Route element={<UserProfileLayout />}>
+                <Route index element={<UserProfile />} />
+                <Route path="security" element={<UserSecurity />} />
+              </Route>
+              <Route path="orders" element={<UserPrevsOrders />} />
+            </Route>
+
+            <Route path="my-restaurant">
+              <Route element={<RestaurantProfileLayout />}>
+                <Route index element={<RestaurantProfile />} />
+                <Route path="security" element={<RestaurantSecurity />} />
+                <Route path="owner" element={<RestaurantOwner />} />
+              </Route>
+              <Route path="orders" element={<UserPrevsOrders />} />
+            </Route>
           </Route>
         </Route>
       </Route>

@@ -138,7 +138,7 @@ export const userDropdownLinks = [
   {
     img: "/icons/user-profile-icon.png",
     name: "Il mio profilo",
-    link: "/user/profile",
+    link: "/user",
     alt: "profile-settings-icon",
   },
   {
@@ -159,7 +159,7 @@ export const restaurantDropdownLinks = [
   {
     img: "/icons/restaurant-profile-icon.png",
     name: "Il mio ristorante",
-    link: "/my-restaurant/profile",
+    link: "/my-restaurant",
     alt: "profile-settings-icon",
   },
   {

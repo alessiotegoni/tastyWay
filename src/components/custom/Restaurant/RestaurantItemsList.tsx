@@ -1,4 +1,4 @@
-import { useGetRestaurantItems } from "@/lib/react-query/queries";
+import { useGetRestaurantItems } from "@/lib/react-query/queries/restaurantQueries";
 import RestaurantListItem from "./RestaurantListItem";
 import { RestaurantItemsFilters } from "@/types/restaurantTypes";
 import RestaurantItemSkeleton from "@/components/skeletons/RestaurantItemSkeleton";
@@ -12,7 +12,7 @@ const RestauranItemsList = ({
   restaurantId,
   itemsFilters,
 }: RestaurantItemsListProps) => {
-  
+
   const { data, isLoading, isError, error } = useGetRestaurantItems(
     restaurantId,
     itemsFilters

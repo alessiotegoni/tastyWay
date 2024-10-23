@@ -14,7 +14,7 @@ import { useAddress } from "@/contexts/AddressContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { CartItem } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
-import { useCreateCheckoutSession } from "@/lib/react-query/mutations";
+import { useCreateCheckoutSession } from "@/lib/react-query/mutations/userMutations";
 import { Loader } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 

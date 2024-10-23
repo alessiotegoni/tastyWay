@@ -429,6 +429,8 @@
     align-items: unset;
   }
 
+  .restaurant-owner__body label,
+  .restaurant-security__body label,
   .user-profile__body label,
   .user-security__body label {
     @apply text-xl font-semibold mt-5 mb-3;
@@ -440,6 +442,8 @@
 
   .user-profile__body input,
   .user-security__body input,
+  .restaurant-owner__body input,
+  .restaurant-security__body input,
   .restaurant-profile__body input,
   .restaurant-profile__body textarea,
   .cuisine-select__btn,
@@ -453,6 +457,8 @@
     hover:bg-[#ED0000] hover:bg-opacity-50;
   }
 
+  .restaurant-owner__body input,
+  .restaurant-security__body input,
   .restaurant-profile__body input,
   .restaurant-profile__body textarea,
   .cuisine-select__btn,
@@ -465,7 +471,9 @@
     border-none text-base placeholder:text-sm font-semibold;
   }
 
-  .restaurant-profile__body {
+  .restaurant-profile__body,
+  .restaurant-owner__body,
+  .restaurant-security__body {
     @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }
@@ -488,5 +496,10 @@
   .restaurant-item__info {
     @apply grid gap-3;
     grid-template-columns: 1fr 0.3fr 0.7fr auto;
+  }
+
+  .restaurant-owner__body,
+  .restaurant-security__body {
+    @apply max-w-[500px] mx-auto;
   }
 }
