@@ -11,14 +11,21 @@ import { ItemsTypeSelect } from "../ItemsTypeSelect";
 import { ChangeEvent, useState } from "react";
 import { useUpdateMyRestaurant } from "@/lib/react-query/mutations";
 import { toast } from "@/hooks/use-toast";
-import { getRestaurantFormData } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
-const RestaurantProfileForm = () => {
+const RestaurantProfileForm = ({
+  restaurantName,
+}: {
+  restaurantName: string | undefined;
+}) => {
   const [itemsImgUrl, setItemsImgUrl] = useState<(string | undefined)[]>([]);
 
-  const { mutateAsync: updateRestaurant, isPending } = useUpdateMyRestaurant();
-
   const form = useFormContext<RestaurantProfileType>();
+
+  const { mutateAsync: updateRestaurant, isPending } = useUpdateMyRestaurant(
+    form,
+    restaurantName
+  );
 
   const {
     fields: items,
@@ -42,11 +49,8 @@ const RestaurantProfileForm = () => {
     form.setValue(`items.${itemIndex}.img`, file, { shouldDirty: true });
   };
 
-  console.log(itemsImgUrl);
-
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
     if (isPending) return;
-    // const formData = getRestaurantFormData(data);
 
     try {
       await updateRestaurant(data);
@@ -101,7 +105,12 @@ const RestaurantProfileForm = () => {
                 <Label id="deliveryPrice" className="mb-3">
                   Prezzo di consegna
                 </Label>
-                <Input type="number" id="deliveryPrice" {...field} />
+                <Input
+                  type="number"
+                  id="deliveryPrice"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
               </div>
             )}
           />
@@ -113,7 +122,12 @@ const RestaurantProfileForm = () => {
                 <Label id="deliveryTime" className="mb-3">
                   Temo di consegna (minuti)
                 </Label>
-                <Input type="number" id="deliveryTime" {...field} />
+                <Input
+                  type="number"
+                  id="deliveryTime"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
               </div>
             )}
           />
@@ -185,24 +199,12 @@ const RestaurantProfileForm = () => {
                             <div className="flex-between gap-2">
                               <Label
                                 htmlFor={`items${i}Img`}
-                                className={`px-1 border border-dashed rounded-xl
+                                className={`px-1 border rounded-xl
                             border-white/80 text-center text-xs cursor-pointer grow
-                            ${imgUrl ? "py-3" : "py-4"}`}
+                            ${imgUrl ? "py-3" : "py-4 border-dashed"}`}
                               >
                                 {imgUrl ? "Cambia" : "Aggiungi immagine"}
                               </Label>
-                              {imgUrl && (
-                                <Button
-                                  onClick={() =>
-                                    setItemsImgUrl((p) => p.with(i, undefined))
-                                  }
-                                  className="btn bg-transparent text-[#ED0000]
-                          border-[#ED0000] border-opacity-60 font-semibold
-                          hover:bg-opacity-60 rounded-xl px-5 text-sm h-full"
-                                >
-                                  Rimuovi
-                                </Button>
-                              )}
                             </div>
                             <Input
                               type="file"
@@ -279,7 +281,7 @@ const RestaurantProfileForm = () => {
               className="btn py-3 px-5 font-medium text-sm rounded-xl bg-green-700
             text-green-100 border-green-800"
             >
-              Salva modifiche
+              {isPending ? <Loader2 /> : "Salva modifiche"}
             </Button>
           </div>
         )}

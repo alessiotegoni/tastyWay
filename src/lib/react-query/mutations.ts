@@ -22,6 +22,8 @@ import {
   UserSecurityType,
 } from "../validations/userProfileSchema";
 import { RestaurantProfileType } from "../validations/RestaurantProfileSchema";
+import { useAuth } from "@/contexts/AuthContext";
+import { UseFormReturn } from "react-hook-form";
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -92,11 +94,21 @@ export const useUpdateUserSecurity = () => {
   });
 };
 
-export const useUpdateMyRestaurant = () => {
+export const useUpdateMyRestaurant = (
+  form: UseFormReturn<RestaurantProfileType, any, undefined>,
+  restaurantName: string | undefined
+) => {
+  const { refreshToken } = useAuth();
   const privateApi = useAxiosPrivate();
+  const queryClient = useQueryClient();
 
   return useMutation<{ message: string }, ApiError, RestaurantProfileType>({
-    mutationKey: ["myRestaurant"],
+    mutationKey: ["updateMyRestaurant"],
     mutationFn: (data) => updateMyRestaurant(privateApi, data),
+    onSuccess: (_, variables) => {
+      if (restaurantName !== form.getValues("name")) refreshToken();
+
+      queryClient.setQueryData(["myRestaurant"], () => variables);
+    },
   });
 };

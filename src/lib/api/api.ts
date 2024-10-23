@@ -104,20 +104,13 @@ export const getMyRestaurant = async (privateApi: AxiosInstance) =>
 
 export const updateMyRestaurant = async (
   privateApi: AxiosInstance,
-  { items, ...restData }: RestaurantProfileType
-) => {
-  const formattedData = { ...restData, items };
-
-  const result = await privateApi.patch(
-    "/restaurants/my/restaurant",
-    formattedData,
-    {
+  data: RestaurantProfileType
+) =>
+  (
+    await privateApi.patch("/restaurants/my/restaurant", data, {
       headers: { "Content-Type": "multipart/form-data" },
-    }
-  );
-
-  return result.data;
-};
+    })
+  ).data;
 
 export const createCheckoutSessionUrl = async (
   body: CheckoutSessionBody,

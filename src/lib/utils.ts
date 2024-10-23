@@ -4,7 +4,6 @@ import { ApiError } from "@/types/apiTypes";
 import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { RestaurantProfileType } from "./validations/RestaurantProfileSchema";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -220,30 +219,4 @@ export const getOrderDate = (isoDate: string): string => {
   }).format(date);
 
   return formattedDate;
-};
-
-export const getRestaurantFormData = (data: RestaurantProfileType) => {
-  const formData = new FormData();
-
-  formData.append("name", data.name);
-  formData.append("address", data.address);
-  formData.append("deliveryInfo.price", data.deliveryInfo.price.toString());
-  formData.append("deliveryInfo.time", data.deliveryInfo.time.toString());
-
-  data.cuisine.forEach((cuisineType, i) => {
-    formData.append(`cuisine[${i}]`, cuisineType);
-  });
-
-  data.items.forEach((item, i) => {
-    formData.append(`items[${i}].name`, item.name);
-    formData.append(`items[${i}].price`, item.price.toString());
-    formData.append(`items[${i}].description`, item.description);
-    formData.append(`items[${i}].type`, item.type!);
-  });
-
-  data.items
-    .map((i) => i.img!)
-    .forEach((file) => formData.append("itemsImg", file));
-
-  return formData;
 };

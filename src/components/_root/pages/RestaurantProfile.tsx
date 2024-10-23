@@ -26,7 +26,7 @@ const RestaurantProfile = () => {
     <section className="restaurant-profile__body">
       <h2 className="text-3xl font-semibold mb-5">Dettagli Ristorante</h2>
       <FormProvider {...form}>
-        <RestaurantProfileForm />
+        <RestaurantProfileForm restaurantName={data?.name} />
       </FormProvider>
     </section>
   );
