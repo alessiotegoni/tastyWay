@@ -1,5 +1,5 @@
 import RestaurantProfileForm from "@/components/custom/forms/RestaurantProfileForm";
-import { useGetMyRestaurant } from "@/lib/react-query/queries";
+import { useGetMyRestaurant } from "@/lib/react-query/queries/restaurantQueries";
 import {
   defaultRestaurantValues,
   restaurantProfileSchema,

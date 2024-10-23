@@ -7,7 +7,7 @@ import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
 import { restaurantsFilters } from "@/config/filtersConfig";
 import { useAddress } from "@/contexts/AddressContext";
 import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
-import { useGetRestaurants } from "@/lib/react-query/queries";
+import { useGetRestaurants } from "@/lib/react-query/queries/restaurantQueries";
 import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
 import { RestaurantTypeFilter } from "@/types/restaurantTypes";
 import { useEffect } from "react";

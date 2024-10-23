@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { useRefreshToken } from "@/lib/react-query/queries";
+import { useRefreshToken } from "@/lib/react-query/queries/authQueries";
 import { UserJwt } from "@/types/userTypes";
 import { jwtDecode } from "jwt-decode";
 import {
@@ -8,7 +8,7 @@ import {
   UseMutateAsyncFunction,
 } from "@tanstack/react-query";
 import { ApiError, LogoutRes } from "@/types/apiTypes";
-import { useLogout } from "@/lib/react-query/mutations";
+import { useLogout } from "@/lib/react-query/mutations/authMutations";
 
 interface AuthContextType {
   accessToken: string | undefined;

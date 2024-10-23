@@ -9,7 +9,7 @@ import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import { CuisineTypesSelect } from "../CuisineTypesSelect";
 import { ItemsTypeSelect } from "../ItemsTypeSelect";
 import { ChangeEvent, useState } from "react";
-import { useUpdateMyRestaurant } from "@/lib/react-query/mutations";
+import { useUpdateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 

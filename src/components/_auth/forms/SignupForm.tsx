@@ -10,7 +10,7 @@ import { SignupType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSignup } from "@/lib/react-query/mutations";
+import { useSignup } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";

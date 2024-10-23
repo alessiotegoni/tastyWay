@@ -6,7 +6,7 @@ import ErrorWidget from "@/components/widgets/ErrorWidget";
 import {
   useGetActiveOrders,
   useGetPrevOrders,
-} from "@/lib/react-query/queries";
+} from "@/lib/react-query/queries/userQueries";
 import { getOrderDate } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";

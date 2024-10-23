@@ -10,7 +10,7 @@ import { SigninType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignin } from "@/lib/react-query/mutations";
+import { useSignin } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 

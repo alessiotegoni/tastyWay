@@ -6,7 +6,7 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
 import { restaurantItemFilters } from "@/config/filtersConfig";
-import { useGetRestaurantInfo } from "@/lib/react-query/queries";
+import { useGetRestaurantInfo } from "@/lib/react-query/queries/restaurantQueries";
 import {
   RestaurantItemsFilters,
   RestaurantItemsTypes,

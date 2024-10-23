@@ -3,7 +3,7 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { useUpdateUserSecurity } from "@/lib/react-query/mutations";
+import { useUpdateUserSecurity } from "@/lib/react-query/mutations/userMutations";
 import {
   userSecuritySchema,
   UserSecurityType,
