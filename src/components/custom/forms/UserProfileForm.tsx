@@ -11,6 +11,7 @@ import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import ClientFormBtns from "../ClientFormBtns";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
@@ -154,25 +155,11 @@ const UserProfileForm = () => {
             </div>
           )}
         />
-        {form.formState.isDirty && (
-          <div className="flex justify-end items-center gap-2 mt-7">
-            <Button
-              type="button"
-              onClick={() => form.reset(userProfile)}
-              className="btn py-3 px-5 font-medium text-sm rounded-xl bg-red-700
-            text-red-100 border-red-800"
-            >
-              Annulla modifiche
-            </Button>
-            <Button
-              type="submit"
-              className="btn py-3 px-5 font-medium text-sm rounded-xl bg-green-700
-            text-green-100 border-green-800"
-            >
-              Salva modifiche
-            </Button>
-          </div>
-        )}
+        <ClientFormBtns
+          form={form}
+          defaultValues={userProfile}
+          isLoading={isUpdatingUP && isLoadingUP}
+        />
       </form>
     </Form>
   );

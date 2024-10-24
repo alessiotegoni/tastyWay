@@ -1,3 +1,4 @@
+import ClientFormBtns from "@/components/custom/ClientFormBtns";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -112,25 +113,11 @@ const RestaurantOwner = () => {
               <Input id="country" value="Italia" disabled />
             </div>
           </div>
-          {form.formState.isDirty && (
-            <div className="flex justify-end items-center gap-2 mt-7">
-              <Button
-                type="button"
-                onClick={() => form.reset(userProfile)}
-                className="btn py-3 px-5 font-medium text-sm rounded-xl bg-red-700
-              text-red-100 border-red-800"
-              >
-                Annulla modifiche
-              </Button>
-              <Button
-                type="submit"
-                className="btn py-3 px-5 font-medium text-sm rounded-xl bg-green-700
-              text-green-100 border-green-800"
-              >
-                Salva modifiche
-              </Button>
-            </div>
-          )}
+          <ClientFormBtns
+            form={form}
+            defaultValues={userProfile}
+            isLoading={isLoadingUP}
+          />
         </form>
       </Form>
     </section>
