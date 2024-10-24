@@ -1,4 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
+import { checkUserPass } from "@/lib/utils";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const ProtectedRoutes = () => {
@@ -8,11 +9,7 @@ const ProtectedRoutes = () => {
 
   const { pathname } = useLocation();
 
-  let canPass = true;
-
-  if (user?.isCmpAccount && !pathname.includes("/my-restaurant")) canPass = false;
-
-  if (!user?.isCmpAccount && !pathname.includes("/user")) canPass = false;
+  const canPass = checkUserPass(user?.isCmpAccount, pathname);
 
   return isAuthenticated && !!user && canPass ? (
     <Outlet />

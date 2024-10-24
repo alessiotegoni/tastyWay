@@ -1,4 +1,4 @@
-import ClientFormBtns from "@/components/custom/ClientFormBtns";
+import ClientFormBtns from "@/components/shared/ClientFormBtns";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

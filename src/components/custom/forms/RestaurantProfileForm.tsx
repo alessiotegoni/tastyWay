@@ -11,7 +11,7 @@ import { ItemsTypeSelect } from "../ItemsTypeSelect";
 import { ChangeEvent, useState } from "react";
 import { useUpdateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
 import { toast } from "@/hooks/use-toast";
-import ClientFormBtns from "../ClientFormBtns";
+import ClientFormBtns from "../../shared/ClientFormBtns";
 
 const RestaurantProfileForm = ({
   restaurantName,

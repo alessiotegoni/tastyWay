@@ -32,19 +32,6 @@ export const getRestaurants = async (
   return data;
 };
 
-export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
-  (await privateApi.get("/restaurants/active-orders")).data;
-
-export const getRestaurantInfo = async (restaurantName: string) => {
-  restaurantName = restaurantName.replace(/-/g, " ");
-
-  const { data } = await api.get<RestaurantRes>(
-    `/restaurants/${restaurantName}`
-  );
-
-  return data;
-};
-
 export const getRestaurantItems = async (
   restaurantId: string,
   pageParam: unknown,
@@ -63,6 +50,19 @@ export const getRestaurantItems = async (
 
   return data;
 };
+
+export const getRestaurantInfo = async (restaurantName: string) => {
+  restaurantName = restaurantName.replace(/-/g, " ");
+
+  const { data } = await api.get<RestaurantRes>(
+    `/restaurants/${restaurantName}`
+  );
+
+  return data;
+};
+
+export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
+  (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;
 
 export const getMyRestaurant = async (privateApi: AxiosInstance) =>
   (await privateApi.get<RestaurantProfileType>("/restaurants/my/restaurant"))

@@ -11,7 +11,7 @@ import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import ClientFormBtns from "../ClientFormBtns";
+import ClientFormBtns from "../../shared/ClientFormBtns";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();

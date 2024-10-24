@@ -114,10 +114,6 @@
 
   .home {
     @apply md:pt-0;
-
-    .container {
-      @apply max-w-[600px];
-    }
   }
 
   .home__subtitle {
@@ -250,7 +246,7 @@
   .home-widget {
     @apply w-full px-5 py-5 rounded-[30px] bg-home-widget
     border border-primary-10 backdrop-blur-[123px]
-    flex flex-col text-center;
+    flex flex-col text-center max-w-[600px] mx-auto;
   }
 
   .user-widget {
@@ -473,7 +469,8 @@
 
   .restaurant-profile__body,
   .restaurant-owner__body,
-  .restaurant-security__body {
+  .restaurant-security__body,
+  .restaurant-container {
     @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }
@@ -501,5 +498,13 @@
   .restaurant-owner__body,
   .restaurant-security__body {
     @apply max-w-[500px] mx-auto;
+  }
+
+  .restaurant-container.active-orders {
+    @apply max-w-fit min-w-full md:min-w-[700px] mx-auto;
+  }
+
+  .restaurant-container.active-orders ul {
+    @apply mb-9 mt-4 gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
   }
 }

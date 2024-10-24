@@ -44,10 +44,10 @@ export type RestaurantItemRes = {
 export type RestaurantActiveOrder = {
   orderId: string;
   customerSurname: string;
-  street: string;
+  address: string;
   status: string;
   totalPrice: number;
-  expectedTime: Date;
+  expectedTime: string;
 };
 
 export type FoodFilters = {
@@ -126,7 +126,7 @@ export type RestaurantItemsTypes =
   | "smoothies"
   | "bakery"
   | "healthy"
-  | "kebab"
+  | "kebab";
 
 export type RestaurantItemsFilters = {
   name: string | null;

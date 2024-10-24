@@ -220,3 +220,20 @@ export const getOrderDate = (isoDate: string): string => {
 
   return formattedDate;
 };
+
+export const checkUserPass = (
+  isCmpAccount: boolean | undefined,
+  pathname: string
+) => {
+  let canPass = true;
+
+  const isActiveOrders = pathname.includes("/active-orders");
+
+  if (isCmpAccount && !pathname.includes("/my-restaurant") && !isActiveOrders)
+    canPass = false;
+
+  if (!isCmpAccount && !pathname.includes("/user") && !isActiveOrders)
+    canPass = false;
+
+  return canPass;
+};
