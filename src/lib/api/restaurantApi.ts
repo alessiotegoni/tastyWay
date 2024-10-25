@@ -9,6 +9,7 @@ import {
   RestaurantItemsFilters,
   RestaurantRes,
   RestaurantsRes,
+  RestaurantUserOrder,
 } from "@/types/restaurantTypes";
 import { AxiosInstance } from "axios";
 import { RestaurantProfileType } from "../validations/RestaurantProfileSchema";
@@ -51,6 +52,19 @@ export const getRestaurantItems = async (
   return data;
 };
 
+export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
+  (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;
+
+export const getRestaurantOrder = async (
+  privateApi: AxiosInstance,
+  orderId: string
+) =>
+  (
+    await privateApi.get<RestaurantUserOrder>(
+      `/restaurants/my/restaurant/orders?orderId=${orderId}`
+    )
+  ).data;
+
 export const getRestaurantInfo = async (restaurantName: string) => {
   restaurantName = restaurantName.replace(/-/g, " ");
 
@@ -60,9 +74,6 @@ export const getRestaurantInfo = async (restaurantName: string) => {
 
   return data;
 };
-
-export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
-  (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;
 
 export const getMyRestaurant = async (privateApi: AxiosInstance) =>
   (await privateApi.get<RestaurantProfileType>("/restaurants/my/restaurant"))

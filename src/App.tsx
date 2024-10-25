@@ -17,6 +17,7 @@ import RestaurantProfileLayout from "./components/_root/layouts/RestaurantProfil
 import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 import RestaurantSecurity from "./components/_root/pages/RestaurantSecurity";
 import RestaurantOwner from "./components/_root/pages/RestaurantOwner";
+import RestaurantUserOrder from "./components/_root/pages/RestaurantUserOrder";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
                 <Route path="security" element={<RestaurantSecurity />} />
                 <Route path="owner" element={<RestaurantOwner />} />
               </Route>
+              <Route path="order/:orderId" element={<RestaurantUserOrder />} />
               <Route path="orders" element={<UserPrevsOrders />} />
             </Route>
           </Route>

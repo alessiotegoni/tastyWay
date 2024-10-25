@@ -50,6 +50,10 @@ export type RestaurantActiveOrder = {
   expectedTime: string;
 };
 
+export type RestaurantUserOrder = RestaurantActiveOrder & {
+  items: OrderItem[];
+};
+
 export type FoodFilters = {
   img: string;
   name: string;

@@ -3,6 +3,7 @@ import {
   getMyRestaurant,
   getRestaurantInfo,
   getRestaurantItems,
+  getRestaurantOrder,
   getRestaurants,
 } from "@/lib/api/restaurantApi";
 import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
@@ -13,6 +14,7 @@ import {
   RestaurantItemsFilters,
   RestaurantRes,
   RestaurantsRes,
+  RestaurantUserOrder,
 } from "@/types/restaurantTypes";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
@@ -28,13 +30,6 @@ export const useGetRestaurants = (
     initialPageParam: null,
   });
 
-export const useGetRestaurantInfo = (restaurantName: string | undefined) =>
-  useQuery<RestaurantRes, ApiError>({
-    queryKey: ["restaurantInfo", restaurantName],
-    queryFn: () => getRestaurantInfo(restaurantName!),
-    enabled: !!restaurantName,
-  });
-
 export const useGetRestaurantItems = (
   restaurantId: string | undefined,
   filters: RestaurantItemsFilters
@@ -46,6 +41,23 @@ export const useGetRestaurantItems = (
     enabled: !!restaurantId,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
+  });
+
+export const useGetRestaurantOrder = (orderId: string | undefined) => {
+  const privateApi = useAxiosPrivate();
+
+  return useQuery<RestaurantUserOrder, ApiError>({
+    queryKey: ["restaurantOrder", orderId],
+    queryFn: () => getRestaurantOrder(privateApi, orderId!),
+    enabled: !!orderId,
+  });
+};
+
+export const useGetRestaurantInfo = (restaurantName: string | undefined) =>
+  useQuery<RestaurantRes, ApiError>({
+    queryKey: ["restaurantInfo", restaurantName],
+    queryFn: () => getRestaurantInfo(restaurantName!),
+    enabled: !!restaurantName,
   });
 
 export const useGetMyRestaurant = () => {
