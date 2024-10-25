@@ -61,7 +61,7 @@ export const getRestaurantOrder = async (
 ) =>
   (
     await privateApi.get<RestaurantUserOrder>(
-      `/restaurants/my/restaurant/orders?orderId=${orderId}`
+      `/restaurants/my/restaurant/orders?id=${orderId}`
     )
   ).data;
 

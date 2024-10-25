@@ -221,6 +221,35 @@ export const getOrderDate = (isoDate: string): string => {
   return formattedDate;
 };
 
+export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
+  let style = ""
+
+  switch (orderStatus) {
+    case "In attesa":
+      style += `bg-[#772F07] border-[#FF7121] border-opacity-70
+      text-[#FF7121]`;
+      break;
+    case "Accettato":
+      style += `bg-[#007120] bg-opacity-80 border-[#43FF3F] border-opacity-50
+      text-[#43FF3F] text-opacity-80`;
+      break;
+    case "In preparazione":
+      style += `bg-[#A00000] bg-opacity-70 border-[#ED0000] border-opacity-60
+      text-[#FF7777] text-opacity-90`;
+      break;
+    case "In consegna":
+      style += `bg-[#8B8600] bg-opacity-70 border-[#FCFF58] border-opacity-50
+      text-[#FCFF58]`;
+      break;
+    case "Consegnato":
+      style += `bg-[#7E004C] bg-opacity-80 border-[#FB38FF] border-opacity-50
+      text-[#FB38FF]`;
+      break;
+  }
+
+  return style;
+};
+
 export const checkUserPass = (
   isCmpAccount: boolean | undefined,
   pathname: string

@@ -45,13 +45,17 @@ export type RestaurantActiveOrder = {
   orderId: string;
   customerSurname: string;
   address: string;
-  status: string;
+  status: OrderStatus;
   totalPrice: number;
   expectedTime: string;
 };
 
-export type RestaurantUserOrder = RestaurantActiveOrder & {
+export type RestaurantUserOrder = Omit<
+  RestaurantActiveOrder,
+  "customerSurname"
+> & {
   items: OrderItem[];
+  clientFullName: string;
 };
 
 export type FoodFilters = {
@@ -136,3 +140,10 @@ export type RestaurantItemsFilters = {
   name: string | null;
   itemsType: RestaurantItemsTypes[] | null;
 };
+
+export type OrderStatus =
+  | "In attesa"
+  | "Accettato"
+  | "In preparazione"
+  | "In consegna"
+  | "Consegnato";

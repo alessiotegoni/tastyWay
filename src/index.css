@@ -470,7 +470,8 @@
   .restaurant-profile__body,
   .restaurant-owner__body,
   .restaurant-security__body,
-  .restaurant-container {
+  .restaurant-container,
+  .restaurant-widget {
     @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }

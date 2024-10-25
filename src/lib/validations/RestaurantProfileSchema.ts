@@ -3,6 +3,10 @@ import { FoodType, RestaurantItemsTypes } from "@/types/restaurantTypes";
 import { z } from "zod";
 
 const restaurantItem = z.object({
+  _id: z
+    .string({ message: "Id non valido" })
+    .length(24, "Id non valido")
+    .optional(),
   img: z.custom<File | null>((data) => data, {
     message: "L'immagine del piatto e' obbligatoria",
   }),

@@ -17,7 +17,7 @@ const ClientFormBtns = <T extends FieldValues>({
     <div className="flex justify-end items-center gap-2 mt-7">
       <Button
         type="button"
-        onClick={() => form.reset(defaultValues)}
+        onClick={() => !isLoading && form.reset(defaultValues)}
         className="btn py-3 px-5 font-medium text-sm rounded-xl bg-red-700
       text-red-100 border-red-800"
       >

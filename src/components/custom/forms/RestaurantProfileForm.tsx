@@ -260,6 +260,13 @@ const RestaurantProfileForm = ({
                         )}
                       />
                     </div>
+                    {item._id && (
+                      <Input
+                        name={`items.${i}._id`}
+                        value={item._id}
+                        className="hidden"
+                      />
+                    )}
                   </li>
                 ))}
               </ul>
