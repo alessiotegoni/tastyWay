@@ -1,3 +1,4 @@
+import { SelectOrderStatus } from "@/components/custom/OrderStatusSelect";
 import OrderItemsList from "@/components/shared/orderItems/OrderItemsList";
 import RestaurantActiveOrderSkeleton from "@/components/skeletons/RestaurantActiveOrderSkeleton";
 import { Button } from "@/components/ui/button";
@@ -17,75 +18,91 @@ const RestaurantUserOrder = () => {
 
   console.log(order);
 
-  return isLoading ? (
-    <RestaurantActiveOrderSkeleton />
-  ) : order ? (
+  return (
     <main className="restaurant-user-order pt-0">
-      <div className="restaurant-widget max-w-[700px] mx-auto">
-        <div className="text-center">
-          <p className="text-white/70 font-semibold text-lg">Nome</p>
-          <h2 className="text-2xl font-semibold mt-2 mb-4">
-            {order.clientFullName}
-          </h2>
-        </div>
-        <div className="text-center">
-          <p className="text-white/70 font-semibold text-lg">In via</p>
-          <h2 className="text-2xl font-semibold mt-2 mb-4">{order.address}</h2>
-        </div>
-        <div className="text-center">
-          <p className="text-white/70 font-semibold text-lg">Per l'ora</p>
-          <h2 className="text-3xl font-semibold mt-2 mb-4">
-            {getExpectedTime(order.expectedTime)}
-          </h2>
-        </div>
-        <div className="text-center">
-          <p className="text-white/70 font-semibold text-lg">Per l'ora</p>
-          <h2 className="text-3xl font-semibold mt-2">${order.totalPrice}</h2>
-        </div>
-      </div>
-      <div
-        className={`w-fit mx-auto py-3 px-6 border rounded-full my-4
+      {isLoading ? (
+        <RestaurantActiveOrderSkeleton />
+      ) : order ? (
+        <>
+          <div className="restaurant-widget max-w-[700px] mx-auto">
+            <div className="text-center">
+              <p className="text-white/70 font-semibold text-lg">Nome</p>
+              <h2 className="text-2xl font-semibold mt-2 mb-4">
+                {order.clientFullName}
+              </h2>
+            </div>
+            <div className="text-center">
+              <p className="text-white/70 font-semibold text-lg">In via</p>
+              <h2 className="text-2xl font-semibold mt-2 mb-4">
+                {order.address}
+              </h2>
+            </div>
+            <div className="text-center">
+              <p className="text-white/70 font-semibold text-lg">Per l'ora</p>
+              <h2 className="text-3xl font-semibold mt-2 mb-4">
+                {getExpectedTime(order.expectedTime)}
+              </h2>
+            </div>
+            <div className="text-center">
+              <p className="text-white/70 font-semibold text-lg">Per l'ora</p>
+              <h2 className="text-3xl font-semibold mt-2">
+                ${order.totalPrice}
+              </h2>
+            </div>
+          </div>
+          <div
+            className={`w-fit mx-auto py-3 px-6 border rounded-full my-4
   text-2xl font-semibold flex-center gap-2 ${getOrderSatusStyle(order.status)}`}
-      >
-        <img
-          src={`/icons/${order.status
-            .toLowerCase()
-            .replaceAll(" ", "-")}-icon.png`}
-          alt={order.status}
-          width={30}
-        />
-        <p>{order.status}</p>
-      </div>
-      <div
-        className="restaurant-widget max-w-[1000px] mx-auto min-h-[420px]
-      flex flex-col justify-between"
-      >
-        <div className="">
-          <h2 className="text-center text-3xl font-semibold mb-4">Ordine</h2>
-          <ul
-            className={`${
-              order.items.length <= 2
-                ? "flex justify-center"
-                : "grid grid-cols-3"
-            } gap-3`}
           >
-            <OrderItemsList
-              items={order.items}
-              className="bg-[#FF2323] bg-opacity-60 py-4 px-5 basis-1/3 h-fit"
-              itemImgSize={80}
-              fontSize={18}
+            <img
+              src={`/icons/${order.status
+                .toLowerCase()
+                .replaceAll(" ", "-")}-icon.png`}
+              alt={order.status}
+              width={30}
             />
-          </ul>
-        </div>
-        <div className="flex-center gap-3">
-          <Button className="btn bg-[#B40000] bg-opacity-80
+            <p>{order.status}</p>
+          </div>
+          <div
+            className="restaurant-widget max-w-[1000px] mx-auto min-h-[420px]
+      flex flex-col justify-between"
+          >
+            <div className="">
+              <h2 className="text-center text-3xl font-semibold mb-4">
+                Ordine
+              </h2>
+              <ul
+                className={`${
+                  order.items.length <= 2
+                    ? "flex justify-center"
+                    : "grid grid-cols-3"
+                } gap-3`}
+              >
+                <OrderItemsList
+                  items={order.items}
+                  className="bg-[#FF2323] bg-opacity-60 py-4 px-5 basis-1/3 h-fit"
+                  itemImgSize={80}
+                  fontSize={18}
+                />
+              </ul>
+            </div>
+            <div className="flex-center gap-3">
+              <Button
+                className="btn bg-[#B40000] bg-opacity-80
           border-[#ED0000] border-opacity-50 font-semibold py-3 px-5
-          hover:bg-opacity-100">
-            Cancella ordine
-          </Button>
-        </div>
-      </div>
+          hover:bg-opacity-100"
+              >
+                Cancella ordine
+              </Button>
+              <SelectOrderStatus
+                currentStatus={order.status}
+                orderId={order.orderId}
+              />
+            </div>
+          </div>
+        </>
+      ) : null}
     </main>
-  ) : null;
+  );
 };
 export default RestaurantUserOrder;

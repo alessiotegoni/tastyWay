@@ -4,6 +4,7 @@ import {
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import {
+  OrderStatus,
   RestaurantFilters,
   RestaurantItemRes,
   RestaurantItemsFilters,
@@ -87,4 +88,16 @@ export const updateMyRestaurant = async (
     await privateApi.patch("/restaurants/my/restaurant", data, {
       headers: { "Content-Type": "multipart/form-data" },
     })
+  ).data;
+
+export const updateOrderStatus = async (
+  privateApi: AxiosInstance,
+  orderId: string,
+  data: { status: OrderStatus }
+) =>
+  (
+    await privateApi.patch(
+      `/restaurants/my/restaurant/orders?id=${orderId}`,
+      data
+    )
   ).data;

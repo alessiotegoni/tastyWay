@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { updateMyRestaurant } from "@/lib/api/restaurantApi";
+import { updateMyRestaurant, updateOrderStatus } from "@/lib/api/restaurantApi";
 import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 import { ApiError } from "@/types/apiTypes";
+import { OrderStatus, RestaurantUserOrder } from "@/types/restaurantTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 
@@ -22,5 +23,24 @@ export const useUpdateMyRestaurant = (
 
       queryClient.setQueryData(["myRestaurant"], () => variables);
     },
+  });
+};
+
+export const useUpdateOrderStatus = (orderId: string) => {
+  const privateApi = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  return useMutation<{ message: string }, ApiError, OrderStatus>({
+    mutationKey: ["updateOrderStatus"],
+    mutationFn: (orderStatus) =>
+      updateOrderStatus(privateApi, orderId, { status: orderStatus }),
+    onSuccess: (_, orderStatus) =>
+      queryClient.setQueryData<RestaurantUserOrder>(
+        ["restaurantOrder", orderId],
+        (order) => ({
+          ...order!,
+          status: orderStatus,
+        })
+      ),
   });
 };
