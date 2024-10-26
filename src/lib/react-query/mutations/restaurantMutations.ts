@@ -1,6 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { updateMyRestaurant, updateOrderStatus } from "@/lib/api/restaurantApi";
+import {
+  deleteOrder,
+  updateMyRestaurant,
+  updateOrderStatus,
+} from "@/lib/api/restaurantApi";
 import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 import { ApiError } from "@/types/apiTypes";
 import { OrderStatus, RestaurantUserOrder } from "@/types/restaurantTypes";
@@ -42,5 +46,20 @@ export const useUpdateOrderStatus = (orderId: string) => {
           status: orderStatus,
         })
       ),
+  });
+};
+
+export const useDeleteOrder = (orderId: string) => {
+  const privateApi = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  return useMutation<{ message: string }, ApiError>({
+    mutationKey: ["deleteOrder"],
+    mutationFn: () => deleteOrder(privateApi, orderId),
+    onSuccess: () =>
+      queryClient.removeQueries({
+        queryKey: ["restaurantOrder", orderId],
+        exact: true,
+      }),
   });
 };

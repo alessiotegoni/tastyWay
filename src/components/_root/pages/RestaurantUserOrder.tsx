@@ -1,7 +1,8 @@
-import { SelectOrderStatus } from "@/components/custom/OrderStatusSelect";
+import { DeleteOrderAlert } from "@/components/custom/my-restaurant/DeleteOrderAlert";
+import { SelectOrderStatus } from "@/components/custom/my-restaurant/OrderStatusSelect";
 import OrderItemsList from "@/components/shared/orderItems/OrderItemsList";
 import RestaurantActiveOrderSkeleton from "@/components/skeletons/RestaurantActiveOrderSkeleton";
-import { Button } from "@/components/ui/button";
+import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { useGetRestaurantOrder } from "@/lib/react-query/queries/restaurantQueries";
 import { getExpectedTime, getOrderSatusStyle } from "@/lib/utils";
 import { useParams } from "react-router-dom";
@@ -87,13 +88,7 @@ const RestaurantUserOrder = () => {
               </ul>
             </div>
             <div className="flex-center gap-3">
-              <Button
-                className="btn bg-[#B40000] bg-opacity-80
-          border-[#ED0000] border-opacity-50 font-semibold py-3 px-5
-          hover:bg-opacity-100"
-              >
-                Cancella ordine
-              </Button>
+              <DeleteOrderAlert orderId={order.orderId} />
               <SelectOrderStatus
                 currentStatus={order.status}
                 orderId={order.orderId}
@@ -101,7 +96,21 @@ const RestaurantUserOrder = () => {
             </div>
           </div>
         </>
-      ) : null}
+      ) : (
+        <ErrorWidget
+          className="restaurant-widget max-w-[600px] mx-auto mt-20"
+          title="Ordine non trovato"
+          subtitle="Quest'ordine e' stato eliminato o l'utente che l'ha creato non esiste piu"
+          btns={[
+            {
+              id: "naviagateBack",
+              value: "Torna indietro",
+              goto: -1,
+              className: "btn border-transparent bg-[#2A003E]",
+            },
+          ]}
+        />
+      )}
     </main>
   );
 };

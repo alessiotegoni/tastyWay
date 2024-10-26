@@ -101,3 +101,7 @@ export const updateOrderStatus = async (
       data
     )
   ).data;
+
+export const deleteOrder = async (privateApi: AxiosInstance, orderId: string) =>
+  (await privateApi.delete(`/restaurants/my/restaurant/orders?id=${orderId}`))
+    .data;

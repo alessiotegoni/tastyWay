@@ -6,7 +6,7 @@ export interface btn {
   id: string;
   value: string;
   icon?: string;
-  goto?: string;
+  goto?: string | number;
   className?: string;
   handleClick?: () => void;
 }
@@ -31,7 +31,7 @@ const ErrorWidget = ({
   const btnsEl = btns.map((btn) => {
     const handleClick = () => {
       if (btn.handleClick) btn.handleClick();
-      if (btn.goto) navigate(btn.goto);
+      if (btn.goto) navigate(btn.goto as string);
     };
 
     return (

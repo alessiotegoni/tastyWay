@@ -12,7 +12,7 @@ const RestaurantActiveOrders = ({
     const expectedTime = getExpectedTime(order.expectedTime);
 
     return (
-      <li key={order.orderId} className="bg-[#2A003E] p-4 rounded-3xl">
+      <li key={order.orderId} className="bg-[#2A003E] p-4 rounded-3xl min-w-[300px]">
         <div className="flex-between">
           <h3 className="text-xl font-semibold">{order.customerSurname}</h3>
           <h2 className="text-3xl font-bold">{expectedTime}</h2>
@@ -56,7 +56,7 @@ const RestaurantActiveOrders = ({
     </div>
   ) : (
     <ErrorWidget
-      className="restaurant-container w-full mx-auto"
+      className="restaurant-container sm:w-full sm:max-w-[600px] mx-auto"
       title="Non hai nessun ordine attivo"
       subtitle="Aggiungi foto accattivanti dei tuoi piatti per attirare più clienti!"
       btns={[
