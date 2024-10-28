@@ -5,6 +5,7 @@ import {
   getRestaurantItems,
   getRestaurantOrder,
   getRestaurants,
+  getRestauratOrders,
 } from "@/lib/api/restaurantApi";
 import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 import { ApiError } from "@/types/apiTypes";
@@ -12,6 +13,7 @@ import {
   RestaurantFilters,
   RestaurantItemRes,
   RestaurantItemsFilters,
+  RestaurantOrdersFilters,
   RestaurantRes,
   RestaurantsRes,
   RestaurantUserOrder,
@@ -42,6 +44,16 @@ export const useGetRestaurantItems = (
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
   });
+
+// export const useGetRestaurantOrders = (filters: RestaurantOrdersFilters) => {
+//   const privateApi = useAxiosPrivate();
+
+//   return useInfiniteQuery({
+//     queryKey: ["restaurantOrders"],
+//     queryFn: (pageParam) => getRestauratOrders(privateApi, pageParam, filters),
+//     initialPageParam: null
+//   });
+// };
 
 export const useGetRestaurantOrder = (orderId: string | undefined) => {
   const privateApi = useAxiosPrivate();

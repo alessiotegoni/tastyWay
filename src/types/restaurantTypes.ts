@@ -147,3 +147,8 @@ export type OrderStatus =
   | "In preparazione"
   | "In consegna"
   | "Consegnato";
+
+export type RestaurantOrdersFilters = {
+  statusType: OrderStatus[];
+  orderInfo: string;
+};

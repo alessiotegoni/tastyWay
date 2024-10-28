@@ -1,6 +1,7 @@
 import {
   api,
   RESTAURANT_ITEMS_LIMIT,
+  RESTAURANT_ORDERS_LIMIT,
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
 import {
@@ -8,6 +9,7 @@ import {
   RestaurantFilters,
   RestaurantItemRes,
   RestaurantItemsFilters,
+  RestaurantOrdersFilters,
   RestaurantRes,
   RestaurantsRes,
   RestaurantUserOrder,
@@ -56,13 +58,24 @@ export const getRestaurantItems = async (
 export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
   (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;
 
+export const getRestauratOrders = async (
+  privateApi: AxiosInstance,
+  pageParam: unknown,
+  filters: RestaurantOrdersFilters
+) =>
+  (
+    await privateApi.get("/restaurants/my/restaurant/orders", {
+      params: { pageParam, filters, limit: RESTAURANT_ORDERS_LIMIT },
+    })
+  ).data;
+
 export const getRestaurantOrder = async (
   privateApi: AxiosInstance,
   orderId: string
 ) =>
   (
     await privateApi.get<RestaurantUserOrder>(
-      `/restaurants/my/restaurant/orders?id=${orderId}`
+      `/restaurants/my/restaurant/order/${orderId}`
     )
   ).data;
 
