@@ -149,6 +149,13 @@ export type OrderStatus =
   | "Consegnato";
 
 export type RestaurantOrdersFilters = {
-  statusType: OrderStatus[];
-  orderInfo: string;
+  statusTypes: OrderStatus[];
+  orderInfo: string | null;
+};
+
+export type RestaurantOrdersRes = {
+  orders: Omit<RestaurantUserOrder, "items"> & {
+    items: Pick<OrderItem, "_id" | "name" | "quantity">[];
+  };
+  nextCursor: string | null;
 };

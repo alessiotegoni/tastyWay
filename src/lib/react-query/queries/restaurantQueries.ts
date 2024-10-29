@@ -14,6 +14,7 @@ import {
   RestaurantItemRes,
   RestaurantItemsFilters,
   RestaurantOrdersFilters,
+  RestaurantOrdersRes,
   RestaurantRes,
   RestaurantsRes,
   RestaurantUserOrder,
@@ -45,15 +46,17 @@ export const useGetRestaurantItems = (
     initialPageParam: null,
   });
 
-// export const useGetRestaurantOrders = (filters: RestaurantOrdersFilters) => {
-//   const privateApi = useAxiosPrivate();
+export const useGetRestaurantOrders = (filters: RestaurantOrdersFilters) => {
+  const privateApi = useAxiosPrivate();
 
-//   return useInfiniteQuery({
-//     queryKey: ["restaurantOrders"],
-//     queryFn: (pageParam) => getRestauratOrders(privateApi, pageParam, filters),
-//     initialPageParam: null
-//   });
-// };
+  return useInfiniteQuery<RestaurantOrdersRes, ApiError>({
+    queryKey: ["restaurantOrders"],
+    queryFn: ({ pageParam }) =>
+      getRestauratOrders(privateApi, pageParam, filters),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: null,
+  });
+};
 
 export const useGetRestaurantOrder = (orderId: string | undefined) => {
   const privateApi = useAxiosPrivate();

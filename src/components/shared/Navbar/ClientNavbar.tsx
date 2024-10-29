@@ -46,7 +46,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
               <p>Home</p>
             </Link>
             <Link
-              to={`/${isUserNavbar ? "user" : "restaurant"}/orders`}
+              to={`/${isUserNavbar ? "user" : "my-restaurant"}/orders`}
               className={`btn client-nav-btn ${
                 isUserNavbar ? "user-btn" : "restaurant-btn"
               } ${isInOrders ? "active" : ""}`}

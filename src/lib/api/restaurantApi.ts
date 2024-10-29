@@ -10,6 +10,7 @@ import {
   RestaurantItemRes,
   RestaurantItemsFilters,
   RestaurantOrdersFilters,
+  RestaurantOrdersRes,
   RestaurantRes,
   RestaurantsRes,
   RestaurantUserOrder,
@@ -64,9 +65,12 @@ export const getRestauratOrders = async (
   filters: RestaurantOrdersFilters
 ) =>
   (
-    await privateApi.get("/restaurants/my/restaurant/orders", {
-      params: { pageParam, filters, limit: RESTAURANT_ORDERS_LIMIT },
-    })
+    await privateApi.get<RestaurantOrdersRes>(
+      "/restaurants/my/restaurant/orders",
+      {
+        params: { pageParam, filters, limit: RESTAURANT_ORDERS_LIMIT },
+      }
+    )
   ).data;
 
 export const getRestaurantOrder = async (

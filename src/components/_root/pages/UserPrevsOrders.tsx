@@ -33,13 +33,13 @@ const UserPrevsOrders = () => {
   const activeOrders = activeOrdersData?.orders ?? [];
   const prevOrders = prevOrdersData?.pages.flatMap((p) => p.orders) ?? [];
 
-  const hasNoActiveOrders = !areActiveOrdersLoading && !!!activeOrders.length;
-  const hasNoPrevOrders = !arePrevOrdersLoading && !!!prevOrders.length;
+  const hasNoActiveOrders = !areActiveOrdersLoading && !activeOrders.length;
+  const hasNoPrevOrders = !arePrevOrdersLoading && !prevOrders.length;
 
   const hasNoOrders = hasNoActiveOrders && hasNoPrevOrders;
 
   const canShowLastOrder =
-    !areActiveOrdersLoading && !!!activeOrdersData.orders?.length;
+    !areActiveOrdersLoading && !activeOrdersData.orders?.length;
 
   const lastOrder = canShowLastOrder ? prevOrders.splice(0, 1).at(0) : null;
 

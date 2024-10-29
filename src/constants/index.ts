@@ -1,4 +1,4 @@
-import { FoodFilters } from "@/types/restaurantTypes";
+import { FoodFilters, OrderStatus } from "@/types/restaurantTypes";
 
 export const tastyWayLogo = "/imgs/tastyWay-logo.png";
 
@@ -132,6 +132,14 @@ export const itemsTypes = [
   { value: "bakery", label: "Panetteria/Pasticceria" },
   { value: "healthy", label: "Salute" },
   { value: "kebab", label: "Kebab/Grigliati" },
+];
+
+export const orderStatuses: OrderStatus[] = [
+  "In attesa",
+  "Accettato",
+  "In preparazione",
+  "In consegna",
+  "Consegnato",
 ];
 
 export const userDropdownLinks = [

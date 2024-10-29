@@ -97,7 +97,7 @@
       url("/imgs/auth-bg.png");
   }
 
-  .hero:has(.user-orders, .restaurant-user-order) {
+  .hero:has(.user-orders, .restaurant-user-order, .restaurant-orders) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
       url("/imgs/plate-bg.png");
   }
