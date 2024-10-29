@@ -1,3 +1,4 @@
+import RestaurantOrdersSkeleton from "@/components/skeletons/RestaurantOrdersSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
@@ -45,7 +46,6 @@ const RestuarantOrders = () => {
               <h2 className="text-4xl font-semibold">Ordini</h2>
             )}
           </div>
-
           <form>
             <div className="search-restaurant-box mt-4 mb-8 pl-[10px]">
               <img
@@ -99,9 +99,18 @@ const RestuarantOrders = () => {
             ))}
           </ul>
         </div>
-        {!orders.length && (
+      </div>
+      {isLoading && <RestaurantOrdersSkeleton />}
+      {isLoading && !!orders.length && (
+        <div className="restaurant-widget max-w-[1000px] mx-auto mt-5">
+          <ul className="grid md:grid-cols-3 gap-4"></ul>
+        </div>
+      )}
+      {!orders.length && !isLoading && (
+        <div className="max-w-[600px] mx-auto">
+          <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
           <ErrorWidget
-            className="restaurant-widget sm:w-full mt-3 font-semibold"
+            className="restaurant-widget sm:w-full font-semibold"
             title="Non hai ancora nessun ordine"
             subtitle="Aggiungi foto accattivanti dei tuoi piatti per attirare più clienti!"
             btns={[
@@ -119,8 +128,8 @@ const RestuarantOrders = () => {
               },
             ]}
           />
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 };
