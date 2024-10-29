@@ -186,7 +186,7 @@ const UserPrevsOrders = () => {
         )}
         {hasNoOrders && (
           <ErrorWidget
-            className="sm:w-[550px] sm:py-5 user-widget mt-4"
+            className="sm:w-[530px] sm:py-5 user-widget mt-4 mx-auto"
             title="Non hai ancora effettuato nessun ordine."
             subtitle="Nessun ordine trovato. Esplora i migliori ristoranti nella tua zona e fai il tuo primo ordine in pochi clic!"
             btns={[
@@ -194,7 +194,7 @@ const UserPrevsOrders = () => {
                 id: "orderNow",
                 value: "Ordina ora",
                 goto: "/restaurants",
-                className: "bg-[#ec010184] border border-[#fe0000b3] px-4",
+                className: "bg-[#ec010184] border border-[#fe0000b3] px-8",
               },
             ]}
           />

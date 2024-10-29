@@ -112,13 +112,8 @@ export const updateOrderStatus = async (
   orderId: string,
   data: { status: OrderStatus }
 ) =>
-  (
-    await privateApi.patch(
-      `/restaurants/my/restaurant/orders?id=${orderId}`,
-      data
-    )
-  ).data;
+  (await privateApi.patch(`/restaurants/my/restaurant/order/${orderId}`, data))
+    .data;
 
 export const deleteOrder = async (privateApi: AxiosInstance, orderId: string) =>
-  (await privateApi.delete(`/restaurants/my/restaurant/orders?id=${orderId}`))
-    .data;
+  (await privateApi.delete(`/restaurants/my/restaurant/order/${orderId}`)).data;

@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { orderStatuses } from "@/constants";
 import { useGetRestaurantOrders } from "@/lib/react-query/queries/restaurantQueries";
-import { getOrderSatusStyle } from "@/lib/utils";
+import { getExpectedTime, getOrderSatusStyle } from "@/lib/utils";
 import { OrderStatus, RestaurantOrdersFilters } from "@/types/restaurantTypes";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const RestuarantOrders = () => {
+const RestaurantOrders = () => {
   const defaultFilters: RestaurantOrdersFilters = {
     orderInfo: null,
     statusTypes: [],
@@ -16,12 +17,14 @@ const RestuarantOrders = () => {
 
   const [filters, setFilters] = useState(defaultFilters);
 
+  // FIXME: when filters are applying there isn't another api request
+
   console.log(filters);
 
   const { data, isLoading, isError, error } = useGetRestaurantOrders(filters);
 
   const orders = data?.pages.flatMap((p) => p.orders) ?? [];
-  const newOrders = orders.filter((o) => o.status === "In attesa");
+  const newOrdersLength = orders.filter((o) => o.status === "In attesa").length;
 
   const handleSetFilters = (os: OrderStatus) =>
     orders.length &&
@@ -37,11 +40,13 @@ const RestuarantOrders = () => {
       <div className="container max-w-[600px]">
         <div className="restaurant-widget px-14">
           <div className="text-center">
-            {newOrders.length ? (
-              <>
-                <h2 className="text-5xl font-semibold">{newOrders.length}</h2>
-                <h3 className="text-3xl font-semibold mt-1">Nuovi ordini</h3>
-              </>
+            {newOrdersLength ? (
+              <div className="flex-center gap-5">
+                <h2 className="text-5xl font-semibold">{newOrdersLength}</h2>
+                <h3 className="text-3xl font-semibold mt-1">
+                  {newOrdersLength > 1 ? "Nuovi ordini" : "Nuovo ordine"}
+                </h3>
+              </div>
             ) : (
               <h2 className="text-4xl font-semibold">Ordini</h2>
             )}
@@ -101,9 +106,68 @@ const RestuarantOrders = () => {
         </div>
       </div>
       {isLoading && <RestaurantOrdersSkeleton />}
-      {isLoading && !!orders.length && (
-        <div className="restaurant-widget max-w-[1000px] mx-auto mt-5">
-          <ul className="grid md:grid-cols-3 gap-4"></ul>
+      {!isLoading && !!orders.length && (
+        <div className="restaurant-widget max-w-[1000px] min-h-[600px] mx-auto mt-5">
+          <ul className="grid md:grid-cols-3 gap-4">
+            {orders.map((order) => (
+              <li
+                key={order.orderId}
+                className="bg-[#2A003E] px-4 py-3 rounded-2xl"
+              >
+                <div className="flex-between">
+                  <h3 className="font-semibold text-xl">
+                    {order.clientFullName}
+                  </h3>
+                  <h2 className="font-bold text-2xl">
+                    {getExpectedTime(order.expectedTime)}
+                  </h2>
+                </div>
+                <div className="flex-center flex-col mt-3 mb-5">
+                  <figure
+                    className={`flex-center rounded-full gap-2 ${getOrderSatusStyle(
+                      order.status
+                    )} border px-3 py-2`}
+                  >
+                    <img
+                      src={`/icons/${order.status
+                        .toLowerCase()
+                        .replaceAll(" ", "-")}-icon.png`}
+                      alt={order.status}
+                      className="w-6"
+                    />
+                    <figcaption className="font-semibold">
+                      {order.status}
+                    </figcaption>
+                  </figure>
+                  <div className="mt-3 font-medium">{order.address}</div>
+                </div>
+                <ul className="flex-center flex-wrap gap gap-2 mb-7">
+                  {order.items.map((item) => (
+                    <li
+                      key={item._id}
+                      className="bg-[#BA4300] flex-center gap-1 py-2 px-4
+                      rounded-full font-medium"
+                    >
+                      <p className="text-lg font-bold">{item.quantity}.</p>
+                      <p>{item.name}</p>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex-between">
+                  <h2 className="self-end font-bold text-2xl">
+                    ${order.totalPrice}
+                  </h2>
+                  <Link
+                    to={`/my-restaurant/order/${order.orderId}`}
+                    className="btn font-semibold py-3 px-5
+                  bg-[#9400DA] border-transparent text-sm"
+                  >
+                    Vedi ordine
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {!orders.length && !isLoading && (
@@ -133,4 +197,4 @@ const RestuarantOrders = () => {
     </section>
   );
 };
-export default RestuarantOrders;
+export default RestaurantOrders;

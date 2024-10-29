@@ -18,7 +18,7 @@ import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 import RestaurantSecurity from "./components/_root/pages/RestaurantSecurity";
 import RestaurantOwner from "./components/_root/pages/RestaurantOwner";
 import RestaurantUserOrder from "./components/_root/pages/RestaurantUserOrder";
-import RestuarantOrders from "./components/_root/pages/RestuarantOrders";
+import RestuarantOrders from "./components/_root/pages/RestaurantOrders";
 
 function App() {
   return (
