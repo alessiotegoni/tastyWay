@@ -12,8 +12,6 @@ const RestaurantListItem = ({
   restaurantId,
   item: { _id, name, img, description, price },
 }: RestaurantListItemProps) => {
-  const itemImg = "/imgs/default-restaurant.png";
-
   const { handleSetCart } = useCart();
 
   return (
@@ -21,7 +19,7 @@ const RestaurantListItem = ({
       <div className="item__body flex gap-5">
         <figure className="item__img">
           <img
-            src={itemImg}
+            src={img ?? "/imgs/default-restaurant.png"}
             alt={`${name}-img`}
             className="w-[130px] h-[130px] object-cover rounded-[20px]"
           />

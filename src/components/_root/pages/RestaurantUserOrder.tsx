@@ -4,7 +4,11 @@ import OrderItemsList from "@/components/shared/orderItems/OrderItemsList";
 import RestaurantActiveOrderSkeleton from "@/components/skeletons/RestaurantActiveOrderSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { useGetRestaurantOrder } from "@/lib/react-query/queries/restaurantQueries";
-import { getExpectedTime, getOrderSatusStyle } from "@/lib/utils";
+import {
+  getExpectedTime,
+  getOrderSatusStyle,
+  getOrderStatusIcon,
+} from "@/lib/utils";
 import { useParams } from "react-router-dom";
 
 const RestaurantUserOrder = () => {
@@ -45,7 +49,7 @@ const RestaurantUserOrder = () => {
               </h2>
             </div>
             <div className="text-center">
-              <p className="text-white/70 font-semibold text-lg">Per l'ora</p>
+              <p className="text-white/70 font-semibold text-lg">Totale</p>
               <h2 className="text-3xl font-semibold mt-2">
                 ${order.totalPrice}
               </h2>
@@ -56,9 +60,7 @@ const RestaurantUserOrder = () => {
   text-2xl font-semibold flex-center gap-2 ${getOrderSatusStyle(order.status)}`}
           >
             <img
-              src={`/icons/${order.status
-                .toLowerCase()
-                .replaceAll(" ", "-")}-icon.png`}
+              src={getOrderStatusIcon(order.status)}
               alt={order.status}
               width={30}
             />

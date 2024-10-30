@@ -222,7 +222,7 @@ export const getOrderDate = (isoDate: string): string => {
 };
 
 export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
-  let style = ""
+  let style = "";
 
   switch (orderStatus) {
     case "In attesa":
@@ -249,6 +249,9 @@ export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
 
   return style;
 };
+
+export const getOrderStatusIcon = (orderStatus: OrderStatus) =>
+  `/icons/${orderStatus.toLowerCase().replaceAll(" ", "-")}-icon.png`;
 
 export const checkUserPass = (
   isCmpAccount: boolean | undefined,

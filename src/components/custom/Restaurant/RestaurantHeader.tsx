@@ -19,14 +19,12 @@ const RestaurantHeader = ({
     getCityFromAddress(restaurantAddress) + ", italia"
   ).replace("a", "");
 
-  const img = "/imgs/default-restaurant.png";
-
   return (
     <div className="restaurant__header">
       <div className="flex gap-5">
         <figure className="shrink-0">
           <img
-            src={img}
+            src={restaurantImg ?? "/imgs/default-restaurant.png"}
             alt={`${restaurantName}-img`}
             className="w-[150px] h-[150px] object-cover rounded-[20px]"
           />

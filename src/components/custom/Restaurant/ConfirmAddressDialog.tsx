@@ -15,7 +15,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { CartItem } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { useCreateCheckoutSession } from "@/lib/react-query/mutations/userMutations";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface ConfirmAddressDialogProps {
@@ -115,7 +115,7 @@ const ConfirmAddressDialog = ({
             className="btn px-4 py-3 bg-primary-70
           hover:bg-primary-90 rounded-xl font-medium border-0"
           >
-            {isPending ? <Loader /> : "Conferma"}
+            {isPending ? <Loader2 /> : "Conferma"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

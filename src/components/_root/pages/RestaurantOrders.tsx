@@ -4,9 +4,14 @@ import { Input } from "@/components/ui/input";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { orderStatuses } from "@/constants";
 import { useGetRestaurantOrders } from "@/lib/react-query/queries/restaurantQueries";
-import { getExpectedTime, getOrderSatusStyle } from "@/lib/utils";
+import {
+  getExpectedTime,
+  getOrderSatusStyle,
+  getOrderStatusIcon,
+} from "@/lib/utils";
 import { OrderStatus, RestaurantOrdersFilters } from "@/types/restaurantTypes";
-import { useState } from "react";
+import { XIcon } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const RestaurantOrders = () => {
@@ -15,11 +20,13 @@ const RestaurantOrders = () => {
     statusTypes: [],
   };
 
+  const [input, setInput] = useState("");
+
   const [filters, setFilters] = useState(defaultFilters);
 
-  // FIXME: when filters are applying there isn't another api request
-
-  console.log(filters);
+  useEffect(() => {
+    if (!input) setFilters({ ...filters, orderInfo: null });
+  }, [input]);
 
   const { data, isLoading, isError, error } = useGetRestaurantOrders(filters);
 
@@ -27,13 +34,23 @@ const RestaurantOrders = () => {
   const newOrdersLength = orders.filter((o) => o.status === "In attesa").length;
 
   const handleSetFilters = (os: OrderStatus) =>
-    orders.length &&
-    (filters.statusTypes.includes(os)
+    filters.statusTypes.includes(os)
       ? setFilters({
           ...filters,
           statusTypes: filters.statusTypes.filter((s) => s !== os),
         })
-      : setFilters({ ...filters, statusTypes: [os, ...filters.statusTypes] }));
+      : setFilters({ ...filters, statusTypes: [os, ...filters.statusTypes] });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!input) return;
+
+    setFilters({
+      ...filters,
+      orderInfo: input ? input : null,
+    });
+  };
 
   return (
     <section className="restaurant-orders">
@@ -51,7 +68,7 @@ const RestaurantOrders = () => {
               <h2 className="text-4xl font-semibold">Ordini</h2>
             )}
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="search-restaurant-box mt-4 mb-8 pl-[10px]">
               <img
                 src="/icons/order-icon.png"
@@ -62,15 +79,19 @@ const RestaurantOrders = () => {
                 type="text"
                 placeholder="Nome dell'utente o indirizzo"
                 className="widget-input grow"
-                onChange={(e) =>
-                  !!orders.length &&
-                  setFilters({
-                    ...filters,
-                    orderInfo: e.target.value.length ? e.target.value : null,
-                  })
-                }
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
               />
-              <Button type="button" className="search-btn bg-[#9400DA]">
+              {!!input && (
+                <div
+                  className="flex-center w-5 h-5 rounded-full
+                bg-x-icon-bg-50 p-1 cursor-pointer"
+                  onClick={() => setInput("")}
+                >
+                  <XIcon />
+                </div>
+              )}
+              <Button type="submit" className="search-btn bg-[#9400DA]">
                 Cerca
               </Button>
             </div>
@@ -84,13 +105,13 @@ const RestaurantOrders = () => {
                       className={`w-13 h-13 p-4 rounded-full border ${getOrderSatusStyle(
                         os
                       )} ${
-                        filters.statusTypes.includes(os) ? "bg-opacity-100" : ""
+                        filters.statusTypes.includes(os)
+                          ? "bg-opacity-100"
+                          : "bg-opacity-30"
                       }`}
                     >
                       <img
-                        src={`/icons/${os
-                          .toLowerCase()
-                          .replaceAll(" ", "-")}-icon.png`}
+                        src={getOrderStatusIcon(os)}
                         alt={os}
                         className="w-10 shrink-0"
                       />
@@ -129,9 +150,7 @@ const RestaurantOrders = () => {
                     )} border px-3 py-2`}
                   >
                     <img
-                      src={`/icons/${order.status
-                        .toLowerCase()
-                        .replaceAll(" ", "-")}-icon.png`}
+                      src={getOrderStatusIcon(order.status)}
                       alt={order.status}
                       className="w-6"
                     />
@@ -170,7 +189,7 @@ const RestaurantOrders = () => {
           </ul>
         </div>
       )}
-      {!orders.length && !isLoading && (
+      {!isLoading && !orders.length && !filters && (
         <div className="max-w-[600px] mx-auto">
           <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
           <ErrorWidget
@@ -189,6 +208,32 @@ const RestaurantOrders = () => {
                 value: "Aggiorna menu",
                 goto: "/my-restaurant",
                 className: "btn bg-[#2A003E] border-transparent",
+              },
+            ]}
+          />
+        </div>
+      )}
+      {!isLoading && !orders.length && filters && (
+        <div className="max-w-[600px] mx-auto">
+          <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
+          <ErrorWidget
+            className="restaurant-widget sm:w-full font-semibold"
+            title="Nesun ordine trovato con questi filtri"
+            subtitle={`Filtri attivi => \n ${
+              filters.statusTypes.length
+                ? `${`Stato dell'ordine: [${filters.statusTypes.join(", ")}]`}`
+                : ""
+            } ${
+              filters.orderInfo
+                ? `Nome/indirizzo utente: [${filters.orderInfo}]`
+                : ""
+            }`}
+            btns={[
+              {
+                id: "resetFilters",
+                value: "Resetta filtri",
+                className: "btn bg-[#2A003E] border-transparent",
+                handleClick: () => setFilters(defaultFilters),
               },
             ]}
           />

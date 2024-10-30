@@ -50,7 +50,7 @@ export const useGetRestaurantOrders = (filters: RestaurantOrdersFilters) => {
   const privateApi = useAxiosPrivate();
 
   return useInfiniteQuery<RestaurantOrdersRes, ApiError>({
-    queryKey: ["restaurantOrders"],
+    queryKey: ["restaurantOrders", filters],
     queryFn: ({ pageParam }) =>
       getRestauratOrders(privateApi, pageParam, filters),
     getNextPageParam: (lastPage) => lastPage.nextCursor,
