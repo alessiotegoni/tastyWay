@@ -37,7 +37,7 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
                 </h2>
               </div>
               <h4 className="font-semibold">Il tuo ordine</h4>
-              <ul className="mt-2 mb-[23px] flex-center gap-2">
+              <ul className="flex-center flex-wrap gap-2 mt-2 mb-[23px]">
                 {order.items.map((item) => (
                   <li
                     className="item rounded-xl py-2 p-3 bg-[#ff232355] min-w-[190px]"

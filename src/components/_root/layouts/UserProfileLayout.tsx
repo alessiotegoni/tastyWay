@@ -13,7 +13,7 @@ const links = [
   {
     iconUrl: "/icons/user-security-icon.png",
     label: "Sicurezza",
-    value: "security",
+    value: "/security",
   },
 ];
 
@@ -34,9 +34,9 @@ const UserProfileLayout = () => {
   const userLinks = links.map((l, i) => (
     <Link
       key={i}
-      to={l.value}
+      to={`/user${l.value}`}
       className={`${
-        pathname.includes(l.value) ? "bg-opacity-90" : "bg-opacity-50"
+        pathname === `/user${l.value}` ? "bg-opacity-90" : "bg-opacity-50"
       } btn py-2 px-4 bg-[#ED0000] rounded-3xl font-semibold
       border border-[#ED0000] border-opacity-30 hover:bg-opacity-80
       flex-center gap-2 backdrop-blur-3xl`}

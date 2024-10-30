@@ -48,7 +48,7 @@ const RestaurantOrders = () => {
 
     setFilters({
       ...filters,
-      orderInfo: input ? input : null,
+      orderInfo: input,
     });
   };
 
