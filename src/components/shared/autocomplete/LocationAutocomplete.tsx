@@ -104,16 +104,14 @@ const LocationAutocomplete = ({
 
   const dropdownClasses = (sugg: readonly Suggestion[]) =>
     `location-dropdown ${
-      shouldShowLatestResearchs
-        ? "w-[150%] left-[-15px] top-[140%] translate-x-0"
-        : ""
+      shouldShowLatestResearchs ? "left-0 top-[105%] xs:top-[115%]" : ""
     } ${
       sugg.length || showLatestResearchs
         ? "opacity-100 pointer-events-auto"
         : "pointer-events-none"
     }`;
 
-  const inputClasses = `widget-input ${
+  const inputClasses = `widget-input text-sm xs:text-base ${
     shouldShowLatestResearchs ? "bg-transparent" : "signup-form-input pr-14"
   } ${inputClassName}`;
 
@@ -130,13 +128,19 @@ const LocationAutocomplete = ({
         const hasSeparator = checkSeparator(suggestions);
 
         return (
-          <div className={`relative ${className ?? ""}`}>
+          <div className={`${className ?? ""}`}>
             <Command>
-              <Input
-                {...getInputProps({ placeholder })}
-                className={inputClasses}
-                onClick={handleShowLatestResearchs}
-              />
+              <div className="flex-center gap-2">
+                <Input
+                  {...getInputProps({ placeholder })}
+                  className={inputClasses}
+                  onClick={handleShowLatestResearchs}
+                />
+                <XIconBtn
+                  input={userInput}
+                  handleRemoveInput={handleDeleteAddress}
+                />
+              </div>
               <CommandList className={dropdownClasses(suggestions)}>
                 {shouldShowLatestResearchs && showLatestResearchs && (
                   <LatestResearchsList
@@ -158,13 +162,6 @@ const LocationAutocomplete = ({
                 )}
               </CommandList>
             </Command>
-            <XIconBtn
-              input={userInput}
-              handleRemoveInput={handleDeleteAddress}
-              className={
-                shouldShowLatestResearchs ? "-right-0 sm:-right-8" : "right-5"
-              }
-            />
 
             {/*
             {loading &&

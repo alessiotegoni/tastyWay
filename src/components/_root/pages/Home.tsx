@@ -26,17 +26,17 @@ const Home = () => {
       <h1 className="mb-[15px] sm:text-[22px] font-semibold">
         Trova i ristoranti vicini a te!
       </h1>
-      <form onSubmit={handleSearchRestaurant} className="search-restaurant-box">
-        <div className="flex items-center gap-2 pl-[10px] w-full">
+      <form onSubmit={handleSearchRestaurant} className="search-box">
+        <div className="flex items-center gap-2 w-full p-1 xs:p-0">
           <img
             src="icons/location-icon.png"
             alt="location-icon"
-            className="w-6 h-6"
+            className="w-6 h-6 xs:ml-[10px]"
           />
           <LocationAutocomplete
             shouldShowLatestResearchs={true}
             placeholder="Inserisci il tuo indirizzo"
-            className="w-full sm:max-w-[260px]"
+            className="grow"
           />
         </div>
         <Button type="submit" className="search-btn">
@@ -44,7 +44,7 @@ const Home = () => {
         </Button>
       </form>
       <MyLocationBtn />
-      <div className="mt-5">
+      <div className="mt-2 xs:mt-5">
         <FoodTypeFilters
           filters={foodFilters.slice(0, 5)}
           carouselContentClasses="justify-between"

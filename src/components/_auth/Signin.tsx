@@ -33,16 +33,22 @@ const Signin = () => {
       <Navbar pageNum={1} />
       <main className="signin">
         <div className="container">
-          <div className="col card">
-            <figure className="flex-center">
-              <img src={tastyWayLogo} alt="Tasty-way-logo" />
-            </figure>
-            <figcaption className="text-[42px] font-semibold mt-2">
-              Login
-            </figcaption>
-            <FormProvider {...methods}>
-              <SigninForm />
-            </FormProvider>
+          <div className="col">
+            <div className="card">
+              <figure className="flex-center flex-col">
+                <img
+                  src={tastyWayLogo}
+                  alt="Tasty-way-logo"
+                  className="w-[135px] xs:w-[200px] sm:w-auto"
+                />
+                <figcaption className="text-3xl sm:text-[42px] font-semibold mt-2">
+                  Login
+                </figcaption>
+              </figure>
+              <FormProvider {...methods}>
+                <SigninForm />
+              </FormProvider>
+            </div>
           </div>
         </div>
       </main>

@@ -47,16 +47,20 @@ const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="user-btn user-btn-bg">
+      <DropdownMenuTrigger className="user-btn user-btn-bg group">
         {isCmpAccount ? (
           <img src="/icons/forks-icon.png" alt="forsk-icon" />
         ) : (
           <img src="/icons/user-icon.png" alt="user-icon" />
         )}
-        <p className="font-semibold text-[18px]">
+        <p className="hidden sm:block font-semibold text-[18px]">
           {user?.restaurantName ?? user!.name}
         </p>
-        <img src="/icons/arrow-down-icon.png" alt="arrow-down-icon" />
+        <img
+          src="/icons/arrow-down-icon.png"
+          alt="arrow-down-icon"
+          className="group-aria-expanded:rotate-180 transition-transform"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="dropdown border-primary-80 rounded-[16px] mt-2

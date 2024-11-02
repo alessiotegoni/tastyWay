@@ -117,8 +117,8 @@
   }
 
   .home__subtitle {
-    @apply text-[13px] max-w-[280px] sm:text-[15px] w-full mx-auto
-    font-medium mt-2 md:mt-[17px] sm:max-w-[430px] leading-6
+    @apply text-[13px] max-w-[280px] xs:text-[13px] sm:text-[15px] w-full mx-auto
+    font-medium mt-2 md:mt-[17px] xs:max-w-[340px] sm:max-w-[430px] leading-6
     group-aria-[roledescription=carousel]:select-none;
   }
 
@@ -127,13 +127,13 @@
     @apply pt-0;
 
     .container {
-      @apply max-w-[540px];
+      @apply xs:max-w-[430px] sm:max-w-[540px];
     }
 
     .card {
-      @apply primary-widget-bg rounded-[69px]
+      @apply primary-widget-bg rounded-[40px] sm:rounded-[69px]
       border border-primary-20 text-center
-      px-[33px] py-[30px] md:px-[50px] md:py-[40px];
+      p-5 sm:px-[33px] sm:py-[30px] md:px-[50px] md:py-[40px];
     }
   }
 
@@ -154,7 +154,7 @@
   }
 
   .login-btn {
-    @apply px-[32px] h-[45px] sm:px-[38px];
+    @apply px-[30px] h-[40px] text-sm md:px-[32px] md:h-[45px] sm:px-[38px] md:text-[17px];
   }
 
   .logout-btn {
@@ -212,8 +212,8 @@
   }
 
   .user-btn {
-    @apply gap-[11px] flex-center
-    py-2 px-8 rounded-[33px]
+    @apply gap-2 sm:gap-[11px] flex-center
+    py-2 px-6 sm:px-8 rounded-[33px]
     border border-primary-80
     outline-none;
   }
@@ -262,7 +262,7 @@
   .location-dropdown {
     @apply absolute bg-home-dropdown rounded-[16px] w-full
     min-h-[173px] max-h-[240px] z-50
-      left-1/2 top-[120%] -translate-x-1/2 backdrop-blur-3xl
+      left-0 top-[120%] backdrop-blur-3xl
       border border-home-widget-border-20 overflow-auto
      has-[.animate-pulse]:space-y-1 opacity-0 isolate;
   }
@@ -292,10 +292,10 @@
     cursor-pointer rounded-lg my-2 last:mb-0;
   }
 
-  .search-restaurant-box {
-    @apply flex w-full self-center md:self-auto md:max-w-none
+  .search-box {
+    @apply relative xs:flex w-full self-center md:self-auto md:max-w-none
     items-center justify-between gap-2 bg-searchbar-40 border
-    border-white/10 rounded-[12px] p-[4px];
+    border-white/10 rounded-[12px] p-1;
   }
 
   .widget-input {
@@ -304,8 +304,8 @@
   }
 
   .search-btn {
-    @apply bg-primary text-[13px] h-[45px] font-semibold w-[88px] rounded-[9px]
-    min-w-[80px];
+    @apply bg-primary text-[13px] h-[45px] font-semibold rounded-[9px]
+    w-full xs:w-[88px] mt-2 xs:mt-0;
   }
 
   .use-location-btn {
@@ -316,8 +316,7 @@
 
   .x-icon {
     @apply bg-x-icon-bg-60 border border-x-icon-bg-40
-    w-[20px] h-[20px] absolute -right-8 top-[50%]
-    -translate-y-[50%] rounded-full
+    w-[20px] h-[20px] rounded-full
     justify-center items-center cursor-pointer;
   }
 
@@ -339,7 +338,7 @@
 
   .signin-form-input {
     @apply border border-primary-90 bg-home-widget-border-10
-    rounded-[22px] px-[25px] py-[35px] hover:bg-home-widget-border-30
+    rounded-2xl sm:rounded-[22px] px-4 py-[30px] sm:px-[25px] sm:py-[35px] hover:bg-home-widget-border-30
      text-white placeholder:text-white/80 font-medium;
   }
 

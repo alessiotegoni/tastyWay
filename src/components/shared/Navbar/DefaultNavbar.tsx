@@ -18,13 +18,13 @@ const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
 
   return (
     <header className="restaurants-header">
-      <div className="container">
+      <div className="">
         <div className="row flex-between">
-          <Link to="/">
+          <Link to="/" className="shrink-0">
             <img
               src={tastyWayLogo}
               alt="Tasty-way-logo"
-              className="w-[170px]"
+              className="w-[120px] md:w-[170px]"
             />
           </Link>
           {homeBtn}

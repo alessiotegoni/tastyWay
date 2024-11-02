@@ -19,12 +19,12 @@ const Signup = () => {
       <main className="signup">
         <div className="container">
           <div className="col card">
-            <figure className="flex-center">
+            <figure className="flex-center flex-col">
               <img src={tastyWayLogo} alt="Tasty-way-logo" className="w-[150px]" />
+              <figcaption className="text-3xl sm:text-[42px] font-semibold mt-2">
+                Registrazione
+              </figcaption>
             </figure>
-            <figcaption className="text-[42px] font-semibold mt-2">
-              Registrazione
-            </figcaption>
             <FormProvider {...methods}>
               <SignupForm />
             </FormProvider>

@@ -95,8 +95,8 @@ const SigninForm = () => {
         </p>
         <Button
           type="submit"
-          className="w-full py-5 bg-[#C24C08]
-        rounded-[26px] text-[24px] font-semibold"
+          className="w-full py-4 sm:py-5 bg-[#C24C08]
+        rounded-[20px] sm:rounded-[26px] text-lg sm:text-[24px] font-semibold"
         >
           Accedi
         </Button>

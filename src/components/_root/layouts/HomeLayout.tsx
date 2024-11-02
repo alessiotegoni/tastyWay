@@ -6,13 +6,13 @@ const HomeLayout = () => {
     <div className="hero">
       <Navbar pageNum={0} />
       <main className="home group">
-        <div className="container">
+        <div className="md:container">
           <div className="w-full text-center mb-10">
             <div className="home__title">
-              <h1 className="text-[25px] sm:text-[44px] text-primary">
+              <h1 className="text-[25px] xs:text-[30px] sm:text-[44px] text-primary">
                 Il tuo cibo preferito
               </h1>
-              <h1 className="text-[25px] -mt-2 sm:text-[44px] leading-[53px]">
+              <h1 className="text-[25px] xs:-mt-2 xs:text-[30px] sm:text-[44px] xs:leading-[53px]">
                 consegnato in un attimo.
               </h1>
             </div>

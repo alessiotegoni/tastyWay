@@ -106,7 +106,7 @@ export default {
         "location-btn": "var(--location-button-background)",
       },
       screens: {
-        xs: 480,
+        xs: "420px",
       },
     },
   },
