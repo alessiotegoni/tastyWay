@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <div className="home-widget sm:px-20">
-      <h1 className="mb-[15px] sm:text-[22px] font-semibold">
+      <h1 className="mb-[15px] xs:text-[18px] sm:text-[22px] font-semibold">
         Trova i ristoranti vicini a te!
       </h1>
       <form onSubmit={handleSearchRestaurant} className="search-box">
@@ -39,11 +39,14 @@ const Home = () => {
             className="grow"
           />
         </div>
-        <Button type="submit" className="search-btn">
-          Cerca
-        </Button>
+        <div className="flex gap-2 mt-2 xs:mt-0">
+          <MyLocationBtn className="justify-center xs:hidden basis-1/2" />
+          <Button type="submit" className="search-btn basis-1/2 xs:basis-full">
+            Cerca
+          </Button>
+        </div>
       </form>
-      <MyLocationBtn />
+      <MyLocationBtn className="hidden xs:flex mt-[15px]" />
       <div className="mt-2 xs:mt-5">
         <FoodTypeFilters
           filters={foodFilters.slice(0, 5)}

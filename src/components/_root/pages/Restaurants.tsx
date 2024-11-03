@@ -47,7 +47,7 @@ const Restaurants = () => {
 
   const restaurants = data?.pages.flatMap((p) => p.restaurants) ?? [];
 
-  const noRestaurantsFound = !!!restaurants.length && !isFetching && !isError;
+  const noRestaurantsFound = !restaurants.length && !isFetching && !isError;
   const canShowRestaurants = !isError && (isFetching || !!restaurants.length);
 
   return (
@@ -59,7 +59,7 @@ const Restaurants = () => {
           alt="restaurants-bg-img"
           className="bg-img"
         />
-        <div className="container">
+        <div className="">
           <div className="flex flex-col items-center gap-3">
             <RestaurantsWidget isError={isError} />
             {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}

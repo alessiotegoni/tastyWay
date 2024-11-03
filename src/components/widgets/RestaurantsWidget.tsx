@@ -34,16 +34,19 @@ const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
   const restaurantCity = getCityFromAddress(selectedAddress!);
 
   return (
-    <div className="px-16 home-widget max-w-[600px]">
-      <h1 className="font-medium text-[30px]">Ristoranti {restaurantCity}</h1>
-      <form className="my-5 search-restaurant-box" onSubmit={handleSubmit}>
-        <div className="flex items-center gap-2 pl-2 w-full max-w-[380px] relative">
+    <div className="home-widget sm:px-16">
+      <h1 className="font-medium text-xl xs:text-2xl sm:text-[30px]">
+        Ristoranti {restaurantCity}
+      </h1>
+      <form className="my-5 search-box" onSubmit={handleSubmit}>
+        <div className="flex items-center gap-2 w-full p-1 xs:p-0 relative">
           <img
             src="/icons/search-restaurant-icon.png"
             alt="search-restaurant-icon"
+            className="xs:ml-2"
           />
           <Input
-            className="widget-input max-w-[290px]"
+            className="widget-input max-w-[290px] text-sm sm:text-base"
             type="text"
             placeholder="Cerca ristorante"
             value={input}

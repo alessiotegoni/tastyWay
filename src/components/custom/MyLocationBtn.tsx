@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 type PositionType = { lat: number; lng: number } | null;
 
-const MyLocationBtn = () => {
+interface MyLocationBtnProps {
+  className: string;
+}
+
+const MyLocationBtn = ({ className }: MyLocationBtnProps) => {
   const [position, setPosition] = useState<PositionType>(null);
 
   const { handleSetSelectedAddress } = useAddress();
@@ -70,9 +74,14 @@ const MyLocationBtn = () => {
   };
 
   return (
-    <div className="use-location-btn" onClick={handleSetMyPosition}>
+    <div
+      className={`use-location-btn ${className}`}
+      onClick={handleSetMyPosition}
+    >
       <img src="icons/cursor-icon.png" alt="cursos-icon" className="w-5 h-5" />
-      <p className="text-[11px] font-semibold">Usa la tua posizione</p>
+      <p className="hidden xs:block text-[11px] font-semibold">
+        Usa la tua posizione
+      </p>
     </div>
   );
 };

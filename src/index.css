@@ -164,10 +164,10 @@
   }
 
   .home-btn {
-    @apply gap-3 flex-center
+    @apply shrink-0 gap-3 flex-center
     bg-home-widget-border-30
     hover:bg-home-widget-border-80
-    px-6 h-[45px];
+    px-4 py-2 sm:px-6 h-[40px] md:h-[45px];
   }
 
   .client-nav-btn {
@@ -244,13 +244,13 @@
   }
 
   .home-widget {
-    @apply w-full px-5 py-5 rounded-[30px] bg-home-widget
+    @apply w-full p-5 rounded-[30px] bg-home-widget
     border border-primary-10 backdrop-blur-[123px]
     flex flex-col text-center max-w-[600px] mx-auto;
   }
 
   .user-widget {
-    @apply w-full px-5 py-5 rounded-[30px] bg-[#ed000071]
+    @apply w-full p-5 rounded-[30px] bg-[#ed000071]
       border border-[#ed00006a] backdrop-blur-[180px]
       flex flex-col items-center text-center;
   }
@@ -305,13 +305,13 @@
 
   .search-btn {
     @apply bg-primary text-[13px] h-[45px] font-semibold rounded-[9px]
-    w-full xs:w-[88px] mt-2 xs:mt-0;
+    w-full xs:w-[88px] shrink-0;
   }
 
   .use-location-btn {
     @apply flex items-center gap-2 bg-location-btn opacity-80 border
-    border-location-btn-border-40 rounded-[10px] mt-[15px] cursor-pointer
-    p-[6px] self-center hover:opacity-100 transition-all;
+    border-location-btn-border-40 rounded-[10px] cursor-pointer
+    p-[6px] xs:self-center hover:opacity-100 transition-all;
   }
 
   .x-icon {
