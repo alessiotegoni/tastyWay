@@ -63,7 +63,7 @@ export const FiltersPopover = ({
             height={25}
           />
           {currentFilter}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent

@@ -15,7 +15,7 @@ interface RestaurantsWidgetProps {
 const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
   const { selectedAddress } = useAddress();
 
-  const { setNameFilter } = useRestaurantFilters();
+  const { filters, setNameFilter } = useRestaurantFilters();
 
   const [input, setInput] = useState("");
 
@@ -30,6 +30,10 @@ const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
   };
 
   const handleRemoveInput = () => setInput("");
+
+  useEffect(() => {
+    if (Object.values(filters).every((f) => !f)) handleRemoveInput();
+  }, [filters]);
 
   const restaurantCity = getCityFromAddress(selectedAddress!);
 

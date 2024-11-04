@@ -18,7 +18,7 @@ const Restaurants = () => {
   const { filters, removeFilters, setRestaurantTypeFilter } =
     useRestaurantFilters();
 
-  const { data, error, isError, isFetching, fetchNextPage } = useGetRestaurants(
+  const { data, error, isError, isLoading, fetchNextPage } = useGetRestaurants(
     selectedAddress,
     filters
   );
@@ -47,13 +47,13 @@ const Restaurants = () => {
 
   const restaurants = data?.pages.flatMap((p) => p.restaurants) ?? [];
 
-  const noRestaurantsFound = !restaurants.length && !isFetching && !isError;
-  const canShowRestaurants = !isError && (isFetching || !!restaurants.length);
+  const noRestaurantsFound = !restaurants.length && !isLoading && !isError;
+  const canShowRestaurants = !isError && (isLoading || !!restaurants.length);
 
   return (
     <div className="hero">
       <Navbar pageNum={3} />
-      <main className="restaurants pt-0">
+      <main className="restaurants pt-0 mt-4 sm:mt-0">
         <img
           src="/imgs/restaurants-bg.png"
           alt="restaurants-bg-img"
@@ -75,8 +75,8 @@ const Restaurants = () => {
                   w-full max-w-[900px] rounded-[30px] overflow-hidden"
                 >
                   <ul className="restaurants__list">
-                    {isFetching && !!!restaurants.length ? (
-                      Array.from({ length: 5 }, (_, i) => (
+                    {isLoading && !restaurants.length ? (
+                      Array.from({ length: 2 }, (_, i) => (
                         <RestaurantSkeleton key={i} />
                       ))
                     ) : (

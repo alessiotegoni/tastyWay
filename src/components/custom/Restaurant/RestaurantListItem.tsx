@@ -16,22 +16,25 @@ const RestaurantListItem = ({
 
   return (
     <li className="restaurant__item restaurant-separator">
-      <div className="item__body flex gap-5">
-        <figure className="item__img">
+      <figure className="item__body sm:flex gap-5">
+        <div className="item__img">
           <img
             src={img ?? "/imgs/default-restaurant.png"}
             alt={`${name}-img`}
             className="w-[130px] h-[130px] object-cover rounded-[20px]"
           />
-        </figure>
-        <div className="">
+        </div>
+        <div className="mt-1 mb-5 sm:mt-0 sm:mb-0">
           <figcaption className="text-[25px]">{name}</figcaption>
-          <p className="text-[14px] max-w-[280px] font-normal mt-1">
+          <p className="text-[14px] sm:max-w-[280px] font-normal mt-1">
             {description}
           </p>
         </div>
-      </div>
-      <div className="item__info flex flex-col justify-between">
+      </figure>
+      <div
+        className="item__info flex sm:flex-col justify-between
+      items-center sm:items-end"
+      >
         <h2 className="text-[25px]">${price}</h2>
         <Button
           onClick={() =>

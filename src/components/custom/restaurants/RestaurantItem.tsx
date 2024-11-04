@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { formatRestaurantName } from "@/lib/utils";
 import { RestaurantsType } from "@/types/restaurantTypes";
 import { useNavigate } from "react-router-dom";
@@ -75,16 +76,27 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
             <p>{restaurant.deliveryInfo.price}€</p>
           </div>
         </div>
-        <div className="flex xs:justify-end items-center gap-5">
-          <p>❤️</p>
-          <button
+        <div className="flex xs:justify-end sm:items-center gap-2">
+          <Button
+            className="btn bg-[#00d0925d] border border-[#00D394]
+            hover:bg-[#00d092ad] h-full py-3 rounded-2xl sm:rounded-[40px]
+            basis-20 min-w-[60px] max-w-[70px]"
+          >
+            <img
+              src="/icons/thumb-icon.png"
+              alt="thumb-img"
+              width={24}
+              height={24}
+            />
+          </Button>
+          <Button
             onClick={handleNavigate}
-            className="w-full xs:w-fit py-3 px-8 border border-[#FE0000]
-            rounded-2xl xs:rounded-[40px]
+            className="basis-80 py-3 px-8 border border-[#FE0000]
+            rounded-2xl sm:rounded-[40px] xs:max-w-[140px] md:max-w-[120px]
             bg-[#EC0101] bg-opacity-60 hover:bg-opacity-90"
           >
             Ordina
-          </button>
+          </Button>
         </div>
       </div>
     </li>

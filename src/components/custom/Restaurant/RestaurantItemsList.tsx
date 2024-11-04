@@ -12,20 +12,16 @@ const RestauranItemsList = ({
   restaurantId,
   itemsFilters,
 }: RestaurantItemsListProps) => {
-
   const { data, isLoading, isError, error } = useGetRestaurantItems(
     restaurantId,
     itemsFilters
   );
 
   const restaurantItems = data?.pages.flatMap((p) => p.restaurantItems) ?? [];
-  const itemsSkeletons = Array.from({ length: 3 }, (_, i) => (
-    <RestaurantItemSkeleton key={i} />
-  ));
 
   return (
     <ul className="restaurant__items__list">
-      {isLoading && itemsSkeletons}
+      {isLoading && <RestaurantItemSkeleton />}
       {!isLoading &&
         !!restaurantItems?.length &&
         restaurantItems.map((item) => (

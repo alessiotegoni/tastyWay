@@ -38,8 +38,11 @@ const ErrorWidget = ({
       <Button
         key={btn.id}
         onClick={handleClick}
-        className={`font-semibold flex-center gap-2 py-4 px-6 rounded-[30px]
-          w-full max-w-[230px] ${btn.className ?? ""}`}
+        className={`btn font-semibold flex-center gap-2
+          py-3 px-3 xs:py-4 xs:px-6 rounded-[30px]
+          w-full basis-1/2 max-w-[230px] text-sm sm:text-base ${
+            btn.className ?? ""
+          }`}
       >
         {btn.icon && (
           <img
@@ -55,13 +58,18 @@ const ErrorWidget = ({
 
   return (
     <div
-      className={`sm:w-[700px] sm:px-20 py-8 text-center ${className ?? ""}`}
+      className={`md:w-[700px] p-4 xs:p-6 sm:p-8 sm:px-20 text-center ${
+        className ?? ""
+      }`}
     >
-      <h1 className="text-[29px]">{title}</h1>
-      <p className="font-normal mb-14 my-3 w-full mx-auto max-w-[510px]">
+      <h1 className="text-2xl xs:text-[29px]">{title}</h1>
+      <p
+        className="font-normal mb-14 my-3 w-full mx-auto
+      text-sm max-w-[350px] xs:max-w-[510px]"
+      >
         {subtitle}
       </p>
-      <div className={`flex-center ${btns.length > 1 ? "gap-6" : ""}`}>
+      <div className={`flex-center ${btns.length > 1 ? "gap-2 sm:gap-6" : ""}`}>
         {btnsEl}
       </div>
     </div>

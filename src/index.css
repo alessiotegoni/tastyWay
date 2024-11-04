@@ -45,7 +45,7 @@
 
   header,
   main {
-    @apply font-bold p-5 sm:p-9;
+    @apply font-bold p-3 xs:p-5 sm:p-9;
   }
 
   input[type="number"]::-webkit-outer-spin-button,
@@ -316,7 +316,7 @@
 
   .x-icon {
     @apply bg-x-icon-bg-60 border border-x-icon-bg-40
-    w-[20px] h-[20px] rounded-full
+    w-[20px] h-[20px] rounded-full shrink-0
     justify-center items-center cursor-pointer;
   }
 
@@ -366,7 +366,7 @@
   .restaurant__header {
     @apply bg-home-widget border
     border-primary-20 rounded-[30px] p-4 gap-3
-    backdrop-blur-[123px];
+    backdrop-blur-[123px] mt-6 sm:mt-0;
   }
 
   .restaurant__items__list {
@@ -375,7 +375,7 @@
   }
 
   .restaurant__item {
-    @apply flex justify-between relative m-5
+    @apply sm:flex justify-between relative m-5
     before:-top-[10px];
   }
 
