@@ -58,9 +58,7 @@ const ErrorWidget = ({
 
   return (
     <div
-      className={`md:w-[700px] p-4 xs:p-6 sm:p-8 sm:px-20 text-center ${
-        className ?? ""
-      }`}
+      className={`p-4 xs:p-6 sm:p-8 sm:px-20 text-center ${className ?? ""}`}
     >
       <h1 className="text-2xl xs:text-[29px]">{title}</h1>
       <p

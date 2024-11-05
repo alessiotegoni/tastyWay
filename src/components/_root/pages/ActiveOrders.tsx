@@ -8,7 +8,7 @@ import { useGetActiveOrders } from "@/lib/react-query/queries/userQueries";
 const ActiveOrders = () => {
   const { user, isAuthenticated } = useAuth();
 
-  const isCmpAccount = user!.isCmpAccount;
+  const { isCmpAccount } = user!;
 
   const { data, isLoading, isError, error } = useGetActiveOrders(
     isCmpAccount,

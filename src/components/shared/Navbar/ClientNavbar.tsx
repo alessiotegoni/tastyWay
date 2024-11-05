@@ -21,17 +21,20 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
   ].includes(pathname);
 
   return (
-    <header className="client__header">
-      <div className="container">
+    <header className="client__header relative">
+      <div className="">
         <div className="row flex-between">
-          <Link to="/">
+          <Link to="/" className="shrink-0">
             <img
               src={tastyWayLogo}
               alt="Tasty-way-logo"
-              className="w-[170px]"
+              className="w-[120px] lg:w-[170px]"
             />
           </Link>
-          <div className="flex-center gap-4">
+          <div
+            className="w-full flex-center gap-4 absolute
+          xl:top-1/2 xl:-translate-y-1/2 top-[95%] left-1/2 -translate-x-1/2"
+          >
             <Link
               to="/"
               className={`btn client-nav-btn ${
@@ -43,7 +46,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
                 alt="home-icon"
                 className="w-5 h-5"
               />
-              <p>Home</p>
+              <p className="hidden sm:block">Home</p>
             </Link>
             <Link
               to={`/${isUserNavbar ? "user" : "my-restaurant"}/orders`}
@@ -56,7 +59,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
                 alt="order-icon"
                 className="w-7 h-7"
               />
-              <p>Ordini</p>
+              <p className="hidden sm:block">Ordini</p>
             </Link>
             <Link
               to={`/${isUserNavbar ? "user" : "my-restaurant"}`}
@@ -69,9 +72,11 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
                   isUserNavbar ? "user" : "restaurant"
                 }-profile-icon.png`}
                 alt="profile icon"
-                className="w-6 h-6 object-contain"
+                className="w-6 h-6 object-contain shrink-0"
               />
-              <p>{isUserNavbar ? "Gestisci profilo" : "Gestisci ristorante"}</p>
+              <p className="hidden sm:block">
+                {isUserNavbar ? "Gestisci profilo" : "Gestisci ristorante"}
+              </p>
             </Link>
           </div>
           {navRightBtn}

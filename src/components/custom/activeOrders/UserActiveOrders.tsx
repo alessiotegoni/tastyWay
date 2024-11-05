@@ -25,11 +25,13 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
                   src="/icons/delivery-truck-icon.png"
                   alt="delivery-truck-icon"
                 />
-                <p className="text-sm">{order.address}</p>
+                <p className="text-xs xs:text-sm">{order.address}</p>
               </div>
             </div>
-            <div className="user-widget sm:px-20">
-              <h1 className="sm:text-[24px] font-semibold">{orderStatus}</h1>
+            <div className="user-widget px-4 xs:px-10 sm:px-16">
+              <h1 className="text-lg xs:text-xl sm:text-[24px] font-semibold">
+                {orderStatus}
+              </h1>
               <div className="expected__time">
                 <h2 className="font-semibold">
                   Orario previsto:
@@ -72,8 +74,8 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
         );
       })}
     </CarouselContent>
-    <CarouselPrevious className="btn disabled:opacity-0 bg-[#ed0000a3] backdrop-blur-2xl hover:bg-[#ed0000d3] border-0" />
-    <CarouselNext className="btn disabled:opacity-0 bg-[#ed0000a3] backdrop-blur-2xl hover:bg-[#ed0000d3] border-0" />
+    <CarouselPrevious className="btn disabled:opacity-0 bg-[#ed0000a3] backdrop-blur-2xl hover:bg-[#ed0000d3] border-0 -left-3 md:-left-12" />
+    <CarouselNext className="btn disabled:opacity-0 bg-[#ed0000a3] backdrop-blur-2xl hover:bg-[#ed0000d3] border-0 -right-3 md:-right-12" />
   </Carousel>
 );
 

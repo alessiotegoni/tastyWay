@@ -1,5 +1,12 @@
 import RestaurantOrdersSkeleton from "@/components/skeletons/RestaurantOrdersSkeleton";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { Input } from "@/components/ui/input";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { orderStatuses } from "@/constants";
@@ -28,7 +35,8 @@ const RestaurantOrders = () => {
     if (!input) setFilters({ ...filters, orderInfo: null });
   }, [input]);
 
-  const { data, isLoading, isError, error } = useGetRestaurantOrders(filters);
+  const { data, isSuccess, isLoading, isError, error, refetch } =
+    useGetRestaurantOrders(filters);
 
   const orders = data?.pages.flatMap((p) => p.orders) ?? [];
   const newOrdersLength = orders.filter((o) => o.status === "In attesa").length;
@@ -52,12 +60,14 @@ const RestaurantOrders = () => {
     });
   };
 
+  const hasFilters = !!filters.orderInfo || !!filters.statusTypes.length;
+
   return (
-    <section className="restaurant-orders">
+    <section className="restaurant-orders px-3 pb-5">
       <div className="container max-w-[600px]">
-        <div className="restaurant-widget px-14">
+        <div className="restaurant-widget sm:px-14 mt-16 xl:mt-0">
           <div className="text-center">
-            {newOrdersLength ? (
+            {newOrdersLength && !hasFilters ? (
               <div className="flex-center gap-5">
                 <h2 className="text-5xl font-semibold">{newOrdersLength}</h2>
                 <h3 className="text-3xl font-semibold mt-1">
@@ -69,71 +79,95 @@ const RestaurantOrders = () => {
             )}
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="search-restaurant-box mt-4 mb-8 pl-[10px]">
-              <img
-                src="/icons/order-icon.png"
-                alt="location-icon"
-                className="w-6 h-6"
-              />
-              <Input
-                type="text"
-                placeholder="Nome dell'utente o indirizzo"
-                className="widget-input grow"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-              {!!input && (
-                <div
-                  className="flex-center w-5 h-5 rounded-full
-                bg-x-icon-bg-50 p-1 cursor-pointer"
-                  onClick={() => setInput("")}
-                >
-                  <XIcon />
-                </div>
-              )}
-              <Button type="submit" className="search-btn bg-[#9400DA]">
+            <div className="search-box mt-4 mb-8">
+              <div className="flex-center gap-2 grow">
+                <img
+                  src="/icons/order-icon.png"
+                  alt="location-icon"
+                  className="w-6 h-6 xs:ml-2"
+                />
+                <Input
+                  type="text"
+                  placeholder="Nome dell'utente o indirizzo"
+                  className="widget-input grow text-sm sm:text-base"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                {!!input && (
+                  <div
+                    className="flex-center w-5 h-5 rounded-full
+                bg-x-icon-bg-50 p-1 cursor-pointer mr-1"
+                    onClick={() => setInput("")}
+                  >
+                    <XIcon />
+                  </div>
+                )}
+              </div>
+              <Button
+                type="submit"
+                className="search-btn mt-1 xs:mt-0 bg-[#9400DA]"
+              >
                 Cerca
               </Button>
             </div>
           </form>
-          <ul className="order-statuses flex justify-between gap-3">
-            {orderStatuses.map((os) => (
-              <li onClick={() => handleSetFilters(os)}>
-                <Button type="submit">
-                  <figure className="flex flex-col items-center">
-                    <div
-                      className={`w-13 h-13 p-4 rounded-full border ${getOrderSatusStyle(
-                        os
-                      )} ${
-                        filters.statusTypes.includes(os)
-                          ? "bg-opacity-100"
-                          : "bg-opacity-30"
-                      }`}
-                    >
-                      <img
-                        src={getOrderStatusIcon(os)}
-                        alt={os}
-                        className="w-10 shrink-0"
-                      />
-                    </div>
-                    <figcaption className="text-sm font-medium my-2">
-                      {os}
-                    </figcaption>
-                  </figure>
-                </Button>
-              </li>
-            ))}
-          </ul>
+          <Carousel className="order-statuses flex justify-between gap-3">
+            <CarouselPrevious
+              className="carousel-btn bg-restaurant-primary-50
+            border border-restaurant-primary-90 bg-[#7800B0]
+            bg-opacity-65 hover:bg-[#7800B0]
+            -left-7 xs:-left-9 sm:-left-10"
+            />
+            <CarouselContent>
+              {orderStatuses.map((os) => (
+                <CarouselItem
+                  onClick={() => handleSetFilters(os)}
+                  className="
+                  basis-1/3 p-0 flex-center sm:block sm:pl-4 sm:basis-1/4 md:basis-1/5"
+                >
+                  <Button type="submit">
+                    <figure className="flex flex-col items-center">
+                      <div
+                        className={`w-13 h-13 p-4 rounded-full border ${getOrderSatusStyle(
+                          os
+                        )} ${
+                          filters.statusTypes.includes(os)
+                            ? "bg-opacity-100"
+                            : "bg-opacity-30"
+                        }`}
+                      >
+                        <img
+                          src={getOrderStatusIcon(os)}
+                          alt={os}
+                          className="w-10 shrink-0"
+                        />
+                      </div>
+                      <figcaption className="text-xs font-medium my-2">
+                        {os}
+                      </figcaption>
+                    </figure>
+                  </Button>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselNext
+              className="carousel-btn -right-7 xs:-right-9 sm:-right-10 bg-restaurant-primary-50
+            border border-restaurant-primary-90 bg-[#7800B0]
+            bg-opacity-65 hover:bg-[#7800B0]"
+            />
+          </Carousel>
         </div>
       </div>
       {isLoading && <RestaurantOrdersSkeleton />}
-      {!isLoading && !!orders.length && (
-        <div className="restaurant-widget max-w-[1000px] min-h-[600px] mx-auto mt-5">
-          <ul className="grid md:grid-cols-3 gap-4">
+      {isSuccess && !!orders.length && (
+        <div className="restaurant-widget p-4 max-w-[1000px] min-h-[600px] mx-auto mt-5">
+          <ul className="restaurant-order">
             {orders.map((order) => (
               <li
                 key={order.orderId}
-                className="bg-[#2A003E] px-4 py-3 rounded-2xl"
+                className={`bg-[#2A003E] px-4 py-3 rounded-2xl ${
+                  orders.length === 1 ? "max-w-[350px]" : ""
+                }`}
               >
                 <div className="flex-between">
                   <h3 className="font-semibold text-xl">
@@ -189,7 +223,7 @@ const RestaurantOrders = () => {
           </ul>
         </div>
       )}
-      {!isLoading && !orders.length && !filters && (
+      {isSuccess && !orders.length && !hasFilters && (
         <div className="max-w-[600px] mx-auto">
           <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
           <ErrorWidget
@@ -201,19 +235,20 @@ const RestaurantOrders = () => {
                 id: "prevOrders",
                 value: "Ordini precedenti",
                 goto: "/my-restaurant/orders?filter=PREV",
-                className: "btn bg-[#FC5B00] bg-opacity-50 hover:bg-opacity-70",
+                className:
+                  "btn bg-[#FC5B00] bg-opacity-50 hover:bg-opacity-70 mt-14",
               },
               {
                 id: "updateMenu",
                 value: "Aggiorna menu",
                 goto: "/my-restaurant",
-                className: "btn bg-[#2A003E] border-transparent",
+                className: "btn bg-[#2A003E] border-transparent mt-14",
               },
             ]}
           />
         </div>
       )}
-      {!isLoading && !orders.length && filters && (
+      {isSuccess && !orders.length && hasFilters && (
         <div className="max-w-[600px] mx-auto">
           <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
           <ErrorWidget
@@ -232,8 +267,29 @@ const RestaurantOrders = () => {
               {
                 id: "resetFilters",
                 value: "Resetta filtri",
-                className: "btn bg-[#2A003E] border-transparent",
-                handleClick: () => setFilters(defaultFilters),
+                className: "btn bg-[#2A003E] border-transparent mt-14",
+                handleClick: () => {
+                  setFilters(defaultFilters);
+                  setInput("");
+                },
+              },
+            ]}
+          />
+        </div>
+      )}
+      {isError && (
+        <div className="max-w-[700px] mx-auto">
+          <div className="restaurant-widget max-w-[100px] mx-auto my-3"></div>
+          <ErrorWidget
+            className="restaurant-widget sm:w-full font-semibold"
+            title="Errore nel caricamento degli ordini"
+            subtitle={`Si è verificato un errore nel caricamento degli ordini. Stiamo lavorando per risolvere il problema il prima possibile e ci scusiamo per l'inconveniente. ${error}`}
+            btns={[
+              {
+                id: "refreshOrders",
+                value: "Riaggiorna ordini",
+                className: "btn bg-[#2A003E] border-transparent mt-14",
+                handleClick: () => refetch(),
               },
             ]}
           />

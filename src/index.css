@@ -45,7 +45,7 @@
 
   header,
   main {
-    @apply font-bold p-3 xs:p-5 sm:p-9;
+    @apply font-bold p-5 sm:p-9;
   }
 
   input[type="number"]::-webkit-outer-spin-button,
@@ -172,7 +172,7 @@
 
   .client-nav-btn {
     @apply gap-3 flex-center
-    px-6 h-[45px] font-semibold;
+    px-4 md:px-6 h-[45px] font-semibold;
   }
 
   .client-nav-btn.user-btn {
@@ -396,7 +396,7 @@
 
   .user-order__container .order__address {
     @apply bg-[#ed000071] border border-[#ed00006a]
-    font-semibold rounded-3xl px-6 py-2 backdrop-blur-3xl;
+    font-semibold rounded-3xl px-3 xs:px-4 sm:px-6 py-2 backdrop-blur-3xl;
   }
 
   .active-orders__container,
@@ -406,6 +406,11 @@
 
   .user-last-order {
     align-items: unset;
+  }
+
+  .restaurant-order {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
   .user-profile,
@@ -471,7 +476,7 @@
   .restaurant-security__body,
   .restaurant-container,
   .restaurant-widget {
-    @apply py-5 px-6 rounded-3xl bg-restaurant-primary-50
+    @apply p-4 xs:py-5 xs:px-6 rounded-3xl bg-restaurant-primary-50
     border border-restaurant-primary-90 backdrop-blur-3xl;
   }
 
