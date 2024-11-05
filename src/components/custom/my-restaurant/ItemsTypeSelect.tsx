@@ -51,7 +51,8 @@ export function ItemsTypeSelect({ itemIndex }: { itemIndex: number }) {
           role="combobox"
           aria-expanded={open}
           className={`w-full items-select__btn justify-between
-          text-white text-sm font-medium ${!value ? "text-opacity-80" : ""}`}
+          text-white text-sm font-medium col-span-4 sm:col-span-3 md:col-span-1
+          ${!value ? "text-opacity-80" : ""}`}
         >
           {value
             ? itemsTypes.find((item) => item.value === value)?.label

@@ -29,16 +29,16 @@ const RestaurantUserOrder = () => {
         <RestaurantActiveOrderSkeleton />
       ) : order ? (
         <>
-          <div className="restaurant-widget max-w-[700px] mx-auto">
+          <div className="restaurant-widget max-w-[700px] mx-auto mt-16 lg:mt-0">
             <div className="text-center">
               <p className="text-white/70 font-semibold text-lg">Nome</p>
-              <h2 className="text-2xl font-semibold mt-2 mb-4">
+              <h2 className="text-lg sm:text-2xl font-semibold mt-2 mb-4">
                 {order.clientFullName}
               </h2>
             </div>
             <div className="text-center">
               <p className="text-white/70 font-semibold text-lg">In via</p>
-              <h2 className="text-2xl font-semibold mt-2 mb-4">
+              <h2 className="text-lg sm:text-2xl font-semibold mt-2 mb-4">
                 {order.address}
               </h2>
             </div>
@@ -50,14 +50,15 @@ const RestaurantUserOrder = () => {
             </div>
             <div className="text-center">
               <p className="text-white/70 font-semibold text-lg">Totale</p>
-              <h2 className="text-3xl font-semibold mt-2">
+              <h2 className="text-xl sm:text-3xl font-semibold mt-2">
                 ${order.totalPrice}
               </h2>
             </div>
           </div>
           <div
-            className={`w-fit mx-auto py-3 px-6 border rounded-full my-4
-  text-2xl font-semibold flex-center gap-2 ${getOrderSatusStyle(order.status)}`}
+            className={`w-fit mx-auto px-4 py-3 sm:px-6 border rounded-full
+              my-3 sm:my-4 text-2xl font-semibold flex-center gap-2
+              ${getOrderSatusStyle(order.status)}`}
           >
             <img
               src={getOrderStatusIcon(order.status)}
@@ -75,21 +76,20 @@ const RestaurantUserOrder = () => {
                 Ordine
               </h2>
               <ul
-                className={`${
-                  order.items.length <= 2
-                    ? "flex justify-center"
-                    : "grid grid-cols-3"
+                className={`flex ${
+                  order.items.length <= 2 ? "justify-center" : "flex-wrap"
                 } gap-3`}
               >
                 <OrderItemsList
                   items={order.items}
-                  className="bg-[#FF2323] bg-opacity-60 py-4 px-5 basis-1/3 h-fit"
+                  className="bg-[#FF2323] bg-opacity-60 py-2 px-3
+                  xs:py-4 xs:px-5 basis-1/3 h-fit"
                   itemImgSize={80}
                   fontSize={18}
                 />
               </ul>
             </div>
-            <div className="flex-center gap-3">
+            <div className="flex-center flex-wrap-reverse gap-3">
               <DeleteOrderAlert orderId={order.orderId} />
               <SelectOrderStatus
                 currentStatus={order.status}

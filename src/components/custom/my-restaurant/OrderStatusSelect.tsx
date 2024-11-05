@@ -77,8 +77,7 @@ export function SelectOrderStatus({
         </PopoverTrigger>
         <PopoverContent
           className="restaurant-widget p-3"
-          side="right"
-          align="end"
+          align="center"
         >
           <Command>
             <CommandList>

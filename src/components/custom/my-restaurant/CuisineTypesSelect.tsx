@@ -42,11 +42,9 @@ export function CuisineTypesSelect() {
 
     let newCuisine = [...values];
 
-    if (values.includes(selectedValue)) {
+    if (values.includes(selectedValue))
       newCuisine = values.filter((v) => v !== selectedValue);
-    } else {
-      newCuisine = [...values, selectedValue];
-    }
+    else newCuisine = [...values, selectedValue];
 
     setValues(newCuisine);
     setFormValue(newCuisine);
@@ -60,7 +58,7 @@ export function CuisineTypesSelect() {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="sm:flex items-center gap-3">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -69,9 +67,6 @@ export function CuisineTypesSelect() {
             className="w-[200px] justify-between py-3 px-5
             cuisine-select__btn font-semibold"
           >
-            {/* {values.length
-              ? cuisine.find((cuisine) => cuisine.value === values.at(0))?.label
-              : "Scegli"} */}
             Scegli
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -108,23 +103,25 @@ export function CuisineTypesSelect() {
           </Command>
         </PopoverContent>
       </Popover>
-      <ul className="flex flex-wrap gap-2">
-        {cuisine
-          .filter((c) => values.includes(c.value))
-          .map((c) => (
-            <li
-              className="flex-center gap-2 bg-[#7800B0] bg-opacity-65
-              hover:bg-[#7800B0] hover:bg-opacity-70 border-none
-              text-sm placeholder:text-sm font-semibold rounded-xl p-3"
-            >
-              {c.label}
-              <XIcon
-                onClick={() => handleRemoveCuisine(c)}
-                className="cursor-pointer w-6 text-red-700"
-              />
-            </li>
-          ))}
-      </ul>
+      {!!values.length && (
+        <ul className="flex flex-wrap gap-2 mt-3 sm:mt-0">
+          {cuisine
+            .filter((c) => values.includes(c.value))
+            .map((c) => (
+              <li
+                className="flex-center gap-2 bg-[#7800B0] bg-opacity-65
+                hover:bg-[#7800B0] hover:bg-opacity-70 border-none
+                text-sm placeholder:text-sm font-semibold rounded-xl p-3"
+              >
+                {c.label}
+                <XIcon
+                  onClick={() => handleRemoveCuisine(c)}
+                  className="cursor-pointer w-6 text-red-700"
+                />
+              </li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 }

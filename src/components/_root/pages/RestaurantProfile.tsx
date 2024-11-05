@@ -24,7 +24,9 @@ const RestaurantProfile = () => {
 
   return (
     <section className="restaurant-profile__body">
-      <h2 className="text-3xl font-semibold mb-5">Dettagli Ristorante</h2>
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-5">
+        Dettagli Ristorante
+      </h2>
       <FormProvider {...form}>
         <RestaurantProfileForm restaurantName={data?.name} />
       </FormProvider>

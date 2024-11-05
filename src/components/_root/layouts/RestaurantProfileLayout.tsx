@@ -51,22 +51,22 @@ const RestaurantProfileLayout = () => {
       }`}
     >
       <img src={l.iconUrl} alt={`${l.value} icon`} className="w-6 h-6" />
-      {l.label}
+      <p className="hidden xs:block text-xs sm:text-base">{l.label}</p>
     </Link>
   ));
 
   return (
     <main className="restaurant-profile">
-      <div className="container max-w-[570px]">
+      <div className="container max-w-[570px] mt-16 xl:mt-0">
         <div className="restaurant-profile__header">
           <figure
-            className="p-3 bg-restaurant-primary-50
+            className="p-3 w-full sm:w-fit self-center sm:self-auto bg-restaurant-primary-50
           rounded-3xl border border-restaurant-primary-90"
           >
             <img
               src={`${restaurant?.imageUrl ?? "/imgs/default-restaurant.png"}`}
               alt=""
-              className="w-[125px] h-[125px] object-cover rounded-2xl"
+              className="sm:w-[125px] sm:h-[125px] object-cover rounded-2xl"
             />
           </figure>
           <div
@@ -82,14 +82,15 @@ const RestaurantProfileLayout = () => {
             </div>
             <Button
               onClick={handleLogout}
-              className="p-2 px-3 btn logout-btn m-0 rounded-xl self-end gap-2"
+              className="p-2 px-3 btn logout-btn m-0 rounded-xl
+              self-end gap-2 mt-2 sm:mt-0"
             >
               <img src="/icons/logout-door-icon.png" alt="logout-icon" />
               <p className="font-medium text-sm">Logout</p>
             </Button>
           </div>
         </div>
-        <div className="flex gap-4 mt-9 mb-3">{restaurantLinks}</div>
+        <div className="flex gap-2 sm:gap-4 mt-9 mb-3">{restaurantLinks}</div>
       </div>
       <div className="container max-w-[900px]">
         <Outlet />

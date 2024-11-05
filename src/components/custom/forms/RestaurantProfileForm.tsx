@@ -72,7 +72,7 @@ const RestaurantProfileForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex gap-3">
+        <div className="flex flex-col md:flex-row gap-3">
           <FormField
             control={form.control}
             name="name"
@@ -119,8 +119,11 @@ const RestaurantProfileForm = ({
             name="deliveryInfo.time"
             render={({ field }) => (
               <div>
-                <Label id="deliveryTime" className="mb-3">
-                  Temo di consegna (minuti)
+                <Label
+                  id="deliveryTime"
+                  className="text-xs h-[14px] sm:text-sm mb-3"
+                >
+                  Tempo di consegna (m)
                 </Label>
                 <Input
                   type="number"
@@ -178,7 +181,7 @@ const RestaurantProfileForm = ({
               </div>
               <ul className="space-y-10">
                 {items.map((item, i) => (
-                  <li key={item.id} className="restaurant-item__table__body">
+                  <li key={item.id} className="md:restaurant-item__table__body">
                     <FormField
                       control={form.control}
                       name={`items.${i}.img`}
@@ -186,7 +189,10 @@ const RestaurantProfileForm = ({
                         const imgUrl = itemsImgUrl.at(i) ?? item.img;
 
                         return (
-                          <div className="flex flex-col justify-between">
+                          <div
+                            className="min-w-[104px] flex flex-col justify-between
+                            items-center md:items-stretch mb-3 md:mb-0"
+                          >
                             {imgUrl && (
                               <figure className="flex-center mb-3">
                                 <img
@@ -201,7 +207,9 @@ const RestaurantProfileForm = ({
                                 htmlFor={`items${i}Img`}
                                 className={`px-1 border rounded-xl
                             border-white/80 text-center text-xs cursor-pointer grow
-                            ${imgUrl ? "py-3" : "py-4 border-dashed"}`}
+                            ${
+                              imgUrl ? "py-3" : "py-4 border-dashed"
+                            } px-12 md:px-0`}
                               >
                                 {imgUrl ? "Cambia" : "Aggiungi immagine"}
                               </Label>
@@ -221,44 +229,63 @@ const RestaurantProfileForm = ({
                         control={form.control}
                         name={`items.${i}.name`}
                         render={({ field }) => (
-                          <Input placeholder="Nome" {...field} />
+                          <div className="col-span-4 md:col-span-1">
+                            <Label className="md:hidden mb-2">Nome</Label>
+                            <Input placeholder="Nome" {...field} />
+                          </div>
                         )}
                       />
                       <FormField
                         control={form.control}
                         name={`items.${i}.price`}
                         render={({ field }) => (
-                          <Input
-                            type="number"
-                            placeholder="Prezzo"
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(e.target.valueAsNumber)
-                            }
-                          />
+                          <div className="col-span-4 sm:col-span-1">
+                            <Label className="md:hidden mb-2">Prezzo</Label>
+                            <Input
+                              type="number"
+                              placeholder="Prezzo"
+                              {...field}
+                              onChange={(e) =>
+                                field.onChange(e.target.valueAsNumber)
+                              }
+                            />
+                          </div>
                         )}
                       />
-                      <ItemsTypeSelect itemIndex={i} />
-                      <Button
-                        type="button"
-                        onClick={() => remove(i)}
-                        className="btn bg-[#ED0000] bg-opacity-50
-                          border-[#ED0000] border-opacity-60 font-semibold
-                          hover:bg-opacity-60 rounded-xl px-5 text-sm"
-                      >
-                        Rimuovi
-                      </Button>
+
+                      <div className="col-span-4 sm:col-span-1">
+                        <Label className="md:hidden mb-2">Tipo di piatto</Label>
+                        <ItemsTypeSelect itemIndex={i} />
+                      </div>
+
                       <FormField
                         control={form.control}
                         name={`items.${i}.description`}
                         render={({ field }) => (
-                          <Textarea
-                            placeholder="Descrizione"
-                            className="rounded-xl col-span-4"
-                            {...field}
-                          ></Textarea>
+                          <div className="col-span-4 sm:col-span-3">
+                            <Label className="md:hidden mb-2">
+                              Descrizione
+                            </Label>
+                            <Textarea
+                              placeholder="Descrizione"
+                              className="rounded-xl col-span-4 text-xs sm:text-sm"
+                              {...field}
+                            ></Textarea>
+                          </div>
                         )}
                       />
+                    </div>
+                    <div className="flex-center mt-3 md:mt-0">
+                      <Button
+                        type="button"
+                        onClick={() => remove(i)}
+                        className="btn bg-[#ED0000] bg-opacity-50
+                            border-[#ED0000] border-opacity-60 font-semibold
+                            hover:bg-opacity-60 rounded-xl py-3 px-5 text-sm
+                            "
+                      >
+                        Rimuovi
+                      </Button>
                     </div>
                     {item._id && (
                       <Input

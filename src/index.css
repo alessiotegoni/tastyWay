@@ -45,7 +45,7 @@
 
   header,
   main {
-    @apply font-bold p-5 sm:p-9;
+    @apply font-bold p-3 xs:p-5 sm:p-9;
   }
 
   input[type="number"]::-webkit-outer-spin-button,
@@ -420,7 +420,7 @@
 
   .user-profile__header,
   .restaurant-profile__header {
-    @apply flex gap-4 *:backdrop-blur-3xl;
+    @apply flex flex-col sm:flex-row gap-4 *:backdrop-blur-3xl;
   }
 
   .user-profile__body,
@@ -486,18 +486,18 @@
   }
 
   .restaurant-item__table__head {
-    @apply grid mt-4 mb-3 gap-3;
+    @apply hidden md:grid mt-4 mb-3 gap-3;
     grid-template-columns: 1fr 1.3fr 0.5fr 1fr 96.14px;
   }
 
   .restaurant-item__table__body {
     @apply grid mt-4 mb-3 gap-3;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
   }
 
   .restaurant-item__info {
     @apply grid gap-3;
-    grid-template-columns: 1fr 0.3fr 0.7fr auto;
+    grid-template-columns: 1fr 0.3fr 0.7fr;
   }
 
   .restaurant-owner__body,
