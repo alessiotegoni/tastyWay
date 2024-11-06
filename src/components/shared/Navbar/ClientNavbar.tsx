@@ -1,6 +1,6 @@
 import { tastyWayLogo } from "@/constants";
 import { ReactElement } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 interface ClientNavbarProps {
   navRightBtn: ReactElement;
@@ -9,16 +9,7 @@ interface ClientNavbarProps {
 const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
   const { pathname } = useLocation();
 
-  const isUserNavbar = pathname.includes("user");
-
-  const isInOrders = pathname.includes("orders");
-  const isInProfile = [
-    "/user",
-    "/user/security",
-    "/my-restaurant",
-    "/my-restaurant/security",
-    "/my-restaurant/owner",
-  ].includes(pathname);
+  const isUserNavbar = pathname.startsWith("/user");
 
   return (
     <header className="client__header relative">
@@ -48,11 +39,17 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
               />
               <p className="hidden sm:block">Home</p>
             </Link>
-            <Link
+            <NavLink
               to={`/${isUserNavbar ? "user" : "my-restaurant"}/orders`}
               className={`btn client-nav-btn ${
                 isUserNavbar ? "user-btn" : "restaurant-btn"
-              } ${isInOrders ? "active" : ""}`}
+              }`}
+              // className={({ isActive }) =>
+              //   `btn client-nav-btn ${
+              //     isUserNavbar ? "user-btn" : "restaurant-btn"
+              //   } ${isActive ? "active" : ""}`
+              // } di default react router dom aggiunge la classe
+              // active al link che coincide con la route
             >
               <img
                 src="/icons/order-icon.png"
@@ -60,12 +57,14 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
                 className="w-7 h-7"
               />
               <p className="hidden sm:block">Ordini</p>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={`/${isUserNavbar ? "user" : "my-restaurant"}`}
-              className={`btn client-nav-btn ${
-                isUserNavbar ? "user-btn" : "restaurant-btn"
-              } ${isInProfile ? "active" : ""}`}
+              className={({ isActive }) =>
+                `btn client-nav-btn ${
+                  isUserNavbar ? "user-btn" : "restaurant-btn"
+                } ${isActive && !pathname.includes("orders") ? "active" : ""}`
+              }
             >
               <img
                 src={`/icons/${
@@ -77,7 +76,7 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
               <p className="hidden sm:block">
                 {isUserNavbar ? "Gestisci profilo" : "Gestisci ristorante"}
               </p>
-            </Link>
+            </NavLink>
           </div>
           {navRightBtn}
         </div>
