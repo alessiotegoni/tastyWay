@@ -111,7 +111,7 @@ const LocationAutocomplete = ({
         : "pointer-events-none"
     }`;
 
-  const inputClasses = `widget-input text-sm xs:text-base ${
+  const inputClasses = `widget-input text-sm sm:text-base ${
     shouldShowLatestResearchs ? "bg-transparent" : "signup-form-input pr-14"
   } ${inputClassName}`;
 

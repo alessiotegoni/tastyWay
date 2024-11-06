@@ -9,7 +9,7 @@ import { getExpectedTime, getOrderStatusMsg } from "@/lib/utils";
 import { UserActiveOrder } from "@/types/userTypes";
 
 const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
-  <Carousel className="max-w-[650px] w-full mx-auto select-none">
+  <Carousel className="max-w-[650px] w-full mx-auto select-none mt-16 xl:mt-0">
     <CarouselContent>
       {orders.map((order) => {
         const orderStatus = getOrderStatusMsg(order.status);

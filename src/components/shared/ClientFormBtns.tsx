@@ -6,15 +6,17 @@ interface ClientFormBtnsProps<T extends FieldValues> {
   form: UseFormReturn<T, any, undefined>;
   defaultValues?: T | undefined;
   isLoading: boolean;
+  className?: string;
 }
 
 const ClientFormBtns = <T extends FieldValues>({
   form,
   defaultValues,
   isLoading,
+  className = "",
 }: ClientFormBtnsProps<T>) =>
   form.formState.isDirty && (
-    <div className="flex justify-end items-center gap-2 mt-7">
+    <div className={`flex justify-end items-center gap-2 mt-7 ${className}`}>
       <Button
         type="button"
         onClick={() => !isLoading && form.reset(defaultValues)}

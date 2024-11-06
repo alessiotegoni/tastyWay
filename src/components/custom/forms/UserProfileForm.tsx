@@ -57,12 +57,12 @@ const UserProfileForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex-center gap-2">
+        <div className="xs:flex gap-2">
           <FormField
             name="name"
             control={form.control}
             render={({ field }) => (
-              <div>
+              <div className="basis-1/2">
                 <Label htmlFor="name">Nome</Label>
                 <Input id="name" {...field} />
               </div>
@@ -72,7 +72,7 @@ const UserProfileForm = () => {
             name="surname"
             control={form.control}
             render={({ field }) => (
-              <div>
+              <div className="basis-1/2">
                 <Label htmlFor="surname">Cognome</Label>
                 <Input id="surname" {...field} />
               </div>
@@ -84,15 +84,15 @@ const UserProfileForm = () => {
         </FormMessage>
         <FormMessage>{form.formState.errors.surname?.message}</FormMessage>
         <div>
-          <Label htmlFor="email">Cognome</Label>
-          <Input id="email" value={user!.email} disabled />
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" defaultValue={user!.email} disabled />
         </div>
-        <div className="flex-center gap-2">
+        <div className="xs:flex gap-2">
           <FormField
             name="phoneNumber"
             control={form.control}
             render={({ field }) => (
-              <div>
+              <div className="basis-1/2">
                 <Label htmlFor="name">Telefono</Label>
                 <Input
                   id="name"
@@ -103,7 +103,7 @@ const UserProfileForm = () => {
               </div>
             )}
           />
-          <div>
+          <div className="basis-1/2">
             <Label htmlFor="country">Paese</Label>
             <Input id="country" value="Italia" disabled />
           </div>
@@ -125,9 +125,11 @@ const UserProfileForm = () => {
           name="isCompanyAccount"
           control={form.control}
           render={({ field: { value, onChange, name } }) => (
-            <div>
+            <div className="mt-8">
               <Label htmlFor="cmpAccount" className="flex-between">
-                <h3 className="text-lg">Passa ad account aziendale</h3>
+                <h3 className="text-sm sm:text-lg">
+                  Passa ad account aziendale
+                </h3>
                 <div
                   className={`relative w-[67px] h-[32px] rounded-xl transition-colors
                 ${

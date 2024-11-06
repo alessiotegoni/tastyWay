@@ -300,7 +300,7 @@ const RestaurantProfileForm = ({
             </>
           )}
         </div>
-        <ClientFormBtns form={form} isLoading={isPending} />
+        <ClientFormBtns form={form} isLoading={isPending} className="" />
       </form>
     </Form>
   );

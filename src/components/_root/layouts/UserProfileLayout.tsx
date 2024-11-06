@@ -49,9 +49,9 @@ const UserProfileLayout = () => {
   return (
     <main className="user-profile">
       <div className="container max-w-[570px]">
-        <div className="user-profile__header">
+        <div className="user-profile__header mt-16 xl:mt-0">
           <figure
-            className="p-3 bg-[#ED0000] bg-opacity-40
+            className="p-3 self-center sm:self-auto bg-[#ED0000] bg-opacity-40
           rounded-3xl border border-[#ED0000] border-opacity-30"
           >
             <img

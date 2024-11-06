@@ -433,7 +433,7 @@
   .restaurant-security__body label,
   .user-profile__body label,
   .user-security__body label {
-    @apply text-xl font-semibold mt-5 mb-3;
+    @apply text-sm sm:text-xl font-semibold mt-3 sm:mt-5 mb-3;
   }
 
   .user-profile__body label[for="cmpAccount"] {
@@ -453,7 +453,7 @@
   .items-type-select,
   .items-type-select input {
     @apply h-auto bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
-    text-lg font-medium border border-[#FF0000] border-opacity-60
+    text-sm sm:text-lg font-medium border border-[#FF0000] border-opacity-60
     hover:bg-[#ED0000] hover:bg-opacity-50;
   }
 
@@ -468,7 +468,7 @@
   .items-type-select,
   .items-type-select input {
     @apply bg-[#7800B0] bg-opacity-65 hover:bg-[#7800B0] hover:bg-opacity-70
-    border-none text-base placeholder:text-sm font-semibold;
+    border-none text-sm sm:text-base font-semibold;
   }
 
   .restaurant-profile__body,

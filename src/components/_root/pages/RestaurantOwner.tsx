@@ -20,6 +20,11 @@ const RestaurantOwner = () => {
   const form = useForm<RestaurasntOwnerType>({
     resolver: zodResolver(restaurantOwnerSchema),
     mode: "onSubmit",
+    defaultValues: {
+      name: "",
+      surname: "",
+      phoneNumber: 0,
+    },
   });
 
   const { data: userProfile, isLoading: isLoadingUP } = useGetUserProfile();
@@ -57,11 +62,10 @@ const RestaurantOwner = () => {
 
   return (
     <section className="restaurant-owner__body">
-      <h2 className="text-2xl font-semibold">Dettagli titolare</h2>
-
+      <h2 className="text-xl sm:text-2xl font-semibold">Dettagli titolare</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex-center gap-2">
+          <div className="sm:flex-center gap-2">
             <FormField
               name="name"
               control={form.control}

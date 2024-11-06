@@ -46,7 +46,7 @@ const RestaurantSecurity = () => {
 
   return (
     <div className="restaurant-security__body max-w-[450px]">
-      <h2 className="text-2xl font-semibold">Cambia password</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold">Cambia password</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
