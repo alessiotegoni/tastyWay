@@ -7,13 +7,19 @@ import {
   useGetActiveOrders,
   useGetPrevOrders,
 } from "@/lib/react-query/queries/userQueries";
-import { getOrderDate } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { formatRestaurantName, getOrderDate } from "@/lib/utils";
+import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
+import { UserPrevOrder } from "@/types/userTypes";
 
 const UserPrevsOrders = () => {
+  const { handleSetCart } = useCart();
+
+  const navigate = useNavigate();
+
   const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
   const { data: activeOrdersData, isLoading: areActiveOrdersLoading } =
@@ -26,8 +32,6 @@ const UserPrevsOrders = () => {
     hasNextPage,
   } = useGetPrevOrders();
 
-  console.log(prevOrdersData);
-
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage();
   }, [inView]);
@@ -35,15 +39,31 @@ const UserPrevsOrders = () => {
   const activeOrders = activeOrdersData?.orders ?? [];
   const prevOrders = prevOrdersData?.pages.flatMap((p) => p.orders) ?? [];
 
-  const hasNoActiveOrders = !areActiveOrdersLoading && !activeOrders.length;
-  const hasNoPrevOrders = !arePrevOrdersLoading && !prevOrders.length;
-
-  const hasNoOrders = hasNoActiveOrders && hasNoPrevOrders;
+  const hasNoOrders =
+    !areActiveOrdersLoading &&
+    !activeOrders.length &&
+    !arePrevOrdersLoading &&
+    !prevOrders.length;
 
   const canShowLastOrder =
     !areActiveOrdersLoading && !activeOrdersData.orders?.length;
 
   const lastOrder = canShowLastOrder ? prevOrders.splice(0, 1).at(0) : null;
+
+  const handleOrderAgain = ({ items, restaurant }: UserPrevOrder) => {
+    items.forEach((i) =>
+      handleSetCart({
+        restaurantId: restaurant.id,
+        itemId: i._id,
+        img: i.img!,
+        name: i.name,
+        price: i.price,
+        type: "ADD",
+      })
+    );
+
+    navigate(`/restaurants/${formatRestaurantName(restaurant.name)}`);
+  };
 
   return (
     <main className="user-orders flex flex-col items-center">
@@ -127,26 +147,26 @@ const UserPrevsOrders = () => {
               </h2>
             </div>
             <div className="prev-orders__container user-widget border-t-0">
-              <ul className="w-full space-y-4 sm:space-y-2">
+              <ul className="w-full space-y-4 md:space-y-2">
                 {prevOrders.map((order, i) => {
                   const orderDate = getOrderDate(order.createdAt);
 
                   return (
                     <li
                       key={order._id}
-                      className="sm:flex items-center gap-4"
+                      className="md:flex items-center gap-4"
                       ref={(i + 1) % 7 === 0 ? ref : null}
                     >
                       <figure className="shrink-0">
                         <img
                           src={"/imgs/default-restaurant.png"}
                           alt={`${order.restaurant.name}-img`}
-                          className="w-full sm:w-[150px] sm:h-[150px] object-cover rounded-2xl"
+                          className="w-full md:w-[150px] md:h-[150px] object-cover rounded-2xl"
                         />
                       </figure>
                       <div className="flex-grow flex flex-col justify-between">
                         <div className="">
-                          <div className="flex-between mt-3 sm:mt-0">
+                          <div className="flex-between mt-3 md:mt-0">
                             <h3 className="font-semibold text-xl sm:text-2xl">
                               {order.restaurant.name}
                             </h3>
@@ -169,6 +189,7 @@ const UserPrevsOrders = () => {
                             <Button
                               className="btn rounded-xl basis-2/3 py-2 px-5 text-sm
                         bg-home-widget-border-50 hover:bg-home-widget-border-80"
+                              onClick={() => handleOrderAgain(order)}
                             >
                               Ordina ancora
                             </Button>

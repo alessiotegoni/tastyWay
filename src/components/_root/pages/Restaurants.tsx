@@ -5,35 +5,51 @@ import RestaurantSkeleton from "@/components/skeletons/RestaurantSkeleton";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
 import { restaurantsFilters } from "@/config/filtersConfig";
+import { cuisineTypes } from "@/constants";
 import { useAddress } from "@/contexts/AddressContext";
-import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { useGetRestaurants } from "@/lib/react-query/queries/restaurantQueries";
 import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
-import { RestaurantTypeFilter } from "@/types/restaurantTypes";
-import { useEffect } from "react";
+import {
+  FoodType,
+  RestaurantFilters,
+  RestaurantTypeFilter,
+} from "@/types/restaurantTypes";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+const defaultRestaurantFilters: RestaurantFilters = {
+  name: null,
+  foodType: [],
+  restaurantType: [],
+};
 
 const Restaurants = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const restaurantFilters = { ...defaultRestaurantFilters };
+
+  const foodTypeParams = (searchParams.getAll("filter") as FoodType[]).filter(
+    (ft) => cuisineTypes.includes(ft)
+  );
+  if (foodTypeParams.length) restaurantFilters.foodType = foodTypeParams;
+
   const { selectedAddress, removeSelectedAddress } = useAddress();
 
-  const { filters, removeFilters, setRestaurantTypeFilter } =
-    useRestaurantFilters();
+  const [filters, setFilters] = useState(restaurantFilters);
 
-  const { data, error, isError, isLoading, fetchNextPage } = useGetRestaurants(
-    selectedAddress,
-    filters
-  );
+  const { data, error, isError, isLoading, hasNextPage, fetchNextPage } =
+    useGetRestaurants(selectedAddress, filters);
 
-  const handleSetFilters = (currentValue?: RestaurantTypeFilter) => {
-    let restaurantType: [] | [RestaurantTypeFilter] = [];
+  const handleSetRTFilters = (currentValue?: RestaurantTypeFilter) => {
+    const restaurantType = currentValue ? [currentValue] : [];
 
-    if (currentValue) restaurantType = [currentValue];
-
-    setRestaurantTypeFilter(restaurantType);
+    setFilters({ ...filters, restaurantType });
   };
 
-  useEffect(() => {
-    return () => removeFilters();
-  }, []);
+  const handleResetFilters = () => {
+    setFilters(defaultRestaurantFilters);
+    setSearchParams({});
+  };
 
   const invalidAddressErrProps = getInvalidAddressProps(
     removeSelectedAddress,
@@ -41,7 +57,7 @@ const Restaurants = () => {
   );
 
   const noRestaurantsErrProps = getNoRestaurantsProps(
-    removeFilters,
+    () => handleResetFilters(),
     removeSelectedAddress
   );
 
@@ -61,14 +77,18 @@ const Restaurants = () => {
         />
         <div className="">
           <div className="flex flex-col items-center gap-3">
-            <RestaurantsWidget isError={isError} />
+            <RestaurantsWidget
+              isError={isError}
+              filters={filters}
+              setFilters={setFilters}
+            />
             {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
             {isError && <ErrorWidget {...invalidAddressErrProps} />}
             {canShowRestaurants && (
               <>
                 <FiltersPopover
                   filters={restaurantsFilters}
-                  setFilters={handleSetFilters}
+                  setFilters={handleSetRTFilters}
                 />
                 <div
                   className="primary-widget-bg border border-primary-20
@@ -83,6 +103,7 @@ const Restaurants = () => {
                       <RestaurantsList
                         restaurants={restaurants}
                         fetchNextPage={fetchNextPage}
+                        hasNextPage={hasNextPage}
                       />
                     )}
                   </ul>

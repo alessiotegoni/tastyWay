@@ -1,6 +1,6 @@
-import { FormEvent } from "react";
-
+import { FormEvent, useState } from "react";
 import { foodFilters } from "@/constants";
+import { FoodType } from "@/types/restaurantTypes";
 import { useNavigate } from "react-router-dom";
 import { useAddress } from "@/contexts/AddressContext";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
@@ -9,8 +9,9 @@ import FoodTypeFilters from "@/components/shared/FoodTypeFilters";
 import MyLocationBtn from "@/components/custom/MyLocationBtn";
 
 const Home = () => {
-  const { selectedAddress } = useAddress();
+  const [foodTypeFilters, setFoodTypeFilters] = useState<FoodType[]>([]);
 
+  const { selectedAddress } = useAddress();
   const navigate = useNavigate();
 
   const handleSearchRestaurant = (e: FormEvent<HTMLFormElement>) => {
@@ -18,7 +19,14 @@ const Home = () => {
 
     if (!selectedAddress) return;
 
-    navigate("/restaurants");
+    const filtersParams = new URLSearchParams();
+
+    if (foodTypeFilters.length)
+      foodTypeFilters.forEach((filter) =>
+        filtersParams.append("filter", filter)
+      );
+
+    navigate(`/restaurants?${filtersParams.toString()}`);
   };
 
   return (
@@ -50,6 +58,8 @@ const Home = () => {
       <div className="mt-2 xs:mt-5">
         <FoodTypeFilters
           filters={foodFilters.slice(0, 5)}
+          foodTypes={foodTypeFilters}
+          setFoodTypes={setFoodTypeFilters}
           carouselContentClasses="justify-between"
         />
       </div>

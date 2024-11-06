@@ -12,7 +12,10 @@ const RestaurantActiveOrders = ({
     const expectedTime = getExpectedTime(order.expectedTime);
 
     return (
-      <li key={order.orderId} className="bg-[#2A003E] p-4 rounded-3xl xs:min-w-[300px]">
+      <li
+        key={order.orderId}
+        className="bg-[#2A003E] p-4 rounded-3xl xs:min-w-[300px]"
+      >
         <div className="flex-between">
           <h3 className="text-xl font-semibold">{order.customerSurname}</h3>
           <h2 className="text-3xl font-bold">{expectedTime}</h2>
@@ -42,7 +45,13 @@ const RestaurantActiveOrders = ({
           {orders.length > 1 ? "Ordini attivi" : "Ordine attivo"}
         </h3>
       </div>
-      <ul className={orders.length <= 2 ? "flex-center" : "grid"}>
+      <ul
+        className={`${
+          orders.length <= 2
+            ? "space-y-2 sm:space-y-0 sm:flex-center flex-wrap"
+            : "grid"
+        }`}
+      >
         {activeOrdersList}
       </ul>
       <div className="flex-center">

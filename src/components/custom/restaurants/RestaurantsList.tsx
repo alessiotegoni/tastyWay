@@ -12,16 +12,18 @@ interface RestaurantsListProps {
   fetchNextPage: () => Promise<
     InfiniteQueryObserverResult<InfiniteData<RestaurantsRes>>
   >;
+  hasNextPage: boolean;
 }
 
 const RestaurantsList = ({
   restaurants,
   fetchNextPage,
+  hasNextPage,
 }: RestaurantsListProps) => {
   const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
   useEffect(() => {
-    if (inView) fetchNextPage();
+    if (inView && hasNextPage) fetchNextPage();
   }, [inView]);
 
   return restaurants.map((r, i) => (

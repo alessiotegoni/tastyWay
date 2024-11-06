@@ -1,10 +1,10 @@
 import { Skeleton } from "../ui/skeleton";
 
 const RestaurantHeaderSkeleton = () => (
-  <div className="restaurant__header">
+  <div className="restaurant__header max-w-[638px]">
     <div className="sm:flex gap-5">
       <Skeleton
-        className="w-full sm:w-[150px] h-[250px] sm:h-[150px] rounded-[20px]
+        className="w-full sm:w-[150px] h-[170px] sm:h-[150px] rounded-[20px]
       shrink-0 primary-widget-bg"
       />
       <div className="flex flex-col justify-between w-full mt-2 sm:mt-0">

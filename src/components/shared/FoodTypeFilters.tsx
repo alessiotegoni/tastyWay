@@ -6,27 +6,29 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { useAddress } from "@/contexts/AddressContext";
 import { toast } from "@/hooks/use-toast";
+import { useMatch, useSearchParams } from "react-router-dom";
 
 interface FoodTypeFiltersProps {
   filters: FoodFilters[];
+  foodTypes: FoodType[];
+  setFoodTypes: (foodTypes: FoodType[]) => void;
   carouselContentClasses?: string;
   isError?: boolean;
 }
 
 const FoodTypeFilters = ({
   filters,
+  foodTypes,
+  setFoodTypes,
   carouselContentClasses,
   isError,
 }: FoodTypeFiltersProps) => {
-  const {
-    filters: { foodType: foodTypeFilters },
-    setFoodTypeFilter,
-  } = useRestaurantFilters();
-
   const { selectedAddress } = useAddress();
+
+  const [_, setSearchParams] = useSearchParams();
+  const isInRestaurants = useMatch("/restaurants");
 
   const handleSetFilters = (foodType: FoodType, hasFilter: boolean) => {
     if (isError) return;
@@ -36,18 +38,17 @@ const FoodTypeFilters = ({
         description: "Prima di selezionare il cibo inserisci il tuo indirizzo",
       });
 
-    const removeFilter = () => foodTypeFilters!.filter((ft) => ft !== foodType);
-    const addFilter = () =>
-      foodTypeFilters ? [...foodTypeFilters, foodType] : [foodType];
+    const newFoodType = hasFilter
+      ? foodTypes.filter((ft) => ft !== foodType)
+      : [...foodTypes, foodType];
 
-    const newFoodType = hasFilter ? removeFilter() : addFilter();
+    setFoodTypes(newFoodType);
 
-    setFoodTypeFilter(newFoodType);
+    if (isInRestaurants) setSearchParams({ filter: newFoodType });
   };
 
   const carouseItems = filters.map((filter, i) => {
-    const hasFilter =
-      !!foodTypeFilters && foodTypeFilters.includes(filter.value);
+    const hasFilter = foodTypes.includes(filter.value);
 
     return (
       <CarouselItem

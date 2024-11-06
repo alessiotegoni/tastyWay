@@ -96,8 +96,8 @@ export type RestaurantTypeFilter =
 
 export type RestaurantFilters = {
   name: string | null;
-  foodType: FoodType[] | null;
-  restaurantType: RestaurantTypeFilter[] | null;
+  foodType: FoodType[];
+  restaurantType: RestaurantTypeFilter[];
 };
 
 export type ItemsFilter = {

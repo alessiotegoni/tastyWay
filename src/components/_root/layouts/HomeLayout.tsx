@@ -5,9 +5,9 @@ const HomeLayout = () => {
   return (
     <div className="hero">
       <Navbar pageNum={0} />
-      <main className="home group">
+      <main className="home group mt-6 sm:mt-0">
         <div className="md:container">
-          <div className="w-full text-center mb-10">
+          <div className="w-full text-center mb-6 sm:mb-10">
             <div className="home__title">
               <h1 className="text-[25px] xs:text-[30px] sm:text-[44px] text-primary">
                 Il tuo cibo preferito

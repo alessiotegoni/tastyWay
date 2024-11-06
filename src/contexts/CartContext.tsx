@@ -77,9 +77,8 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
       }
     }
 
-    if (type === "REMOVE" && cartItem) {
+    if (type === "REMOVE" && cartItem)
       newItems = removeCartItem({ itemId, itemIndex, cartItem, cartItems });
-    }
 
     try {
       localStorage.setItem("cartItems", JSON.stringify(newItems));

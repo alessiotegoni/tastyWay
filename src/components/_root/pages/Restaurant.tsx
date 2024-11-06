@@ -95,7 +95,7 @@ const Restaurant = () => {
               ) : (
                 <RestaurantHeaderSkeleton />
               )}
-              <div className="sm:flex-between mb-3 sm:mb-0">
+              <div className="sm:flex-between mb-3 sm:mb-0 max-w-[638.66px]">
                 <div
                   className="bg-home-widget border border-home-widget-border-30
                 rounded-[50px] p-2 px-5 flex-center gap-3 my-3 backdrop-blur-[123px]

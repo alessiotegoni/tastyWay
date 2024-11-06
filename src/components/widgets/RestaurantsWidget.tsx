@@ -5,35 +5,39 @@ import { Button } from "../ui/button";
 import { getCityFromAddress } from "@/lib/utils";
 import FoodTypeFilters from "../shared/FoodTypeFilters";
 import XIconBtn from "../shared/XIconBtn";
-import { useRestaurantFilters } from "@/contexts/RestaurantFiltersContext";
 import { foodFilters } from "@/constants";
+import { RestaurantFilters } from "@/types/restaurantTypes";
 
 interface RestaurantsWidgetProps {
   isError?: boolean;
+  filters: RestaurantFilters;
+  setFilters: React.Dispatch<React.SetStateAction<RestaurantFilters>>;
 }
 
-const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
+const RestaurantsWidget = ({
+  isError,
+  filters,
+  setFilters,
+}: RestaurantsWidgetProps) => {
   const { selectedAddress } = useAddress();
 
-  const { filters, setNameFilter } = useRestaurantFilters();
-
   const [input, setInput] = useState("");
-
-  useEffect(() => {
-    if (!input) setNameFilter(null);
-  }, [input]);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (input) setNameFilter(input);
-  };
 
   const handleRemoveInput = () => setInput("");
 
   useEffect(() => {
+    if (!input) setFilters({ ...filters, name: null });
+  }, [input]);
+
+  useEffect(() => {
     if (Object.values(filters).every((f) => !f)) handleRemoveInput();
   }, [filters]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (input) setFilters({ ...filters, name: input });
+  };
 
   const restaurantCity = getCityFromAddress(selectedAddress!);
 
@@ -66,7 +70,12 @@ const RestaurantsWidget = ({ isError }: RestaurantsWidgetProps) => {
           Cerca
         </Button>
       </form>
-      <FoodTypeFilters filters={foodFilters} isError={isError} />
+      <FoodTypeFilters
+        filters={foodFilters}
+        foodTypes={filters.foodType}
+        setFoodTypes={(foodType) => setFilters({ ...filters, foodType })}
+        isError={isError}
+      />
     </div>
   );
 };
