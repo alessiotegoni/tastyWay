@@ -1,36 +1,24 @@
 import RestaurantCart from "@/components/custom/restaurant/RestaurantCart";
+import RestaurantCartMobileDialog from "@/components/custom/restaurant/RestaurantCartMobileDialog";
 import RestaurantHeader from "@/components/custom/restaurant/RestaurantHeader";
 import RestauranItemsList from "@/components/custom/restaurant/RestaurantItemsList";
 import FiltersPopover from "@/components/shared/FiltersPopover";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { restaurantItemFilters } from "@/config/filtersConfig";
-import { useCart } from "@/hooks/useCart";
 import { useGetRestaurantInfo } from "@/lib/react-query/queries/restaurantQueries";
 import {
   RestaurantItemsFilters,
   RestaurantItemsTypes,
 } from "@/types/restaurantTypes";
-import { SearchIcon, ShoppingBasket, X } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const defaultItemsFilters: RestaurantItemsFilters = {
   name: null,
-  itemsType: null,
+  itemsTypes: [],
 };
 
 const Restaurant = () => {
@@ -38,13 +26,11 @@ const Restaurant = () => {
 
   const [itemsFilters, setItemsFilters] = useState(defaultItemsFilters);
 
-  const handleSetFilters = (currentValue?: RestaurantItemsTypes) => {
-    let itemsType = null;
-
-    if (currentValue) itemsType = [currentValue];
-
-    setItemsFilters({ ...itemsFilters, itemsType });
-  };
+  const handleSetFilters = (currentValue?: RestaurantItemsTypes) =>
+    setItemsFilters({
+      ...itemsFilters,
+      itemsTypes: currentValue ? [currentValue] : [],
+    });
 
   const {
     data: restaurant,
@@ -53,26 +39,6 @@ const Restaurant = () => {
     isError,
     error,
   } = useGetRestaurantInfo(restaurantName);
-
-  const { restaurantCart } = useCart(restaurant?._id);
-
-  const cartItemsLength = restaurantCart.reduce(
-    (acc, item) => (acc += item.qnt),
-    0
-  );
-
-  const restaurantCartEl = isSuccess && (
-    <RestaurantCart
-      restaurantId={restaurant._id}
-      restaurantName={restaurant.name}
-      deliveryPrice={restaurant.deliveryInfo.price}
-    />
-  );
-
-  // FIXME: mettere filtri ritornati dall'api
-  // tramite un map del tipo di ogni item
-  // quindi i filtri saranno tutti i tipi di
-  // ogni item di quel ristorante
 
   return (
     <div className="hero">
@@ -110,63 +76,40 @@ const Restaurant = () => {
                     className="bg-transparent"
                   />
                 </div>
-                <div className="flex-between">
-                  <FiltersPopover
-                    filters={restaurantItemFilters}
-                    setFilters={handleSetFilters}
-                  />
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        className="shrink-0 md:hidden btn block sticky top-0 w-[51px] h-[51px]
-        backdrop-blur-3xl rounded-full bg-home-widget border border-primary-20"
-                      >
-                        <div className="relative h-full flex-center">
-                          <ShoppingBasket className="w-5 sm:w-10" />
-                          <p
-                            className="absolute -top-[9px] -right-[9px] sm:-top-1 sm:-right-1
-            text-xs w-6 h-6 flex-center bg-[#ed0000] rounded-full"
-                          >
-                            {cartItemsLength}
-                          </p>
-                        </div>
-                      </Button>
-                    </AlertDialogTrigger>
+                {isSuccess && !!restaurant.itemsTypes.length && (
+                  <div className="flex-between">
+                    <FiltersPopover
+                      filters={restaurantItemFilters.filter((itemFilter) =>
+                        restaurant.itemsTypes.includes(itemFilter.value)
+                      )}
+                      setFilters={handleSetFilters}
+                    />
                     {isSuccess && (
-                      <AlertDialogContent className="p-0 px-3 block border-none max-w-[400px]">
-                        <div
-                          className="bg-home-widget
-                  border border-primary-20 backdrop-blur-[123px] rounded-[30px]
-                  p-5"
-                        >
-                          {restaurantCartEl}
-                        </div>
-                        <AlertDialogFooter className="flex-row justify-end mt-5">
-                          <AlertDialogCancel
-                            className="btn w-10 h-10 rounded-full
-                          backdrop-blur-3xl bg-[#ec01017e]
-               border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
-                          >
-                            <X size={20} />
-                          </AlertDialogCancel>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
+                      <RestaurantCartMobileDialog
+                        restaurantId={restaurant._id}
+                        restaurantName={restaurant.name}
+                        restaurantPrice={restaurant.deliveryInfo.price}
+                      />
                     )}
-                  </AlertDialog>
-                </div>
+                  </div>
+                )}
               </div>
               <RestauranItemsList
                 restaurantId={restaurant?._id}
                 itemsFilters={itemsFilters}
               />
             </div>
-            {!isLoading && !!restaurant && (
+            {isSuccess && !!restaurant && (
               <div
                 className="hidden md:block col sticky top-7 bg-home-widget
                   border border-primary-20 backdrop-blur-[123px] rounded-[30px]
                   p-5 h-fit basis-[350px]"
               >
-                {restaurantCartEl}
+                <RestaurantCart
+                  restaurantId={restaurant._id}
+                  restaurantName={restaurant.name}
+                  deliveryPrice={restaurant.deliveryInfo.price}
+                />
               </div>
             )}
           </div>

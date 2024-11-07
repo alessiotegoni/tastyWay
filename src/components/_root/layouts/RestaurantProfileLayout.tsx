@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAddress } from "@/contexts/AddressContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 const links = [
   {
@@ -13,20 +13,18 @@ const links = [
   {
     iconUrl: "/icons/user-security-icon.png",
     label: "Sicurezza",
-    value: "/security",
+    value: "security",
   },
   {
     iconUrl: "/icons/user-security-icon.png",
     label: "Info titolare",
-    value: "/owner",
+    value: "owner",
   },
 ];
 
 const RestaurantProfileLayout = () => {
   const { user: restaurant, logout } = useAuth();
   const { removeSelectedAddress } = useAddress();
-
-  const { pathname } = useLocation();
 
   const fullName = restaurant?.restaurantName
     ? restaurant.restaurantName
@@ -39,20 +37,15 @@ const RestaurantProfileLayout = () => {
   };
 
   const restaurantLinks = links.map((l, i) => (
-    <Link
+    <NavLink
       key={i}
-      to={`/my-restaurant${l.value}`}
-      className={`btn py-2 px-4 rounded-3xl font-semibold
-       border border-restaurant-primary-90 hover:bg-restaurant-primary-80
-      flex-center gap-2 backdrop-blur-3xl ${
-        pathname === `/my-restaurant${l.value}`
-          ? "bg-restaurant-primary"
-          : "bg-restaurant-primary-50"
-      }`}
+      to={l.value}
+      className="btn client-nav-btn restaurant-btn py-2 px-4"
+      end
     >
       <img src={l.iconUrl} alt={`${l.value} icon`} className="w-6 h-6" />
       <p className="hidden xs:block text-xs sm:text-base">{l.label}</p>
-    </Link>
+    </NavLink>
   ));
 
   return (

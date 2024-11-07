@@ -3,7 +3,8 @@ import { Skeleton } from "../ui/skeleton";
 const RestaurantItemSkeleton = () => (
   <li className="restaurant__item restaurant-separator">
     <div className="item__body sm:flex gap-5">
-      <Skeleton className="w-[130px] h-[130px] rounded-[20px] primary-widget-bg" />
+      <Skeleton className="aspect-square xs:w-[200px] xs:h-[200px]
+      rounded-[20px] primary-widget-bg" />
       <div className="mt-2 mb-5 sm:mt-0 sm:mb-0">
         <Skeleton className="w-[150px] h-[35px] primary-widget-bg" />
         <Skeleton className="w-[200px] lg:w-[300px] h-[20px] mt-2 primary-widget-bg" />

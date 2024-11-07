@@ -1,6 +1,5 @@
 import {
   RestaurantItemsTypes,
-  RestaurantTypeFilter,
 } from "@/types/restaurantTypes";
 
 // type RestaurantFiltersType = {
@@ -35,12 +34,10 @@ export const restaurantsFilters = [
   },
 ];
 
-// type RestaurantItemFiltersType = {
-//   value: RestaurantItemsTypes;
-//   label: string;
-// };
-
-export const restaurantItemFilters = [
+export const restaurantItemFilters: {
+  value: RestaurantItemsTypes;
+  label: string;
+}[] = [
   { value: "pizza", label: "Pizza" },
   { value: "burger", label: "Hamburger" },
   { value: "pasta", label: "Pasta" },

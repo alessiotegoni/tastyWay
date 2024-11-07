@@ -101,7 +101,7 @@ const RestaurantProfileForm = ({
             control={form.control}
             name="deliveryInfo.price"
             render={({ field }) => (
-              <div>
+              <div className="basis-1/2">
                 <Label id="deliveryPrice" className="mb-3">
                   Prezzo di consegna
                 </Label>
@@ -118,7 +118,7 @@ const RestaurantProfileForm = ({
             control={form.control}
             name="deliveryInfo.time"
             render={({ field }) => (
-              <div>
+              <div className="basis-1/2">
                 <Label
                   id="deliveryTime"
                   className="text-xs h-[14px] sm:text-sm mb-3"
@@ -179,7 +179,7 @@ const RestaurantProfileForm = ({
                 <p className="font-medium text-sm mb-2">Prezzo</p>
                 <p className="font-medium text-sm mb-2">Tipo di piatto</p>
               </div>
-              <ul className="space-y-10">
+              <ul className="space-y-10 mt-5 md:mt-0">
                 {items.map((item, i) => (
                   <li key={item.id} className="md:restaurant-item__table__body">
                     <FormField
@@ -253,7 +253,7 @@ const RestaurantProfileForm = ({
                         )}
                       />
 
-                      <div className="col-span-4 sm:col-span-1">
+                      <div className="col-span-4 sm:col-span-3 md:col-span-1">
                         <Label className="md:hidden mb-2">Tipo di piatto</Label>
                         <ItemsTypeSelect itemIndex={i} />
                       </div>
@@ -262,13 +262,13 @@ const RestaurantProfileForm = ({
                         control={form.control}
                         name={`items.${i}.description`}
                         render={({ field }) => (
-                          <div className="col-span-4 sm:col-span-3">
+                          <div className="col-span-4 md:col-span-3">
                             <Label className="md:hidden mb-2">
                               Descrizione
                             </Label>
                             <Textarea
                               placeholder="Descrizione"
-                              className="rounded-xl col-span-4 text-xs sm:text-sm"
+                              className="rounded-xl text-xs sm:text-sm"
                               {...field}
                             ></Textarea>
                           </div>
@@ -300,7 +300,11 @@ const RestaurantProfileForm = ({
             </>
           )}
         </div>
-        <ClientFormBtns form={form} isLoading={isPending} className="" />
+        <ClientFormBtns
+          form={form}
+          isLoading={isPending}
+          setItemsImgUrl={setItemsImgUrl}
+        />
       </form>
     </Form>
   );

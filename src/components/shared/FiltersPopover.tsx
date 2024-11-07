@@ -29,8 +29,6 @@ export const FiltersPopover = ({
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
-  // FIXME: add icons to popover content
-
   const handleSelect = (currentValue: string) => {
     setFilters(currentValue);
 
@@ -78,6 +76,7 @@ export const FiltersPopover = ({
                   key={filter.value}
                   value={filter.value}
                   onSelect={handleSelect}
+                  className="cursor-pointer"
                 >
                   {filter.label}
                   <CheckIcon

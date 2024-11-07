@@ -51,7 +51,7 @@ export function ItemsTypeSelect({ itemIndex }: { itemIndex: number }) {
           role="combobox"
           aria-expanded={open}
           className={`w-full items-select__btn justify-between
-          text-white text-sm font-medium col-span-4 sm:col-span-3 md:col-span-1
+          text-white text-sm font-medium h-[48px] md:h-full
           ${!value ? "text-opacity-80" : ""}`}
         >
           {value

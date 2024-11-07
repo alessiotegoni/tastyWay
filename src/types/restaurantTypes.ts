@@ -33,6 +33,7 @@ export type RestaurantItem = {
 };
 
 export type RestaurantRes = {
+  itemsTypes: RestaurantItemsTypes[];
   createdAt: string;
 } & Omit<RestaurantsType, "cuisine">;
 
@@ -138,7 +139,7 @@ export type RestaurantItemsTypes =
 
 export type RestaurantItemsFilters = {
   name: string | null;
-  itemsType: RestaurantItemsTypes[] | null;
+  itemsTypes: RestaurantItemsTypes[];
 };
 
 export type OrderStatus =
