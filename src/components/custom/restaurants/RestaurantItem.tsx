@@ -12,8 +12,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
   const navigate = useNavigate();
 
   const restaurantName = formatRestaurantName(restaurant.name);
-  // const restaurantImg = restaurant.imageUrl ?? "/imgs/default-restaurant.png";
-  const restaurantImg = "/imgs/default-restaurant.png";
+  const restaurantImg = restaurant.imageUrl ?? "/imgs/default-restaurant.png";
   const restaurantCuisine = restaurant.cuisine.map((c, i) => (
     <li
       key={i}
@@ -26,15 +25,13 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
 
   const handleNavigate = () => navigate(`/restaurants/${restaurantName}`);
 
-  // FIXME: switch heart icon with like thumb icon
-
   return (
     <li
       className="lg:flex justify-between m-4 relative restaurant-separator"
       ref={observerRef}
     >
       <div className="col-left sm:flex grow gap-4">
-        <figure className="sm:w-[260px] sm:h-[140px]">
+        <figure className="sm:w-[260px] sm:h-[160px]">
           <img
             src={restaurantImg}
             alt={`${restaurantName}-img`}

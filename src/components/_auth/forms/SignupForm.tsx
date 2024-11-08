@@ -175,7 +175,7 @@ const SignupForm = () => {
           />
           {isError && (
             <div
-              className="rounded-[17px] p-5 font-medium
+              className="rounded-[17px] text-sm sm:text-base p-4 sm:p-5 font-medium
             bg-x-icon-bg-40 border border-x-icon-bg-60"
             >
               {error.response?.data?.message ??

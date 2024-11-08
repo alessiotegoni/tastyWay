@@ -10,7 +10,13 @@ interface RestaurantListItemProps {
 
 const RestaurantListItem = ({
   restaurantId,
-  item: { _id, name, img, description, price },
+  item: {
+    _id,
+    name,
+    img = "https://cdn-icons-png.flaticon.com/512/3225/3225116.png",
+    description,
+    price,
+  },
 }: RestaurantListItemProps) => {
   const { handleSetCart } = useCart();
 
@@ -22,7 +28,7 @@ const RestaurantListItem = ({
          rounded-[20px] overflow-hidden xs:max-w-[200px] xs:max-h-[200px]"
         >
           <img
-            src={img ?? "/imgs/default-restaurant.png"}
+            src={img}
             alt={`${name}-img`}
             className="w-full h-full object-cover"
           />

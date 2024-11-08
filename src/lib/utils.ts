@@ -1,8 +1,9 @@
 import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
 import { CartItem, CartItemType } from "@/contexts/CartContext";
 import { ApiError } from "@/types/apiTypes";
-import { OrderStatus } from "@/types/userTypes";
+import { OrderStatus, UserJwt } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -59,7 +60,8 @@ export const getNoRestaurantsProps = (
   removeSelectedAddress: () => void
 ): ErrorWidgetProps => ({
   title: "Oops! Non abbiamo trovato il ristorante che stai cercando.",
-  className: "primary-widget-bg border border-primary-20 rounded-[30px]",
+  className:
+    "primary-widget-bg border border-primary-20 rounded-[30px] max-w-[650px]",
   subtitle:
     "Ma non preoccuparti! Prova a controllare la tua ricerca per eventuali errori di ortografia, oppure esplora ristoranti simili che potrebbero piacerti. Continuare la tua esplorazione?",
   btns: [
@@ -193,7 +195,7 @@ export const getExpectedTime = (isoDate: string) => {
   return `${hours}:${minutes}`;
 };
 
-export const getOrderDate = (isoDate: string): string => {
+export const getDate = (isoDate: string): string => {
   const date = new Date(isoDate);
   const today = new Date();
   const yesterday = new Date(today);
@@ -253,13 +255,21 @@ export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
 export const getOrderStatusIcon = (orderStatus: OrderStatus) =>
   `/icons/${orderStatus.toLowerCase().replaceAll(" ", "-")}-icon.png`;
 
-export const checkUserPass = (
-  isCmpAccount: boolean | undefined,
-  pathname: string
-) => {
+export const checkUserPass = (isCmpAccount: boolean | undefined) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const redirect = searchParams.get("redirect");
+
   let canPass = true;
 
   const isActiveOrders = pathname.includes("/active-orders");
+
+  if (isCmpAccount && redirect?.startsWith("my-restaurant")) {
+    navigate(`/${redirect}`);
+    return true;
+  }
 
   if (isCmpAccount && !pathname.includes("/my-restaurant") && !isActiveOrders)
     canPass = false;

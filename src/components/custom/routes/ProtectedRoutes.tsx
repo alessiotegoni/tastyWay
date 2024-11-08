@@ -1,20 +1,16 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { checkUserPass } from "@/lib/utils";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-  const { user, isAuthenticated, isRefreshingToken } = useAuth();
+  const { user, isAuthenticated, isLoadingToken } = useAuth();
 
-  if (isRefreshingToken) return;
+  if (isLoadingToken) return;
 
-  const { pathname } = useLocation();
+  const canPass = checkUserPass(user?.isCmpAccount);
 
-  const canPass = checkUserPass(user?.isCmpAccount, pathname);
+  if (isAuthenticated && user && canPass) return <Outlet />;
 
-  return isAuthenticated && !!user && canPass ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" />
-  );
+  return <Navigate to="/" />;
 };
 export default ProtectedRoutes;

@@ -32,18 +32,16 @@ const SigninForm = () => {
   }, [isSuccess]);
 
   const onSubmit: SubmitHandler<SigninType> = async (data) => {
-    if (isPending) return
+    if (isPending) return;
 
-    await signin(data)
+    await signin(data);
 
-    toast({ title: "Accesso effetuato con successo" })
-  }
+    toast({ title: "Accesso effetuato con successo" });
+  };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col my-5 gap-[15px]">
           <FormField
             control={form.control}
@@ -79,7 +77,7 @@ const SigninForm = () => {
           />
           {isError && (
             <div
-              className="rounded-[17px] p-5 font-medium
+              className="rounded-[17px] text-sm sm:text-base p-4 sm:p-5 font-medium
             bg-x-icon-bg-40 border border-x-icon-bg-60"
             >
               {error.response?.data?.message ??

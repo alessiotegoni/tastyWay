@@ -9,23 +9,31 @@ import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import { CuisineTypesSelect } from "../my-restaurant/CuisineTypesSelect";
 import { ItemsTypeSelect } from "../my-restaurant/ItemsTypeSelect";
 import { ChangeEvent, useState } from "react";
-import { useUpdateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
+import {
+  useCreateMyRestaurant,
+  useUpdateMyRestaurant,
+} from "@/lib/react-query/mutations/restaurantMutations";
 import { toast } from "@/hooks/use-toast";
 import ClientFormBtns from "../../shared/ClientFormBtns";
 
+interface RestaurantProfileProps {
+  restaurantName: string | undefined;
+  hasntRestaurant: boolean;
+}
+
 const RestaurantProfileForm = ({
   restaurantName,
-}: {
-  restaurantName: string | undefined;
-}) => {
+  hasntRestaurant,
+}: RestaurantProfileProps) => {
   const [itemsImgUrl, setItemsImgUrl] = useState<(string | undefined)[]>([]);
 
   const form = useFormContext<RestaurantProfileType>();
 
-  const { mutateAsync: updateRestaurant, isPending } = useUpdateMyRestaurant(
-    form,
-    restaurantName
-  );
+  const { mutateAsync: createRestaurant, isPending: isCreating } =
+    useCreateMyRestaurant();
+
+  const { mutateAsync: updateRestaurant, isPending: isUpdating } =
+    useUpdateMyRestaurant(form, restaurantName);
 
   const {
     fields: items,
@@ -50,18 +58,24 @@ const RestaurantProfileForm = ({
   };
 
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
-    if (isPending) return;
+    if (isCreating || isUpdating) return;
 
     try {
-      await updateRestaurant(data);
+      hasntRestaurant
+        ? await createRestaurant(data)
+        : await updateRestaurant(data);
       toast({
-        description: "Ristorante aggiornato con successo",
+        description: `Ristorante ${
+          hasntRestaurant ? "creato" : "aggiornato"
+        } con successo`,
       });
     } catch (err: any) {
       toast({
         description:
           err.response.data.message ??
-          "Errore nell'aggiornamento del ristorante",
+          `Errore ${
+            hasntRestaurant ? "nella creazione" : "nell'aggiornamento"
+          } del ristorante`,
         variant: "destructive",
       });
     }
@@ -85,7 +99,7 @@ const RestaurantProfileForm = ({
               </div>
             )}
           />
-          <div className="grow">
+          <div className="grow relative">
             <Label htmlFor="address" className="mb-3">
               Indirizzo
             </Label>
@@ -302,7 +316,7 @@ const RestaurantProfileForm = ({
         </div>
         <ClientFormBtns
           form={form}
-          isLoading={isPending}
+          isLoading={isUpdating}
           setItemsImgUrl={setItemsImgUrl}
         />
       </form>

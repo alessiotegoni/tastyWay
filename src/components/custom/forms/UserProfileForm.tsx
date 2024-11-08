@@ -1,5 +1,4 @@
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
-import { Button } from "@/components/ui/button";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,13 +9,13 @@ import { useGetUserProfile } from "@/lib/react-query/queries/userQueries";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ClientFormBtns from "../../shared/ClientFormBtns";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
 
-  const navigate = useNavigate();
+  const [_, setSearchParams] = useSearchParams();
 
   const form = useFormContext<UserProfileType>();
 
@@ -28,9 +27,15 @@ const UserProfileForm = () => {
 
   const {
     mutateAsync: updateUserProfile,
+    isSuccess: hasUpdatedUser,
     isPending: isUpdatingUP,
     error,
   } = useUpdateUserProfile();
+
+  useEffect(() => {
+    if (hasUpdatedUser && userProfile?.isCompanyAccount)
+      setSearchParams({ redirect: "my-restaurant" });
+  }, [hasUpdatedUser]);
 
   // isDirty = Se il form o il campo e' stato modificato (diverso da quello di prima)
 
@@ -42,8 +47,6 @@ const UserProfileForm = () => {
       await refreshToken();
 
       toast({ description: res.message });
-
-      if (data.isCompanyAccount) navigate("/my-restaurant");
     } catch (err) {
       toast({
         description:

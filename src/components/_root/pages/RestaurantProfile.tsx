@@ -24,7 +24,10 @@ const RestaurantProfile = () => {
     if (data) form.reset(data, { keepDirty: false });
   }, [data]);
 
-  return !isError ? (
+  const hasntRestaurant =
+    isError && error?.response?.data.message === "Crea il tuo ristorante";
+
+  return hasntRestaurant || data ? (
     <section className="restaurant-profile__body min-h-[500px]">
       <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-5">
         Dettagli Ristorante
@@ -36,11 +39,14 @@ const RestaurantProfile = () => {
         </div>
       ) : (
         <FormProvider {...form}>
-          <RestaurantProfileForm restaurantName={data?.name} />
+          <RestaurantProfileForm
+            restaurantName={data?.name}
+            hasntRestaurant={hasntRestaurant}
+          />
         </FormProvider>
       )}
     </section>
-  ) : (
+  ) : !isLoading ? (
     <ErrorWidget
       className="restaurant-widget mx-auto max-w-[650px]"
       title="Ops! Qualcosa è andato storto..."
@@ -55,6 +61,12 @@ const RestaurantProfile = () => {
         },
       ]}
     />
+  ) : (
+    <section className="restaurant-profile__body min-h-[500px]">
+      <div className="flex-center mt-2 h-full">
+        <Loader2 size={50} />
+      </div>
+    </section>
   );
 };
 export default RestaurantProfile;

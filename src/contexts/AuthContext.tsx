@@ -14,6 +14,7 @@ interface AuthContextType {
   accessToken: string | undefined;
   user: UserJwt | null;
   isAuthenticated: boolean;
+  isLoadingToken: boolean;
   isRefreshingToken: boolean;
   logout: UseMutateAsyncFunction<LogoutRes, ApiError, void, unknown>;
   refreshToken: (
@@ -35,7 +36,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const {
     data: accessToken,
     isError,
-    isLoading: isRefreshingToken,
+    isLoading: isLoadingToken,
+    isRefetching: isRefreshingToken,
     refetch: refreshToken,
   } = useRefreshToken();
 
@@ -52,6 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isAuthenticated,
         logout,
         refreshToken,
+        isLoadingToken,
         isRefreshingToken,
         user,
       }}

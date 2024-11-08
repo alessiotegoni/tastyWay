@@ -21,9 +21,9 @@ enum PAGES {
 }
 
 const Navbar = ({ pageNum }: NavbarProps) => {
-  const { isAuthenticated, user, logout, isRefreshingToken } = useAuth();
+  const { isAuthenticated, user, logout, isLoadingToken } = useAuth();
 
-  const navRightBtn = isRefreshingToken ? (
+  const navRightBtn = isLoadingToken ? (
     <Skeleton className="user-btn user-btn-bg w-[180px] h-[45px] rounded-3xl" />
   ) : isAuthenticated && user ? (
     <UserDropdown user={user} logoutFn={logout} />

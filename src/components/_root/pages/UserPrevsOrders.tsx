@@ -7,7 +7,7 @@ import {
   useGetActiveOrders,
   useGetPrevOrders,
 } from "@/lib/react-query/queries/userQueries";
-import { formatRestaurantName, getOrderDate } from "@/lib/utils";
+import { formatRestaurantName, getDate } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
@@ -96,7 +96,7 @@ const UserPrevsOrders = () => {
                     </figcaption>
                     <div className="flex-between">
                       <p className="text-white/80 text-lg font-semibold">
-                        {getOrderDate(lastOrder!.createdAt)}
+                        {getDate(lastOrder!.createdAt)}
                       </p>
                       <div className="flex-center gap-2">
                         <Button
@@ -149,7 +149,7 @@ const UserPrevsOrders = () => {
             <div className="prev-orders__container user-widget border-t-0">
               <ul className="w-full space-y-4 md:space-y-2">
                 {prevOrders.map((order, i) => {
-                  const orderDate = getOrderDate(order.createdAt);
+                  const orderDate = getDate(order.createdAt);
 
                   return (
                     <li

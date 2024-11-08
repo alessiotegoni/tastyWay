@@ -3,13 +3,13 @@ import { OrderItem } from "./restaurantTypes";
 export interface UserJwt {
   id: string;
   email: string;
-  restaurantName?: string
-  imageUrl?: string
+  restaurantName?: string;
+  imageUrl?: string;
   name: string;
   surname: string;
   address: string;
   isCmpAccount: boolean;
-  createdAt: number;
+  createdAt: string;
   exp: number;
   iat: number;
 }
