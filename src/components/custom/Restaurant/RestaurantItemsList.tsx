@@ -23,7 +23,7 @@ const RestauranItemsList = ({
     <ul className="restaurant__items__list">
       {isLoading && <RestaurantItemSkeleton />}
       {!isLoading &&
-        !!restaurantItems?.length &&
+        !!restaurantItems.length &&
         restaurantItems.map((item) => (
           <RestaurantListItem
             key={item._id}

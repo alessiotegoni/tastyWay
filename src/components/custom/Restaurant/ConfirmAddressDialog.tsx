@@ -8,79 +8,28 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useAddress } from "@/contexts/AddressContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { CartItem } from "@/contexts/CartContext";
-import { toast } from "@/hooks/use-toast";
-import { useCreateCheckoutSession } from "@/lib/react-query/mutations/userMutations";
 import { Loader2 } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 interface ConfirmAddressDialogProps {
-  restaurantId: string;
-  restaurantName: string;
-  deliveryPrice: number;
-  items: CartItem[];
   disabled: boolean;
+  handleCreateSession: () => void;
+  isPending: boolean;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const ConfirmAddressDialog = ({
-  disabled,
-  items,
-  restaurantName,
-  deliveryPrice,
-  restaurantId,
+  handleCreateSession,
+  isPending,
+  isOpen,
+  onClose
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
-  const { isAuthenticated, user } = useAuth();
-
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const { mutateAsync: createSession, isPending } = useCreateCheckoutSession();
-
-  const gotoSignin = () => navigate(`/signin?redirect=${pathname}`);
-
-  const handleClick = async () => {
-    if (!isAuthenticated || !!!user) return gotoSignin();
-
-    if (!items.length && !isPending) return;
-
-    try {
-      const sessionUrl = await createSession({
-        restaurantId,
-        restaurantName,
-        items,
-        deliveryPrice,
-        address: selectedAddress!,
-      });
-
-      window.location.href = sessionUrl;
-    } catch (err) {
-      toast({
-        title: "Errore",
-        description: user.isCmpAccount
-          ? "I ristoranti non possono ordinare"
-          : "Errore nel redirect alla pagina di pagamento",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleOnOpen = (open: boolean) =>
-    !isAuthenticated && open && gotoSignin();
 
   return (
-    <AlertDialog onOpenChange={handleOnOpen}>
-      <AlertDialogTrigger
-        disabled={disabled}
-        className="btn mt-4 bg-[#ec01017e] w-full py-[14px]
-              rounded-xl border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
-      >
-        Checkout
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen}>
       <AlertDialogContent
         className="bg-home-widget backdrop-blur-[200px] border-0
       rounded-[40px]"
@@ -104,14 +53,15 @@ const ConfirmAddressDialog = ({
         />
         <AlertDialogFooter>
           <AlertDialogCancel
+            onClick={onClose}
             className="btn px-4 py-3 bg-x-icon-bg-70
           hover:bg-x-icon-bg rounded-xl font-medium border-0"
           >
             Annulla
           </AlertDialogCancel>
           <AlertDialogAction
-            disabled={!!!selectedAddress && isPending}
-            onClick={handleClick}
+            disabled={!selectedAddress && isPending}
+            onClick={handleCreateSession}
             className="btn px-4 py-3 bg-primary-70
           hover:bg-primary-90 rounded-xl font-medium border-0"
           >

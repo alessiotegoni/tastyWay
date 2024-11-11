@@ -1,5 +1,6 @@
+import ConfirmAddressDialog from "@/components/custom/restaurant/ConfirmAddressDialog";
+import PaymentErrorAlert from "@/components/custom/restaurant/paymentErrorAlert";
 import RestaurantCart from "@/components/custom/restaurant/RestaurantCart";
-import RestaurantCartMobileDialog from "@/components/custom/restaurant/RestaurantCartMobileDialog";
 import RestaurantHeader from "@/components/custom/restaurant/RestaurantHeader";
 import RestauranItemsList from "@/components/custom/restaurant/RestaurantItemsList";
 import FiltersPopover from "@/components/shared/FiltersPopover";
@@ -7,14 +8,24 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
 import { restaurantItemFilters } from "@/config/filtersConfig";
+import { useAddress } from "@/contexts/AddressContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
+import { useCart } from "@/hooks/useCart";
+import { useCreateCheckoutSession } from "@/lib/react-query/mutations/userMutations";
 import { useGetRestaurantInfo } from "@/lib/react-query/queries/restaurantQueries";
 import {
   RestaurantItemsFilters,
   RestaurantItemsTypes,
 } from "@/types/restaurantTypes";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 const defaultItemsFilters: RestaurantItemsFilters = {
   name: null,
@@ -22,15 +33,21 @@ const defaultItemsFilters: RestaurantItemsFilters = {
 };
 
 const Restaurant = () => {
-  const { restaurantName } = useParams();
+  const { isAuthenticated, user } = useAuth();
+  const { selectedAddress } = useAddress();
 
   const [itemsFilters, setItemsFilters] = useState(defaultItemsFilters);
+  const [isErrAlertOpen, setIsErrAlertOpen] = useState(false);
+  const [isCADOpen, setIsCADOpen] = useState(false); // CAD = confirm address dialog
 
-  const handleSetFilters = (currentValue?: RestaurantItemsTypes) =>
-    setItemsFilters({
-      ...itemsFilters,
-      itemsTypes: currentValue ? [currentValue] : [],
-    });
+  const { pathname } = useLocation();
+  const { restaurantName } = useParams();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("failed")) setIsErrAlertOpen(true);
+  }, [searchParams]);
 
   const {
     data: restaurant,
@@ -39,11 +56,69 @@ const Restaurant = () => {
     isError,
     error,
   } = useGetRestaurantInfo(restaurantName);
+  const { mutateAsync: createSession, isPending: isCreatingSession } =
+    useCreateCheckoutSession();
+
+  const { restaurantCart } = useCart(restaurant?._id);
+
+  const handleCreateSession = async () => {
+    if (!isAuthenticated || !user)
+      return navigate(`/signin?redirect=${pathname}`);
+    if (!restaurant || !selectedAddress || user.isCmpAccount) return;
+
+    if (!restaurantCart.length && !isCreatingSession) return;
+
+    try {
+      const sessionUrl = await createSession({
+        restaurantId: restaurant._id,
+        itemsIds: restaurantCart.map((i) => i._id),
+        address: selectedAddress,
+      });
+
+      window.location.href = sessionUrl;
+    } catch (err: any) {
+      toast({
+        title: "Errore",
+        description:
+          err.message ?? "Errore nel redirect alla pagina di pagamento",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSetFilters = (currentValue?: RestaurantItemsTypes) =>
+    setItemsFilters({
+      ...itemsFilters,
+      itemsTypes: currentValue ? [currentValue] : [],
+    });
+
+  const cartEl = isSuccess && (
+    <RestaurantCart
+      openCAD={() => setIsCADOpen(true)}
+      restaurantId={restaurant._id}
+      deliveryPrice={restaurant.deliveryInfo.price}
+    />
+  );
 
   return (
     <div className="hero">
       <Navbar pageNum={4} />
       <main className="restaurant pt-0">
+        <PaymentErrorAlert
+          isOpen={isErrAlertOpen}
+          onClose={() => {
+            setIsErrAlertOpen(false);
+            setSearchParams({});
+          }}
+          onRetry={() => handleCreateSession()}
+        />
+        <ConfirmAddressDialog
+          disabled={!restaurantCart.length}
+          handleCreateSession={handleCreateSession}
+          isPending={isCreatingSession}
+          isOpen={isCADOpen}
+          onClose={() => setIsCADOpen(false)}
+        />
         <img
           src="/imgs/restaurants-bg.png"
           alt="restaurants-bg-img"
@@ -61,7 +136,7 @@ const Restaurant = () => {
               ) : (
                 <RestaurantHeaderSkeleton />
               )}
-              <div className="sm:flex-between mb-3 sm:mb-0 max-w-[638.66px]">
+              <div className="sm:flex-between mb-3 sm:mb-0">
                 <div
                   className="bg-home-widget border border-home-widget-border-30
                 rounded-[50px] p-2 px-5 flex-center gap-3 my-3 backdrop-blur-[123px]
@@ -84,13 +159,7 @@ const Restaurant = () => {
                       )}
                       setFilters={handleSetFilters}
                     />
-                    {isSuccess && (
-                      <RestaurantCartMobileDialog
-                        restaurantId={restaurant._id}
-                        restaurantName={restaurant.name}
-                        restaurantPrice={restaurant.deliveryInfo.price}
-                      />
-                    )}
+                    <div className="block md:hidden">{cartEl}</div>
                   </div>
                 )}
               </div>
@@ -99,19 +168,13 @@ const Restaurant = () => {
                 itemsFilters={itemsFilters}
               />
             </div>
-            {isSuccess && !!restaurant && (
-              <div
-                className="hidden md:block col sticky top-7 bg-home-widget
-                  border border-primary-20 backdrop-blur-[123px] rounded-[30px]
-                  p-5 h-fit basis-[350px]"
-              >
-                <RestaurantCart
-                  restaurantId={restaurant._id}
-                  restaurantName={restaurant.name}
-                  deliveryPrice={restaurant.deliveryInfo.price}
-                />
-              </div>
-            )}
+            <div
+              className="hidden md:block col sticky top-7 bg-home-widget
+                border border-primary-20 backdrop-blur-[123px] rounded-[30px]
+                p-5 h-fit basis-[350px]"
+            >
+              {cartEl}
+            </div>
           </div>
         </div>
       </main>
