@@ -1,6 +1,5 @@
 import PlacesAutocomplete, { Suggestion } from "react-places-autocomplete";
 import { Input } from "../../ui/input";
-import { Skeleton } from "../../ui/skeleton";
 import {
   Command,
   CommandList,
@@ -17,9 +16,8 @@ import XIconBtn from "../XIconBtn";
 // const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 interface LocationAutocompleteProps {
-  placeholder: string;
-  shouldShowLatestResearchs: boolean;
-  defaultValue?: string;
+  placeholder?: string;
+  shouldShowLatestResearchs?: boolean;
   className?: string;
   inputClassName?: string;
 }
@@ -30,16 +28,21 @@ const searchOptions = {
 };
 
 const LocationAutocomplete = ({
-  placeholder,
-  shouldShowLatestResearchs,
-  defaultValue,
+  placeholder = "",
+  shouldShowLatestResearchs = false,
   className,
   inputClassName,
 }: LocationAutocompleteProps) => {
+  const form = useFormContext<{ address: string }>();
+  const formAddress = form?.watch("address");
+
+  const { handleSetSelectedAddress, removeSelectedAddress } = useAddress();
+
   const [userInput, setUserInput] = useState("");
 
-  const { selectedAddress, handleSetSelectedAddress, removeSelectedAddress } =
-    useAddress();
+  useEffect(() => {
+    if (formAddress) setUserInput(formAddress);
+  }, [formAddress]);
 
   const {
     searchedLocations,
@@ -49,8 +52,6 @@ const LocationAutocomplete = ({
     handleShowLatestResearchs,
     latestResearchs,
   } = useLatestResearch(userInput, shouldShowLatestResearchs);
-
-  const form = useFormContext<{ address: string }>();
 
   const setFormAddress = (
     selectedAddress: string,
@@ -62,20 +63,6 @@ const LocationAutocomplete = ({
         shouldDirty,
       });
   };
-
-  useEffect(() => {
-    if (defaultValue) {
-      setUserInput(defaultValue);
-      setFormAddress(defaultValue);
-    }
-  }, [defaultValue]);
-
-  useEffect(() => {
-    if (selectedAddress && !defaultValue) {
-      setUserInput(selectedAddress);
-      setFormAddress(selectedAddress);
-    }
-  }, [selectedAddress]);
 
   const handleSelect = async (value: string) => {
     const address = value?.replace(", Italia", "");

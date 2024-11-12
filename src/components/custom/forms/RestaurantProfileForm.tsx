@@ -103,11 +103,7 @@ const RestaurantProfileForm = ({
             <Label htmlFor="address" className="mb-3">
               Indirizzo
             </Label>
-            <LocationAutocomplete
-              placeholder=""
-              shouldShowLatestResearchs={false}
-              defaultValue={form.getValues("address")}
-            />
+            <LocationAutocomplete />
           </div>
         </div>
         <div className="flex my-5 gap-3">

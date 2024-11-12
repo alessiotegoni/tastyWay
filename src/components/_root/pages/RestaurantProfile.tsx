@@ -1,5 +1,6 @@
 import RestaurantProfileForm from "@/components/custom/forms/RestaurantProfileForm";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
+import { useAddress } from "@/contexts/AddressContext";
 import { useGetMyRestaurant } from "@/lib/react-query/queries/restaurantQueries";
 import {
   defaultRestaurantValues,
@@ -12,12 +13,17 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const RestaurantProfile = () => {
+  const { selectedAddress } = useAddress();
+
   const { data, isLoading, error, isError, refetch } = useGetMyRestaurant();
 
   const form = useForm<RestaurantProfileType>({
     resolver: zodResolver(restaurantProfileSchema),
     mode: "onSubmit",
-    defaultValues: data ?? defaultRestaurantValues,
+    defaultValues: data ?? {
+      ...defaultRestaurantValues,
+      address: selectedAddress ?? "",
+    },
   });
 
   useEffect(() => {

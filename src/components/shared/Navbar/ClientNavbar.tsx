@@ -1,4 +1,5 @@
 import { tastyWayLogo } from "@/constants";
+import { useAuth } from "@/contexts/AuthContext";
 import { ReactElement } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
@@ -7,6 +8,7 @@ interface ClientNavbarProps {
 }
 
 const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
+  const { user } = useAuth();
   const { pathname } = useLocation();
 
   const isUserNavbar = pathname.startsWith("/user");
@@ -39,25 +41,27 @@ const ClientNavbar = ({ navRightBtn }: ClientNavbarProps) => {
               />
               <p className="hidden sm:block">Home</p>
             </Link>
-            <NavLink
-              to={`/${isUserNavbar ? "user" : "my-restaurant"}/orders`}
-              className={`btn client-nav-btn ${
-                isUserNavbar ? "user-btn" : "restaurant-btn"
-              }`}
-              // className={({ isActive }) =>
-              //   `btn client-nav-btn ${
-              //     isUserNavbar ? "user-btn" : "restaurant-btn"
-              //   } ${isActive ? "active" : ""}`
-              // } di default react router dom aggiunge la classe
-              // active al link che coincide con la route
-            >
-              <img
-                src="/icons/order-icon.png"
-                alt="order-icon"
-                className="w-7 h-7"
-              />
-              <p className="hidden sm:block">Ordini</p>
-            </NavLink>
+            {((!isUserNavbar && user?.restaurantName) || isUserNavbar) && (
+              <NavLink
+                to={`/${isUserNavbar ? "user" : "my-restaurant"}/orders`}
+                className={`btn client-nav-btn ${
+                  isUserNavbar ? "user-btn" : "restaurant-btn"
+                }`}
+                // className={({ isActive }) =>
+                //   `btn client-nav-btn ${
+                //     isUserNavbar ? "user-btn" : "restaurant-btn"
+                //   } ${isActive ? "active" : ""}`
+                // } di default react router dom aggiunge la classe
+                // active al link che coincide con la route
+              >
+                <img
+                  src="/icons/order-icon.png"
+                  alt="order-icon"
+                  className="w-7 h-7"
+                />
+                <p className="hidden sm:block">Ordini</p>
+              </NavLink>
+            )}
             <NavLink
               to={`/${isUserNavbar ? "user" : "my-restaurant"}`}
               className={({ isActive }) =>

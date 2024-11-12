@@ -4,11 +4,14 @@ import RestaurantActiveOrderSkeleton from "@/components/skeletons/RestaurantActi
 import UserActiveOrderSkeleton from "@/components/skeletons/UserActiveOrderSkeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetActiveOrders } from "@/lib/react-query/queries/userQueries";
+import { Navigate } from "react-router-dom";
 
 const ActiveOrders = () => {
   const { user, isAuthenticated } = useAuth();
 
-  const { isCmpAccount } = user!;
+  const { isCmpAccount, restaurantName } = user!;
+
+  if (isCmpAccount && !restaurantName) return <Navigate to="/" />;
 
   const { data, isLoading, isError, error } = useGetActiveOrders(
     isCmpAccount,

@@ -11,7 +11,7 @@ import { toast } from "@/hooks/use-toast";
 import { ApiError, LogoutRes } from "@/types/apiTypes";
 import { UserJwt } from "@/types/userTypes";
 import { UseMutateAsyncFunction } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface UserDropdowenProps {
   user: UserJwt | null;
@@ -22,16 +22,27 @@ const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
   const { removeSelectedAddress } = useAddress();
 
   const isCmpAccount = user!.isCmpAccount;
+  const { pathname } = useLocation();
 
   const menuItems = (
     isCmpAccount ? restaurantDropdownLinks : userDropdownLinks
   ).map((l, i) => {
+    const disabled =
+      l.link === "/my-restaurant/orders" &&
+      isCmpAccount &&
+      !user?.restaurantName;
+
     return (
       <DropdownMenuItem
         key={i}
-        className="mx-1 my-2 hover:cursor-pointer hover:underline"
+        className="mx-1 my-2 hover:cursor-pointer hover:underline has-[aria-disabled]:"
+        disabled={disabled}
       >
-        <Link to={l.link} className="flex items-center gap-3">
+        <Link
+          to={disabled ? pathname : l.link}
+          className="flex items-center gap-3"
+          aria-disabled={disabled}
+        >
           <img src={l.img} alt={l.alt} className="w-5 h-5 object-contain" />
           <p className="font-medium">{l.name}</p>
         </Link>

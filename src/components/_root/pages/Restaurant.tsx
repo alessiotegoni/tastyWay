@@ -1,5 +1,5 @@
 import ConfirmAddressDialog from "@/components/custom/restaurant/ConfirmAddressDialog";
-import PaymentErrorAlert from "@/components/custom/restaurant/paymentErrorAlert";
+import PaymentErrorAlert from "@/components/custom/restaurant/PaymentErrorAlert";
 import RestaurantCart from "@/components/custom/restaurant/RestaurantCart";
 import RestaurantHeader from "@/components/custom/restaurant/RestaurantHeader";
 import RestauranItemsList from "@/components/custom/restaurant/RestaurantItemsList";
@@ -92,7 +92,7 @@ const Restaurant = () => {
       itemsTypes: currentValue ? [currentValue] : [],
     });
 
-  const cartEl = isSuccess && (
+  const cartEl = isSuccess && !user?.isCmpAccount && (
     <RestaurantCart
       openCAD={() => setIsCADOpen(true)}
       restaurantId={restaurant._id}
@@ -124,7 +124,11 @@ const Restaurant = () => {
           alt="restaurants-bg-img"
           className="bg-img"
         />
-        <div className="mx-auto md:max-w-[1000px]">
+        <div
+          className={`mx-auto ${
+            user?.isCmpAccount ? "max-w-[600px]" : "md:max-w-[1000px]"
+          }`}
+        >
           <div className="row flex gap-3">
             <div className="col grow md:basis-[640px]">
               {!isLoading && restaurant ? (
@@ -168,13 +172,15 @@ const Restaurant = () => {
                 itemsFilters={itemsFilters}
               />
             </div>
-            <div
-              className="hidden md:block col sticky top-7 bg-home-widget
-                border border-primary-20 backdrop-blur-[123px] rounded-[30px]
-                p-5 h-fit basis-[350px]"
-            >
-              {cartEl}
-            </div>
+            {!user?.isCmpAccount && (
+              <div
+                className="hidden md:block col sticky top-7 bg-home-widget
+                  border border-primary-20 backdrop-blur-[123px] rounded-[30px]
+                  p-5 h-fit basis-[350px]"
+              >
+                {cartEl}
+              </div>
+            )}
           </div>
         </div>
       </main>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { RestaurantItem } from "@/types/restaurantTypes";
 import { PlusIcon } from "lucide-react";
@@ -19,6 +20,7 @@ const RestaurantListItem = ({
   },
 }: RestaurantListItemProps) => {
   const { handleSetCart } = useCart();
+  const { user } = useAuth();
 
   return (
     <li className="restaurant__item restaurant-separator">
@@ -45,23 +47,25 @@ const RestaurantListItem = ({
       items-center sm:items-end"
       >
         <h2 className="text-[25px]">${price}</h2>
-        <Button
-          onClick={() =>
-            handleSetCart({
-              restaurantId,
-              itemId: _id,
-              name,
-              img,
-              price,
-              type: "ADD",
-            })
-          }
-          className="btn bg-[#ec01018a] hover:bg-[#ec0101d7]
-           font-normal text-[30px] border border-[#FE0000]
-           w-[50px] h-[50px] rounded-full"
-        >
-          <PlusIcon />
-        </Button>
+        {!user?.isCmpAccount && (
+          <Button
+            onClick={() =>
+              handleSetCart({
+                restaurantId,
+                itemId: _id,
+                name,
+                img,
+                price,
+                type: "ADD",
+              })
+            }
+            className="btn bg-[#ec01018a] hover:bg-[#ec0101d7]
+            font-normal text-[30px] border border-[#FE0000]
+            w-[50px] h-[50px] rounded-full"
+          >
+            <PlusIcon />
+          </Button>
+        )}
       </div>
     </li>
   );

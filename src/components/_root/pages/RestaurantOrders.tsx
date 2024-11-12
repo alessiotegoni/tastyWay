@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 import { orderStatuses } from "@/constants";
+import { useAuth } from "@/contexts/AuthContext";
 import { useGetRestaurantOrders } from "@/lib/react-query/queries/restaurantQueries";
 import {
   getExpectedTime,
@@ -19,9 +20,13 @@ import {
 import { OrderStatus, RestaurantOrdersFilters } from "@/types/restaurantTypes";
 import { XIcon } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const RestaurantOrders = () => {
+  const { user } = useAuth();
+
+  if (!user?.restaurantName) return <Navigate to="/" />;
+
   const defaultFilters: RestaurantOrdersFilters = {
     orderInfo: null,
     statusTypes: [],
