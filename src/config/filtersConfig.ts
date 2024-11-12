@@ -1,6 +1,4 @@
-import {
-  RestaurantItemsTypes,
-} from "@/types/restaurantTypes";
+import { RestaurantItemsTypes } from "@/types/restaurantTypes";
 
 // type RestaurantFiltersType = {
 //   value: RestaurantTypeFilter;
@@ -17,16 +15,8 @@ export const restaurantsFilters = [
     label: "Costoso",
   },
   {
-    value: "top_rated",
-    label: "Migliori recensioni",
-  },
-  {
     value: "fast_delivery",
     label: "Consegna rapida",
-  },
-  {
-    value: "new",
-    label: "Nuovo",
   },
   {
     value: "trending",

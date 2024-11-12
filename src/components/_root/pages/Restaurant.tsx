@@ -13,7 +13,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useCart } from "@/hooks/useCart";
 import { useCreateCheckoutSession } from "@/lib/react-query/mutations/userMutations";
-import { useGetRestaurantInfo } from "@/lib/react-query/queries/restaurantQueries";
+import {
+  useGetRestaurantInfo,
+  useGetRestaurantItems,
+} from "@/lib/react-query/queries/restaurantQueries";
 import {
   RestaurantItemsFilters,
   RestaurantItemsTypes,
@@ -51,15 +54,18 @@ const Restaurant = () => {
 
   const {
     data: restaurant,
-    isLoading,
+    isLoading: isLoadingInfo,
     isSuccess,
-    isError,
-    error,
   } = useGetRestaurantInfo(restaurantName);
+  const { data: restaurantItems, isLoading: isLoadingItems } =
+    useGetRestaurantItems(restaurant?._id, itemsFilters);
+
   const { mutateAsync: createSession, isPending: isCreatingSession } =
     useCreateCheckoutSession();
 
   const { restaurantCart } = useCart(restaurant?._id);
+
+  // FIXME: useCart context, make useAddress only an hook
 
   const handleCreateSession = async () => {
     if (!isAuthenticated || !user)
@@ -131,7 +137,7 @@ const Restaurant = () => {
         >
           <div className="row flex gap-3">
             <div className="col grow md:basis-[640px]">
-              {!isLoading && restaurant ? (
+              {!isLoadingInfo && restaurant ? (
                 <RestaurantHeader
                   restaurantName={restaurant.name}
                   restaurantImg={restaurant.imageUrl}
@@ -169,7 +175,8 @@ const Restaurant = () => {
               </div>
               <RestauranItemsList
                 restaurantId={restaurant?._id}
-                itemsFilters={itemsFilters}
+                restaurantItems={restaurantItems}
+                isLoading={isLoadingItems}
               />
             </div>
             {!user?.isCmpAccount && (

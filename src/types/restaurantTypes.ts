@@ -37,11 +37,6 @@ export type RestaurantRes = {
   createdAt: string;
 } & Omit<RestaurantsType, "cuisine">;
 
-export type RestaurantItemRes = {
-  nextCursor: string | null;
-  restaurantItems: RestaurantItem[];
-};
-
 export type RestaurantActiveOrder = {
   orderId: string;
   customerSurname: string;
@@ -90,9 +85,7 @@ export type FoodType =
 export type RestaurantTypeFilter =
   | "cheap"
   | "expensive"
-  | "top_rated"
   | "fast_delivery"
-  | "new"
   | "trending";
 
 export type RestaurantFilters = {

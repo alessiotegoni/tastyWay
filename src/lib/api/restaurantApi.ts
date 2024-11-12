@@ -7,7 +7,7 @@ import {
 import {
   OrderStatus,
   RestaurantFilters,
-  RestaurantItemRes,
+  RestaurantItem,
   RestaurantItemsFilters,
   RestaurantOrdersFilters,
   RestaurantOrdersRes,
@@ -39,22 +39,16 @@ export const getRestaurants = async (
 
 export const getRestaurantItems = async (
   restaurantId: string,
-  pageParam: unknown,
   filters: RestaurantItemsFilters
-) => {
-  const { data } = await api.get<RestaurantItemRes>(
-    `/restaurants/${restaurantId}/items`,
-    {
+) =>
+  (
+    await api.get<RestaurantItem[]>(`/restaurants/${restaurantId}/items`, {
       params: {
-        pageParam,
         filters,
         limit: RESTAURANT_ITEMS_LIMIT,
       },
-    }
-  );
-
-  return data;
-};
+    })
+  ).data;
 
 export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
   (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;

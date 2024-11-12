@@ -75,7 +75,7 @@ const Restaurants = () => {
           alt="restaurants-bg-img"
           className="bg-img"
         />
-        <div className="">
+        <div>
           <div className="flex flex-col items-center gap-3">
             <RestaurantsWidget
               isError={isError}

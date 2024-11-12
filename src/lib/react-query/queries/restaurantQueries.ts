@@ -11,7 +11,7 @@ import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema
 import { ApiError } from "@/types/apiTypes";
 import {
   RestaurantFilters,
-  RestaurantItemRes,
+  RestaurantItem,
   RestaurantItemsFilters,
   RestaurantOrdersFilters,
   RestaurantOrdersRes,
@@ -37,13 +37,10 @@ export const useGetRestaurantItems = (
   restaurantId: string | undefined,
   filters: RestaurantItemsFilters
 ) =>
-  useInfiniteQuery<RestaurantItemRes, ApiError>({
+  useQuery<RestaurantItem[], ApiError>({
     queryKey: ["restaurantItems", restaurantId, filters],
-    queryFn: ({ pageParam }) =>
-      getRestaurantItems(restaurantId!, pageParam, filters),
+    queryFn: () => getRestaurantItems(restaurantId!, filters),
     enabled: !!restaurantId,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    initialPageParam: null,
   });
 
 export const useGetRestaurantOrders = (filters: RestaurantOrdersFilters) => {
