@@ -1,7 +1,6 @@
 import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
-import { CartItem, CartItemType } from "@/contexts/CartContext";
 import { ApiError } from "@/types/apiTypes";
-import { OrderStatus, UserJwt } from "@/types/userTypes";
+import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
@@ -23,7 +22,7 @@ export const filterSearchedLocations = (slArr: string[], userInput: string) => {
 };
 
 export const getCityFromAddress = (address: string) => {
-  let city = address.split(",").at(1)!;
+  let city = address?.split(",").at(1)!;
 
   if (parseInt(city)) city = address.split(",").at(2)!;
 
@@ -83,84 +82,6 @@ export const getNoRestaurantsProps = (
     },
   ],
 });
-
-interface CartActionsParams {
-  itemId: string;
-  cartItem?: CartItemType;
-  cartItems: CartItemType[];
-}
-
-interface AddCartItemParams extends CartActionsParams {
-  restaurantId?: string;
-  defaultItem: CartItem;
-  cartItemI?: number;
-}
-
-export const addCartItem = ({
-  restaurantId,
-  itemId,
-  defaultItem,
-  cartItem,
-  cartItems,
-  cartItemI,
-}: AddCartItemParams): CartItemType[] => {
-  if (!cartItem)
-    return [
-      ...cartItems,
-      { restaurantId: restaurantId!, items: [defaultItem] },
-    ];
-
-  const itemI = cartItem.items.findIndex((ci) => ci._id === itemId);
-
-  let newCartItems: CartItem[] = [];
-
-  if (itemI !== -1) {
-    const item = cartItem.items.at(itemI)!;
-
-    newCartItems = cartItem.items.with(itemI, {
-      ...item,
-      qnt: item.qnt + 1,
-    });
-  } else {
-    newCartItems = [...cartItem.items, defaultItem];
-  }
-
-  return cartItems.with(cartItemI!, {
-    ...cartItem,
-    items: newCartItems,
-  });
-};
-
-interface RemoveCartItemParams extends CartActionsParams {
-  itemI: number;
-}
-
-export const removeCartItem = ({
-  itemId,
-  itemI,
-  cartItem,
-  cartItems,
-}: RemoveCartItemParams): CartItemType[] => {
-  const cartItemI = cartItem!.items.findIndex((ci) => ci._id === itemId);
-
-  if (cartItemI === -1) return cartItems;
-
-  const cartItemPlate = cartItem!.items.at(cartItemI)!;
-
-  let newCartItemPlate = [];
-
-  if (cartItemPlate.qnt <= 1)
-    newCartItemPlate = cartItem!.items.filter((i) => i._id !== itemId);
-  else
-    newCartItemPlate = cartItem!.items.map((i) =>
-      i._id === itemId ? { ...i, qnt: i.qnt - 1 } : i
-    );
-
-  return cartItems.with(itemI, {
-    ...cartItem!,
-    items: newCartItemPlate,
-  });
-};
 
 export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
   let msg = "";

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/hooks/useCart";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,21 +7,31 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ShoppingBasket, X } from "lucide-react";
+import { HandleSetCartParams } from "@/contexts/CartContext";
+import { RestaurantCartItem } from "@/hooks/useCart";
 
 interface RestaurantCartProps {
   restaurantId: string;
+  restaurantCartItems: RestaurantCartItem[];
+  handleSetCart: (params: HandleSetCartParams) => void;
   deliveryPrice: number;
   openCAD: () => void;
 }
 
 const RestaurantCart = ({
   restaurantId,
+  restaurantCartItems,
+  handleSetCart,
   deliveryPrice,
   openCAD,
 }: RestaurantCartProps) => {
-  const { restaurantCart, totalPrice, handleSetCart } = useCart(restaurantId);
+  const totalPrice =
+    restaurantCartItems.reduce(
+      (acc, item) => (acc += item.price * item.quantity),
+      0
+    ) + deliveryPrice;
 
-  const restaurantItems = restaurantCart.map((item) => (
+  const restaurantItems = restaurantCartItems.map((item) => (
     <li className="item" key={item._id}>
       <div className="flex justify-center gap-2">
         <figure className="w-[40px] h-[40px] lg:w-[50px] lg:h-[50px] self-center">
@@ -35,7 +44,7 @@ const RestaurantCart = ({
           <figcaption className="text-[13px] font-semibold">
             {item.name}
           </figcaption>
-          <p>{item.qnt} x</p>
+          <p>{item.quantity} x</p>
         </div>
       </div>
       <div className="flex flex-col justify-between items-end">
@@ -61,19 +70,19 @@ const RestaurantCart = ({
         <h2>Consegna</h2>
         <p>${deliveryPrice}</p>
       </div>
-      {!!restaurantCart.length && (
+      {!!restaurantCartItems.length && (
         <ul className="items__list">{restaurantItems}</ul>
       )}
       <hr className="my-5 border-white/20" />
       <div className="flex-between">
         <h1 className="text-[25px]">Totale</h1>
-        <p className="text-[30px]">${totalPrice + deliveryPrice}</p>
+        <p className="text-[30px]">${totalPrice}</p>
       </div>
       <Button
         onClick={() => openCAD()}
         className="btn mt-4 bg-[#ec01017e] w-full py-[14px]
         rounded-xl border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
-        disabled={!restaurantCart.length}
+        disabled={!restaurantCartItems.length}
       >
         Checkout
       </Button>
@@ -93,7 +102,10 @@ backdrop-blur-3xl rounded-full bg-home-widget border border-primary-20"
               className="absolute -top-[9px] -right-[9px] sm:-top-1 sm:-right-1
 text-xs w-6 h-6 flex-center bg-[#ed0000] rounded-full"
             >
-              {restaurantCart.reduce((acc, item) => (acc += item.qnt), 0)}
+              {restaurantCartItems.reduce(
+                (acc, item) => (acc += item.quantity),
+                0
+              )}
             </p>
           </div>
         </Button>

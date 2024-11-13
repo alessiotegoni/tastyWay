@@ -52,6 +52,14 @@ const Restaurant = () => {
     if (searchParams.get("failed")) setIsErrAlertOpen(true);
   }, [searchParams]);
 
+  useEffect(() => {
+    if (user?.isCmpAccount)
+      toast({
+        description:
+          "Puoi solamente guardare come sono strutturati gli altri ristoranti",
+      });
+  }, []);
+
   const {
     data: restaurant,
     isLoading: isLoadingInfo,
@@ -63,21 +71,24 @@ const Restaurant = () => {
   const { mutateAsync: createSession, isPending: isCreatingSession } =
     useCreateCheckoutSession();
 
-  const { restaurantCart } = useCart(restaurant?._id);
+  const { restaurantCartItems, handleSetCart } = useCart(
+    restaurant?._id,
+    restaurantItems
+  );
 
-  // FIXME: useCart context, make useAddress only an hook
+  // FIXME: make useAddress only an hook
 
   const handleCreateSession = async () => {
     if (!isAuthenticated || !user)
       return navigate(`/signin?redirect=${pathname}`);
     if (!restaurant || !selectedAddress || user.isCmpAccount) return;
 
-    if (!restaurantCart.length && !isCreatingSession) return;
+    if (!restaurantCartItems.length && !isCreatingSession) return;
 
     try {
       const sessionUrl = await createSession({
         restaurantId: restaurant._id,
-        itemsIds: restaurantCart.map((i) => i._id),
+        itemsIds: restaurantCartItems.map((i) => i._id),
         address: selectedAddress,
       });
 
@@ -100,9 +111,11 @@ const Restaurant = () => {
 
   const cartEl = isSuccess && !user?.isCmpAccount && (
     <RestaurantCart
-      openCAD={() => setIsCADOpen(true)}
       restaurantId={restaurant._id}
       deliveryPrice={restaurant.deliveryInfo.price}
+      restaurantCartItems={restaurantCartItems}
+      handleSetCart={handleSetCart}
+      openCAD={() => setIsCADOpen(true)}
     />
   );
 
@@ -119,7 +132,7 @@ const Restaurant = () => {
           onRetry={() => handleCreateSession()}
         />
         <ConfirmAddressDialog
-          disabled={!restaurantCart.length}
+          disabled={!restaurantCartItems.length}
           handleCreateSession={handleCreateSession}
           isPending={isCreatingSession}
           isOpen={isCADOpen}

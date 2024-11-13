@@ -1,19 +1,44 @@
 import { CartContext } from "@/contexts/CartContext";
+import { RestaurantItem } from "@/types/restaurantTypes";
 import { useContext } from "react";
 
-export const useCart = (restaurantId?: string) => {
+export type RestaurantCartItem = Omit<
+  RestaurantItem,
+  "description" | "type"
+> & {
+  quantity: number;
+};
+
+export const useCart = (
+  restaurantId: string | undefined,
+  restaurantItems: RestaurantItem[] | undefined
+) => {
   const context = useContext(CartContext);
 
-  if (!context) throw new Error("Must be inside of CartProvider");
+  if (!context) {
+    throw new Error("To use useCart hook you must be inside of CartProvider");
+  }
 
-  const restaurantCart =
-    context.cartItems.find((ci) => ci.restaurantId === restaurantId)?.items ??
-    [];
+  const cartItemIds = restaurantId ? context.cartItems[restaurantId] ?? [] : [];
 
-  const totalPrice = restaurantCart.reduce(
-    (total, item) => total + (item.qnt * item.price),
-    0
+  const itemCount = cartItemIds.reduce<{ [key: string]: number }>(
+    (acc, itemId) => {
+      acc[itemId] = (acc[itemId] || 0) + 1;
+      return acc;
+    },
+    {}
   );
 
-  return { ...context, restaurantCart, totalPrice };
+  const restaurantCartItems =
+    restaurantItems
+      ?.filter((i) => restaurantId && cartItemIds.includes(i._id))
+      .map(({ _id, name, img, price }) => ({
+        _id,
+        name,
+        img,
+        price,
+        quantity: itemCount[_id] || 0,
+      })) ?? [];
+
+  return { ...context, restaurantCartItems };
 };
