@@ -51,16 +51,11 @@ const UserPrevsOrders = () => {
   const lastOrder = canShowLastOrder ? prevOrders.splice(0, 1).at(0) : null;
 
   const handleOrderAgain = ({ items, restaurant }: UserPrevOrder) => {
-    items.forEach((i) =>
-      handleSetCart({
-        restaurantId: restaurant.id,
-        itemId: i._id,
-        img: i.img!,
-        name: i.name,
-        price: i.price,
-        type: "ADD",
-      })
-    );
+    handleSetCart({
+      restaurantId: restaurant.id,
+      itemsIds: items.map((i) => i._id),
+      type: "ADD",
+    });
 
     navigate(`/restaurants/${formatRestaurantName(restaurant.name)}`);
   };
@@ -126,7 +121,7 @@ const UserPrevsOrders = () => {
                 <OrderItemsList items={lastOrder!.items} />
               </ul>
               <h3 className="font-semibold text-3xl">
-                Totale: <span>${lastOrder!.totalPrice}</span>
+                Totale: <span>${lastOrder!.totalPrice.toFixed(2)}</span>
               </h3>
             </div>
           </div>
@@ -171,7 +166,7 @@ const UserPrevsOrders = () => {
                               {order.restaurant.name}
                             </h3>
                             <h3 className="font-medium sm:font-semibold text-base sm:text-2xl">
-                              ${order.totalPrice}
+                              ${order.totalPrice.toFixed(2)}
                             </h3>
                           </div>
                           <ul className="flex flex-wrap md:grid grid-cols-3 my-3 gap-2">

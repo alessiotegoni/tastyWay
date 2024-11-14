@@ -4,6 +4,8 @@ import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import { RestaurantProfileType } from "./validations/RestaurantProfileSchema";
+import { UseFormReturn } from "react-hook-form";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -200,3 +202,4 @@ export const checkUserPass = (isCmpAccount: boolean | undefined) => {
 
   return canPass;
 };
+

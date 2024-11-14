@@ -91,15 +91,8 @@ export const getMyRestaurant = async (privateApi: AxiosInstance) =>
   (await privateApi.get<RestaurantProfileType>("/restaurants/my/restaurant"))
     .data;
 
-export const createMyRestaurant = async (
-  privateApi: AxiosInstance,
-  data: RestaurantProfileType
-) =>
-  (
-    await privateApi.post("/restaurants/my/restaurant", data, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-  ).data;
+export const createMyRestaurant = async (privateApi: AxiosInstance) =>
+  (await privateApi.post("/restaurants/my/restaurant")).data;
 
 export const updateMyRestaurant = async (
   privateApi: AxiosInstance,

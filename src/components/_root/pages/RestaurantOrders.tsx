@@ -213,7 +213,7 @@ const RestaurantOrders = () => {
                 </ul>
                 <div className="flex-between">
                   <h2 className="self-end font-bold text-2xl">
-                    ${order.totalPrice}
+                    ${order.totalPrice.toFixed(2)}
                   </h2>
                   <Link
                     to={`/my-restaurant/order/${order.orderId}`}

@@ -1,36 +1,28 @@
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import { Button } from "@/components/ui/button";
-import { Form, FormField } from "@/components/ui/form";
+import { Form, FormField, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import { CuisineTypesSelect } from "../my-restaurant/CuisineTypesSelect";
 import { ItemsTypeSelect } from "../my-restaurant/ItemsTypeSelect";
-import { ChangeEvent, useState } from "react";
-import {
-  useCreateMyRestaurant,
-  useUpdateMyRestaurant,
-} from "@/lib/react-query/mutations/restaurantMutations";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useUpdateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
 import { toast } from "@/hooks/use-toast";
 import ClientFormBtns from "../../shared/ClientFormBtns";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface RestaurantProfileProps {
   restaurantName: string | undefined;
-  hasntRestaurant: boolean;
 }
 
-const RestaurantProfileForm = ({
-  restaurantName,
-  hasntRestaurant,
-}: RestaurantProfileProps) => {
+const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
+  const { user } = useAuth();
+
   const [itemsImgUrl, setItemsImgUrl] = useState<(string | undefined)[]>([]);
 
   const form = useFormContext<RestaurantProfileType>();
-
-  const { mutateAsync: createRestaurant, isPending: isCreating } =
-    useCreateMyRestaurant();
 
   const { mutateAsync: updateRestaurant, isPending: isUpdating } =
     useUpdateMyRestaurant(form, restaurantName);
@@ -58,30 +50,40 @@ const RestaurantProfileForm = ({
   };
 
   const onSubmit: SubmitHandler<RestaurantProfileType> = async (data) => {
-    if (isCreating || isUpdating) return;
+    if (isUpdating) return;
+
+    if (!user?.imageUrl) {
+      toast({ description: "Aggiungi l'immagine del tuo ristorante" });
+      return;
+    }
 
     try {
-      hasntRestaurant
-        ? await createRestaurant(data)
-        : await updateRestaurant(data);
+      updateRestaurant(data);
       toast({
-        description: `Ristorante ${
-          hasntRestaurant ? "creato" : "aggiornato"
-        } con successo`,
+        description: "Ristorante aggiornato con successo",
       });
     } catch (err: any) {
       toast({
         description:
           err.response.data.message ??
-          `Errore ${
-            hasntRestaurant ? "nella creazione" : "nell'aggiornamento"
-          } del ristorante`,
+          "Errore nell'aggiornamento del ristorante",
         variant: "destructive",
       });
     }
   };
 
-  console.log(form.formState.errors);
+  const formErrors = form.formState.errors;
+
+  useEffect(() => {
+    if (formErrors.items?.message) {
+      toast({
+        description: formErrors.items.message,
+      });
+    }
+  }, [formErrors]);
+
+  console.log(formErrors);
+  
 
   return (
     <Form {...form}>
@@ -92,17 +94,18 @@ const RestaurantProfileForm = ({
             name="name"
             render={({ field }) => (
               <div>
-                <Label id="name" className="mb-3">
+                <FormLabel htmlFor="name" className="mb-3">
                   Nome
-                </Label>
+                </FormLabel>
                 <Input id="name" {...field} />
+                <FormMessage />
               </div>
             )}
           />
           <div className="grow relative">
-            <Label htmlFor="address" className="mb-3">
+            <FormLabel htmlFor="address" className="mb-3">
               Indirizzo
-            </Label>
+            </FormLabel>
             <LocationAutocomplete />
           </div>
         </div>
@@ -112,9 +115,9 @@ const RestaurantProfileForm = ({
             name="deliveryInfo.price"
             render={({ field }) => (
               <div className="basis-1/2">
-                <Label id="deliveryPrice" className="mb-3">
+                <FormLabel htmlFor="deliveryPrice" className="mb-3">
                   Prezzo di consegna
-                </Label>
+                </FormLabel>
                 <Input
                   type="number"
                   id="deliveryPrice"
@@ -129,12 +132,12 @@ const RestaurantProfileForm = ({
             name="deliveryInfo.time"
             render={({ field }) => (
               <div className="basis-1/2">
-                <Label
+                <FormLabel
                   id="deliveryTime"
                   className="text-xs h-[14px] sm:text-sm mb-3"
                 >
                   Tempo di consegna (m)
-                </Label>
+                </FormLabel>
                 <Input
                   type="number"
                   id="deliveryTime"
@@ -213,7 +216,7 @@ const RestaurantProfileForm = ({
                               </figure>
                             )}
                             <div className="flex-between gap-2">
-                              <Label
+                              <FormLabel
                                 htmlFor={`items${i}Img`}
                                 className={`px-1 border rounded-xl
                             border-white/80 text-center text-xs cursor-pointer grow
@@ -222,7 +225,7 @@ const RestaurantProfileForm = ({
                             } px-12 md:px-0`}
                               >
                                 {imgUrl ? "Cambia" : "Aggiungi immagine"}
-                              </Label>
+                              </FormLabel>
                             </div>
                             <Input
                               type="file"
@@ -240,7 +243,9 @@ const RestaurantProfileForm = ({
                         name={`items.${i}.name`}
                         render={({ field }) => (
                           <div className="col-span-4 md:col-span-1">
-                            <Label className="md:hidden mb-2">Nome</Label>
+                            <FormLabel className="md:hidden mb-2">
+                              Nome
+                            </FormLabel>
                             <Input placeholder="Nome" {...field} />
                           </div>
                         )}
@@ -250,7 +255,9 @@ const RestaurantProfileForm = ({
                         name={`items.${i}.price`}
                         render={({ field }) => (
                           <div className="col-span-4 sm:col-span-1">
-                            <Label className="md:hidden mb-2">Prezzo</Label>
+                            <FormLabel className="md:hidden mb-2">
+                              Prezzo
+                            </FormLabel>
                             <Input
                               type="number"
                               placeholder="Prezzo"
@@ -264,7 +271,9 @@ const RestaurantProfileForm = ({
                       />
 
                       <div className="col-span-4 sm:col-span-3 md:col-span-1">
-                        <Label className="md:hidden mb-2">Tipo di piatto</Label>
+                        <FormLabel className="md:hidden mb-2">
+                          Tipo di piatto
+                        </FormLabel>
                         <ItemsTypeSelect itemIndex={i} />
                       </div>
 
@@ -273,9 +282,9 @@ const RestaurantProfileForm = ({
                         name={`items.${i}.description`}
                         render={({ field }) => (
                           <div className="col-span-4 md:col-span-3">
-                            <Label className="md:hidden mb-2">
+                            <FormLabel className="md:hidden mb-2">
                               Descrizione
-                            </Label>
+                            </FormLabel>
                             <Textarea
                               placeholder="Descrizione"
                               className="rounded-xl text-xs sm:text-sm"

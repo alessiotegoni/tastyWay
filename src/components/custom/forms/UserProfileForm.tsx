@@ -9,13 +9,11 @@ import { useGetUserProfile } from "@/lib/react-query/queries/userQueries";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
 import ClientFormBtns from "../../shared/ClientFormBtns";
+import { useCreateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
-
-  const [_, setSearchParams] = useSearchParams();
 
   const form = useFormContext<UserProfileType>();
 
@@ -25,32 +23,38 @@ const UserProfileForm = () => {
     if (userProfile) form.reset(userProfile);
   }, [userProfile]);
 
+  const { mutateAsync: updateUserProfile, isPending: isUpdatingUP } =
+    useUpdateUserProfile();
   const {
-    mutateAsync: updateUserProfile,
-    isSuccess: hasUpdatedUser,
-    isPending: isUpdatingUP,
-    error,
-  } = useUpdateUserProfile();
+    mutateAsync: createRestaurant,
+    isPending: isCreatingRestaurant,
+    isError: isCreateError,
+  } = useCreateMyRestaurant();
 
   useEffect(() => {
-    if (hasUpdatedUser && userProfile?.isCompanyAccount)
-      setSearchParams({ redirect: "my-restaurant" });
-  }, [hasUpdatedUser]);
+    if (isCreateError) location.reload();
+  }, [isCreateError]);
 
   // isDirty = Se il form o il campo e' stato modificato (diverso da quello di prima)
 
   const onSubmit: SubmitHandler<UserProfileType> = async (data) => {
-    if (isUpdatingUP && isLoadingUP) return;
+    if (isUpdatingUP || isLoadingUP || isCreatingRestaurant) return;
 
     try {
-      const res = await updateUserProfile(data);
+      await updateUserProfile(data);
+      if (data.isCompanyAccount) await createRestaurant();
+
       await refreshToken();
 
-      toast({ description: res.message });
-    } catch (err) {
+      toast({
+        description: data.isCompanyAccount
+          ? "Passaggio ad account aziendale eseguito"
+          : "Profilo aggiornato con successo",
+      });
+    } catch (err: any) {
       toast({
         description:
-          error!.response?.data?.message ??
+          err.response?.data?.message ??
           "Errore nell'aggiornamento dell'utente",
         variant: "destructive",
       });
@@ -163,7 +167,7 @@ const UserProfileForm = () => {
         <ClientFormBtns
           form={form}
           defaultValues={userProfile}
-          isLoading={isUpdatingUP && isLoadingUP}
+          isLoading={isUpdatingUP || isLoadingUP || isCreatingRestaurant}
         />
       </form>
     </Form>

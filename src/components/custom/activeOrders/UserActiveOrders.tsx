@@ -58,7 +58,9 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
                         </figcaption>
                         <div className="flex-between mt-2">
                           <p className="text-sm">x{item.quantity}</p>
-                          <h2 className="font-medium text-sm">${item.price}</h2>
+                          <h2 className="font-medium text-sm">
+                            ${item.price.toFixed(2)}
+                          </h2>
                         </div>
                       </div>
                     </div>
@@ -67,7 +69,9 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
               </ul>
               <h1 className="font-semibold text-[27px]">
                 Totale:
-                <span className="ml-2 text-[30px]">${order.totalPrice}</span>
+                <span className="ml-2 text-[30px]">
+                  ${order.totalPrice.toFixed(2)}
+                </span>
               </h1>
             </div>
           </CarouselItem>

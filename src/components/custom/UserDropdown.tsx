@@ -65,7 +65,7 @@ const UserDropdown = ({ user, logoutFn: logout }: UserDropdowenProps) => {
           <img src="/icons/user-icon.png" alt="user-icon" />
         )}
         <p className="hidden sm:block font-semibold text-[18px]">
-          {user?.restaurantName ?? user!.name}
+          {user?.restaurantName ? user.restaurantName : user!.name}
         </p>
         <img
           src="/icons/arrow-down-icon.png"

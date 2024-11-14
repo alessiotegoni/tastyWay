@@ -35,7 +35,7 @@ export type RestaurantItemType = z.infer<typeof restaurantItem>;
 export const restaurantProfileSchema = z.object({
   name: z
     .string({ message: "Nome del ristorante obbligatorio" })
-    .min(3, "Il nome del ristorante deve avere almeno 3 caratteri"),
+    .min(4, "Il nome del ristorante deve avere almeno 4 caratteri"),
   address: z
     .string({ message: "Indirizzo obbligatorio" })
     .min(3, "Indirizzo non valido"),
@@ -67,9 +67,10 @@ export const restaurantProfileSchema = z.object({
 export const defaultRestaurantValues = {
   name: "",
   address: "",
+  imageUrl: "",
   deliveryInfo: {
-    price: 0.1,
-    time: 10,
+    price: 0,
+    time: 0,
   },
   cuisine: [],
   items: [],

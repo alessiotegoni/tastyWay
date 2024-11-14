@@ -46,18 +46,11 @@ const RestaurantListItem = ({
         className="item__info flex sm:flex-col justify-between
       items-center sm:items-end"
       >
-        <h2 className="text-[25px]">${price}</h2>
+        <h2 className="text-[25px]">${price.toFixed(2)}</h2>
         {!user?.isCmpAccount && (
           <Button
             onClick={() =>
-              handleSetCart({
-                restaurantId,
-                itemId: _id,
-                name,
-                img,
-                price,
-                type: "ADD",
-              })
+              handleSetCart({ type: "ADD", restaurantId, itemId: _id })
             }
             className="btn bg-[#ec01018a] hover:bg-[#ec0101d7]
             font-normal text-[30px] border border-[#FE0000]

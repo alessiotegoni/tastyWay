@@ -25,11 +25,12 @@ const RestaurantCart = ({
   deliveryPrice,
   openCAD,
 }: RestaurantCartProps) => {
-  const totalPrice =
+  const totalPrice = (
     restaurantCartItems.reduce(
       (acc, item) => (acc += item.price * item.quantity),
       0
-    ) + deliveryPrice;
+    ) + deliveryPrice
+  ).toFixed(2);
 
   const restaurantItems = restaurantCartItems.map((item) => (
     <li className="item" key={item._id}>
@@ -48,7 +49,7 @@ const RestaurantCart = ({
         </div>
       </div>
       <div className="flex flex-col justify-between items-end">
-        <h2>${item.price}</h2>
+        <h2>${item.price.toFixed(2)}</h2>
         <Button
           onClick={() =>
             handleSetCart({ restaurantId, itemId: item._id, type: "REMOVE" })
@@ -68,7 +69,7 @@ const RestaurantCart = ({
       <h1 className="text-[30px]">Il tuo ordine</h1>
       <div className="flex-between font-medium my-5">
         <h2>Consegna</h2>
-        <p>${deliveryPrice}</p>
+        <p>${deliveryPrice.toFixed(2)}</p>
       </div>
       {!!restaurantCartItems.length && (
         <ul className="items__list">{restaurantItems}</ul>

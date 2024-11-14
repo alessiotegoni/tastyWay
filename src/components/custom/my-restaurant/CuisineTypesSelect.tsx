@@ -107,8 +107,9 @@ export function CuisineTypesSelect() {
         <ul className="flex flex-wrap gap-2 mt-3 sm:mt-0">
           {cuisine
             .filter((c) => values.includes(c.value))
-            .map((c) => (
+            .map((c, i) => (
               <li
+                key={i}
                 className="flex-center gap-2 bg-[#7800B0] bg-opacity-65
                 hover:bg-[#7800B0] hover:bg-opacity-70 border-none
                 text-sm placeholder:text-sm font-semibold rounded-xl p-3"

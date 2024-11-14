@@ -11,6 +11,7 @@ export type HandleSetCartParams = {
   type: "ADD" | "REMOVE";
   restaurantId: string;
   itemId?: string;
+  itemsIds?: string[];
 };
 
 interface CartContextValues {
@@ -37,13 +38,18 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
   const handleSetCart = ({
     restaurantId,
     itemId,
+    itemsIds,
     type,
   }: HandleSetCartParams) => {
     let newItems = { ...cartItems };
     const restaurantItems = newItems[restaurantId];
 
-    if (type === "ADD" && itemId)
-      newItems[restaurantId] = [...(restaurantItems ?? []), itemId];
+    if (type === "ADD") {
+      if (itemId) newItems[restaurantId] = [...(restaurantItems ?? []), itemId];
+      else if (itemsIds?.length) {
+        newItems[restaurantId] = itemsIds;
+      }
+    }
 
     if (type === "REMOVE" && restaurantItems?.length) {
       if (itemId) {

@@ -1,3 +1,4 @@
+import { useAddress } from "@/contexts/AddressContext";
 import { useAuth } from "@/contexts/AuthContext";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
 import {
@@ -7,23 +8,32 @@ import {
   updateMyRestaurantImg,
   updateOrderStatus,
 } from "@/lib/api/restaurantApi";
-import { RestaurantProfileType } from "@/lib/validations/RestaurantProfileSchema";
+import {
+  defaultRestaurantValues,
+  RestaurantProfileType,
+} from "@/lib/validations/RestaurantProfileSchema";
 import { ApiError } from "@/types/apiTypes";
 import { OrderStatus, RestaurantUserOrder } from "@/types/restaurantTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 export const useCreateMyRestaurant = () => {
-  const { refreshToken } = useAuth();
-  const privateApi = useAxiosPrivate();
+  const [_, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const privateApi = useAxiosPrivate();
+  const { selectedAddress } = useAddress();
 
-  return useMutation<{ message: string }, ApiError, RestaurantProfileType>({
+  return useMutation<{ message: string }, ApiError>({
     mutationKey: ["createMyRestaurant"],
-    mutationFn: (data) => createMyRestaurant(privateApi, data),
-    onSuccess: (_, variables) => {
-      queryClient.setQueryData(["myRestaurant"], () => variables);
-      refreshToken();
+    mutationFn: () => createMyRestaurant(privateApi),
+    onSuccess: () => {
+      queryClient.setQueryData(["myRestaurant"], () => ({
+        ...defaultRestaurantValues,
+        address: selectedAddress ?? "",
+      }));
+
+      setSearchParams({ redirect: "my-restaurant" });
     },
   });
 };
@@ -48,11 +58,13 @@ export const useUpdateMyRestaurant = (
 };
 
 export const useUpdateMyRestaurantImg = () => {
+  const { refreshToken } = useAuth();
   const privateApi = useAxiosPrivate();
 
   return useMutation<{ message: string; imageUrl: string }, ApiError, File>({
     mutationKey: ["updateMyRestaurantImg"],
     mutationFn: (data) => updateMyRestaurantImg(privateApi, data),
+    onSuccess: () => refreshToken(),
   });
 };
 

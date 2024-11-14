@@ -51,7 +51,7 @@ const RestaurantUserOrder = () => {
             <div className="text-center">
               <p className="text-white/70 font-semibold text-lg">Totale</p>
               <h2 className="text-xl sm:text-3xl font-semibold mt-2">
-                ${order.totalPrice}
+                ${order.totalPrice.toFixed(2)}
               </h2>
             </div>
           </div>

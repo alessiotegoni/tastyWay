@@ -70,7 +70,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
               alt="delivery-price-icon"
               width={30}
             />
-            <p>{restaurant.deliveryInfo.price}€</p>
+            <p>{restaurant.deliveryInfo.price.toFixed(2)}€</p>
           </div>
         </div>
         <div className="flex xs:justify-end sm:items-center gap-2">

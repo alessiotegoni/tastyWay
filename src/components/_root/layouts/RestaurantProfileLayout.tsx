@@ -7,7 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { useUpdateMyRestaurantImg } from "@/lib/react-query/mutations/restaurantMutations";
 import { getDate } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const links = [
@@ -30,23 +30,19 @@ const links = [
 
 const RestaurantProfileLayout = () => {
   const { user: restaurant, logout } = useAuth();
-
-  const [restaurantImg, setRestaurantImg] = useState(restaurant?.imageUrl);
+  const { restaurantName, createdAt, imageUrl } = restaurant!;
 
   const { removeSelectedAddress } = useAddress();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
+    data,
     mutateAsync: updateImg,
     isPending,
     isError,
     error,
   } = useUpdateMyRestaurantImg();
-
-  const fullName = restaurant?.restaurantName
-    ? restaurant.restaurantName
-    : `${restaurant!.name} ${restaurant!.surname}`;
 
   const handleLogout = async () => {
     await logout();
@@ -60,10 +56,12 @@ const RestaurantProfileLayout = () => {
     const file = e.target.files?.item(0);
     if (!file || isPending) return;
 
-    const res = await updateImg(file);
-    setRestaurantImg(res.imageUrl);
-    toast({ description: res.message });
+    await updateImg(file);
   };
+
+  useEffect(() => {
+    if (data) toast({ description: data.message });
+  }, [data]);
 
   useEffect(() => {
     if (isError)
@@ -107,9 +105,9 @@ const RestaurantProfileLayout = () => {
             />
             {isPending ? (
               <Loader2 />
-            ) : restaurantImg ? (
+            ) : imageUrl ? (
               <img
-                src={restaurantImg}
+                src={imageUrl}
                 alt=""
                 className="sm:w-[125px] sm:h-[125px] object-cover rounded-2xl"
               />
@@ -129,15 +127,17 @@ const RestaurantProfileLayout = () => {
           flex flex-col justify-between"
           >
             <div>
-              <h1 className="text-2xl font-semibold capitalize">{fullName}</h1>
-              {restaurant?.createdAt && (
+              <h1 className="text-2xl font-semibold capitalize">
+                {restaurantName || "Nome del tuo ristorante"}
+              </h1>
+              {createdAt && (
                 <p className="mt-2 text-sm font-normal text-white/80">
-                  Creato: <span>{getDate(restaurant.createdAt)}</span>
+                  Creato: <span>{getDate(createdAt)}</span>
                 </p>
               )}
             </div>
             <div className="flex justify-end gap-2 mt-3 sm:mt-0">
-              {restaurantImg && (
+              {imageUrl && (
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   className="p-2 px-3 btn restaurant-btn border

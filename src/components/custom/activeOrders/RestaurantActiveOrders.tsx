@@ -23,7 +23,7 @@ const RestaurantActiveOrders = ({
         <p className="font-normal text-sm mb-6 mt-2">{order.address}</p>
         <div className="flex-between">
           <h4 className="text-lg font-semibold self-end">
-            ${order.totalPrice}
+            ${order.totalPrice.toFixed(2)}
           </h4>
           <Link
             to={`/my-restaurant/order/${order.orderId}`}

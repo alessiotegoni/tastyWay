@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAddress } from "@/contexts/AddressContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { getDate } from "@/lib/utils";
 import { NavLink, Outlet } from "react-router-dom";
 
 const links = [
@@ -65,7 +66,7 @@ const UserProfileLayout = () => {
             <div>
               <h1 className="text-2xl font-semibold capitalize">{fullName}</h1>
               <p className="mt-2 text-sm font-normal text-white/80">
-                Creato il <span>10/12/2024</span>
+                Creato: <span>{getDate(user!.createdAt)}</span>
               </p>
             </div>
             <Button
