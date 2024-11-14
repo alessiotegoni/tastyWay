@@ -24,7 +24,10 @@ const Navbar = ({ pageNum }: NavbarProps) => {
   const { isAuthenticated, user, logout, isLoadingToken } = useAuth();
 
   const navRightBtn = isLoadingToken ? (
-    <Skeleton className="user-btn user-btn-bg w-[180px] h-[45px] rounded-3xl" />
+    <Skeleton
+      className="user-btn user-btn-bg w-[100px] h-[40px]
+    md:w-[180px] md:h-[45px] rounded-3xl"
+    />
   ) : isAuthenticated && user ? (
     <UserDropdown user={user} logoutFn={logout} />
   ) : (

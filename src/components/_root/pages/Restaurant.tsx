@@ -72,8 +72,8 @@ const Restaurant = () => {
     useCreateCheckoutSession();
 
   const { restaurantCartItems, handleSetCart } = useCart(
-    restaurant?._id,
-    restaurantItems
+    restaurantItems,
+    restaurant?._id
   );
 
   // FIXME: make useAddress only an hook

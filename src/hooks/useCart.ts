@@ -10,8 +10,8 @@ export type RestaurantCartItem = Omit<
 };
 
 export const useCart = (
-  restaurantId: string | undefined,
-  restaurantItems: RestaurantItem[] | undefined
+  restaurantItems?: RestaurantItem[],
+  restaurantId?: string
 ) => {
   const context = useContext(CartContext);
 

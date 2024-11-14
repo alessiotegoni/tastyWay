@@ -1,6 +1,7 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createContext } from "react";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "./AuthContext";
 
 export type CartItemType = {
   [restaurantId: string]: string[];
@@ -9,7 +10,7 @@ export type CartItemType = {
 export type HandleSetCartParams = {
   type: "ADD" | "REMOVE";
   restaurantId: string;
-  itemId: string;
+  itemId?: string;
 };
 
 interface CartContextValues {
@@ -20,10 +21,18 @@ interface CartContextValues {
 export const CartContext = createContext<CartContextValues | null>(null);
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+
   const storedCartItems: CartItemType =
     JSON.parse(localStorage.getItem("cartItems")!) ?? {};
 
   const [cartItems, setCartItems] = useState(storedCartItems);
+
+  const removeStoredItems = () => localStorage.removeItem("cartItems");
+
+  useEffect(() => {
+    if (user?.isCmpAccount) removeStoredItems();
+  }, [cartItems, user]);
 
   const handleSetCart = ({
     restaurantId,
@@ -33,18 +42,21 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     let newItems = { ...cartItems };
     const restaurantItems = newItems[restaurantId];
 
-    if (type === "ADD")
+    if (type === "ADD" && itemId)
       newItems[restaurantId] = [...(restaurantItems ?? []), itemId];
 
     if (type === "REMOVE" && restaurantItems?.length) {
-      const itemIndex = restaurantItems.findIndex((id) => id === itemId);
+      if (itemId) {
+        const itemIndex = restaurantItems.findIndex((id) => id === itemId);
 
-      if (itemIndex === -1) return;
+        if (itemIndex === -1) return;
 
-      newItems[restaurantId] = restaurantItems.toSpliced(itemIndex, 1);
-
+        newItems[restaurantId] = restaurantItems.toSpliced(itemIndex, 1);
+      } else {
+        newItems[restaurantId] = [];
+      }
       if (!newItems[restaurantId].length) delete newItems[restaurantId];
-      if (!Object.keys(newItems).length) localStorage.removeItem("cartItems");
+      if (!Object.keys(newItems).length) removeStoredItems();
     }
 
     try {

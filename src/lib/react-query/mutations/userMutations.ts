@@ -10,13 +10,17 @@ import {
   UserProfileType,
   UserSecurityType,
 } from "@/lib/validations/userProfileSchema";
+import { useCart } from "@/hooks/useCart";
 
 export const useCreateCheckoutSession = () => {
   const privateApi = useAxiosPrivate();
+  const { handleSetCart } = useCart();
 
   return useMutation<string, ApiError, CheckoutSessionBody>({
     mutationKey: ["checkoutSessionUrl"],
     mutationFn: (data) => createCheckoutSessionUrl(data, privateApi),
+    onSuccess: (_, { restaurantId }) =>
+      handleSetCart({ restaurantId, type: "REMOVE" }),
   });
 };
 

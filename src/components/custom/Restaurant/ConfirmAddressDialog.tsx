@@ -24,7 +24,7 @@ const ConfirmAddressDialog = ({
   handleCreateSession,
   isPending,
   isOpen,
-  onClose
+  onClose,
 }: ConfirmAddressDialogProps) => {
   const { selectedAddress } = useAddress();
 
@@ -43,14 +43,15 @@ const ConfirmAddressDialog = ({
             inserito precedentemente, puoi sempre cambiarlo da qui
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <LocationAutocomplete
-          placeholder="Inserisci l'indirizzo dell'ordine"
-          shouldShowLatestResearchs={false}
-          className="my-4"
-          inputClassName="bg-transparent rounded-[15px] font-normal
-          border-home-widget-border-60 focus:border-home-widget-border
-          hover:bg-transparent"
-        />
+        <div className="relative my-4">
+          <LocationAutocomplete
+            placeholder="Inserisci l'indirizzo dell'ordine"
+            shouldShowLatestResearchs={false}
+            inputClassName="bg-transparent rounded-[15px] font-normal
+            border-home-widget-border-60 focus:border-home-widget-border
+            hover:bg-transparent"
+          />
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel
             onClick={onClose}
