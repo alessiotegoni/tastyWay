@@ -8,7 +8,7 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 import RestaurantHeaderSkeleton from "@/components/skeletons/RestaurantHeaderSkeleton";
 import { Input } from "@/components/ui/input";
 import { restaurantItemFilters } from "@/config/filtersConfig";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useCart } from "@/hooks/useCart";

@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { UserGoogleJwt } from "./userTypes";
 
 export type ApiError = AxiosError<{ message: string }>;
 
@@ -11,3 +12,12 @@ export type CheckoutSessionBody = {
   itemsIds: string[];
   address: string;
 };
+
+export type GoogleLoginBody =
+  | { access_token: string }
+  | {
+      userData: Pick<
+        UserGoogleJwt,
+        "email" | "given_name" | "family_name" | "picture"
+      >;
+    };

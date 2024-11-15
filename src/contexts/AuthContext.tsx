@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { ApiError, LogoutRes } from "@/types/apiTypes";
 import { useLogout } from "@/lib/react-query/mutations/authMutations";
+import GoogleOneTapLogin from "@/components/custom/GoogleOneTapLogin";
 
 interface AuthContextType {
   accessToken: string | undefined;
@@ -31,13 +32,14 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Refresh token only if it isn't stored in react-query cache
 
-  const { mutateAsync: logout } = useLogout();
+  const { mutateAsync: logout, isSuccess: hasLoggedOut } = useLogout();
 
   const {
     data: accessToken,
     isError,
     isLoading: isLoadingToken,
     isRefetching: isRefreshingToken,
+    isSuccess,
     refetch: refreshToken,
   } = useRefreshToken();
 
@@ -59,6 +61,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         user,
       }}
     >
+      {!isAuthenticated && (isSuccess || isError) && !hasLoggedOut && (
+        <GoogleOneTapLogin />
+      )}
       {children}
     </AuthContext.Provider>
   );

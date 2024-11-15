@@ -7,25 +7,26 @@ import App from "./App.tsx";
 import "./index.css";
 import { Toaster } from "./components/ui/toaster.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
-import AddressProvider from "./contexts/AddressContext.tsx";
 import CartProvider from "./contexts/CartContext.tsx";
 import { queryClientConfig } from "./config/reactQueryConfig.ts";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const client = new QueryClient(queryClientConfig);
+const authClientId = import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID!;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={client}>
       <Router>
-        <AuthProvider>
-          <AddressProvider>
+        <GoogleOAuthProvider clientId={authClientId}>
+          <AuthProvider>
             <CartProvider>
               <Routes>
                 <Route path="/*" element={<App />} />
               </Routes>
             </CartProvider>
-          </AddressProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </GoogleOAuthProvider>
       </Router>
       <ReactQueryDevtools />
     </QueryClientProvider>

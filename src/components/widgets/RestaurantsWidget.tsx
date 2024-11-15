@@ -1,4 +1,4 @@
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { FormEvent, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";

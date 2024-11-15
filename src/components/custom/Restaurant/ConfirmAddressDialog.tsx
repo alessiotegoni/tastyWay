@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { Loader2 } from "lucide-react";
 
 interface ConfirmAddressDialogProps {

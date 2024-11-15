@@ -1,8 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { logout, signin, signup } from "@/lib/api/authApi";
+import { googleAuth, logout, signin, signup } from "@/lib/api/authApi";
 import { SigninType, SignupType } from "@/lib/validations/authSchemas";
-import { ApiError, AuthRes, LogoutRes } from "@/types/apiTypes";
+import {
+  ApiError,
+  AuthRes,
+  GoogleLoginBody,
+  LogoutRes,
+} from "@/types/apiTypes";
+import { googleLogout } from "@react-oauth/google";
+
+export const useGoogleAuth = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AuthRes, ApiError, GoogleLoginBody>({
+    mutationKey: ["googleLogin"],
+    mutationFn: googleAuth,
+    onSuccess: (accessToken) =>
+      queryClient.setQueryData(["accessToken"], () => accessToken),
+  });
+};
 
 export const useSignin = () => {
   const queryClient = useQueryClient();
@@ -38,6 +55,7 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.setQueryData(["accessToken"], () => null);
+      googleLogout();
       navigate("/");
     },
   });

@@ -1,4 +1,4 @@
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { filterSearchedLocations } from "@/lib/utils";
 import { useEffect, useState } from "react";
 

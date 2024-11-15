@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { restaurantDropdownLinks, userDropdownLinks } from "@/constants";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { toast } from "@/hooks/use-toast";
 import { ApiError, LogoutRes } from "@/types/apiTypes";
 import { UserJwt } from "@/types/userTypes";

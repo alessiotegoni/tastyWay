@@ -1,6 +1,6 @@
 import RestaurantProfileForm from "@/components/custom/forms/RestaurantProfileForm";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useGetMyRestaurant } from "@/lib/react-query/queries/restaurantQueries";

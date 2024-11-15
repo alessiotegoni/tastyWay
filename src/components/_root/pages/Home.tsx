@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { foodFilters } from "@/constants";
 import { FoodType } from "@/types/restaurantTypes";
 import { useNavigate } from "react-router-dom";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import { Button } from "@/components/ui/button";
 import FoodTypeFilters from "@/components/shared/FoodTypeFilters";

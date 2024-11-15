@@ -1,5 +1,10 @@
 import { api } from "@/config/apiConfig";
 import { SigninType, SignupType } from "../validations/authSchemas";
+import { GoogleLoginBody } from "@/types/apiTypes";
+
+export const googleAuth = async (
+  data: GoogleLoginBody
+) => (await api.post("/auth/google", data)).data;
 
 export const signin = async (data: SigninType) =>
   (await api.post("/auth/signin", data)).data;

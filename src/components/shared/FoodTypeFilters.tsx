@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { toast } from "@/hooks/use-toast";
 import { useMatch, useSearchParams } from "react-router-dom";
 

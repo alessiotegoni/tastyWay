@@ -6,7 +6,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { useEffect, useState } from "react";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useFormContext } from "react-hook-form";
 import LatestResearchsList from "./suggests/LatestResearchsList";
 import SuggestsList from "./suggests/SuggestsList";

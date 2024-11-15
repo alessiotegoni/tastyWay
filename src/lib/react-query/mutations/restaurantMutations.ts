@@ -1,4 +1,4 @@
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useAuth } from "@/contexts/AuthContext";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
 import {

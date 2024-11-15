@@ -1,4 +1,4 @@
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useNavigate } from "react-router-dom";
 
 type LocationLatestProps = {

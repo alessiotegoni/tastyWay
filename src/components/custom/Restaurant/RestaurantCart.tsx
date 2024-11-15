@@ -35,10 +35,11 @@ const RestaurantCart = ({
   const restaurantItems = restaurantCartItems.map((item) => (
     <li className="item" key={item._id}>
       <div className="flex justify-center gap-2">
-        <figure className="w-[40px] h-[40px] lg:w-[50px] lg:h-[50px] self-center">
+        <figure className="w-[60px] h-[60px] self-center shrink-0">
           <img
             src={item.img ?? "/imgs/default-restaurant-item.png"}
             alt={item.name}
+            className="rounded-lg"
           />
         </figure>
         <div className="flex flex-col justify-between">

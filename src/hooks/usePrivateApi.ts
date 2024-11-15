@@ -29,7 +29,7 @@ const useAxiosPrivate = () => {
           !prevReq?.sent
         ) {
           const { data: accessToken, isError } = await refreshToken();
-          if (isError) return navigate("/login");
+          if (isError) return navigate("/signin");
           prevReq.headers.Authorization = `Bearer ${accessToken}`;
           prevReq.sent = true;
           return privateApi(prevReq);

@@ -6,7 +6,7 @@ import ErrorWidget from "@/components/widgets/ErrorWidget";
 import RestaurantsWidget from "@/components/widgets/RestaurantsWidget";
 import { restaurantsFilters } from "@/config/filtersConfig";
 import { cuisineTypes } from "@/constants";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useGetRestaurants } from "@/lib/react-query/queries/restaurantQueries";
 import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
 import {

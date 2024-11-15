@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { getDate } from "@/lib/utils";

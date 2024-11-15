@@ -1,4 +1,4 @@
-import { useAddress } from "@/contexts/AddressContext";
+import useAddress from "@/hooks/useAddress";
 import { useToast } from "@/hooks/use-toast";
 import { useGetMyAddress } from "@/lib/react-query/queries/userQueries";
 import { useEffect, useState } from "react";
