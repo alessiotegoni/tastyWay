@@ -35,7 +35,6 @@ const GoogleOneTapLogin = () => {
         description: "Errore nel login con google",
         variant: "destructive",
       }),
-    promptMomentNotification: (notification) => console.log(notification),
   });
 
   return <></>;

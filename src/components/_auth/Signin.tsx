@@ -41,8 +41,6 @@ const Signin = () => {
         description: "Errore nel login, riprovare",
         variant: "destructive",
       }),
-    scope:
-      "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly",
   });
 
   useEffect(() => {
@@ -76,35 +74,21 @@ const Signin = () => {
                 <SigninForm />
               </FormProvider>
               <p className="text-center font-medium my-3">oppure</p>
-              <div className="md:flex-center gap-3">
-                <Button
-                  onClick={() => googleLogin()}
-                  className="btn border-0 w-full sm:basis-1/2 h-16 px-4 bg-white"
-                >
-                  <figure className="flex-center gap-2">
-                    <img
-                      src="/icons/google-icon.webp"
-                      alt="google icon"
-                      className="w-10 h-10 text-white"
-                    />
-                    <figcaption className="font-semibold text-xl text-black">
-                      Google
-                    </figcaption>
-                  </figure>
-                </Button>
-                <Button className="btn border-0 w-full sm:basis-1/2 bg-black h-16 px-4 mt-3 md:mt-0">
-                  <figure className="flex-center gap-2">
-                    <img
-                      src="/icons/apple-icon.png"
-                      alt="appple icon"
-                      className="w-8 h-8"
-                    />
-                    <figcaption className="font-semibold text-xl">
-                      Apple
-                    </figcaption>
-                  </figure>
-                </Button>
-              </div>
+              <Button
+                onClick={() => googleLogin()}
+                className="btn border-0 w-full h-16 px-4 bg-white"
+              >
+                <figure className="flex-center gap-2">
+                  <img
+                    src="/icons/google-icon.webp"
+                    alt="google icon"
+                    className="w-10 h-10 text-white"
+                  />
+                  <figcaption className="font-semibold text-xl text-black">
+                    Google
+                  </figcaption>
+                </figure>
+              </Button>
             </div>
           </div>
         </div>

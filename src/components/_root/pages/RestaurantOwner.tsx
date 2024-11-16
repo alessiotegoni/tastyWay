@@ -116,11 +116,7 @@ const RestaurantOwner = () => {
               <Input id="country" value="Italia" disabled />
             </div>
           </div>
-          <ClientFormBtns
-            form={form}
-            defaultValues={userProfile}
-            isLoading={isLoadingUP}
-          />
+          <ClientFormBtns defaultValues={userProfile} isLoading={isLoadingUP} />
         </form>
       </Form>
     </section>

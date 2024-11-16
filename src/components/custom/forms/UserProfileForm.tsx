@@ -6,22 +6,25 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useUpdateUserProfile } from "@/lib/react-query/mutations/userMutations";
 import { useGetUserProfile } from "@/lib/react-query/queries/userQueries";
-import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import ClientFormBtns from "../../shared/ClientFormBtns";
 import { useCreateMyRestaurant } from "@/lib/react-query/mutations/restaurantMutations";
+import { UserProfileType } from "@/lib/validations/userProfileSchema";
+import InputMask from "react-input-mask";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
 
   const form = useFormContext<UserProfileType>();
 
-  const { data: userProfile, isLoading: isLoadingUP } = useGetUserProfile();
+  const { data, isLoading: isLoadingUP } = useGetUserProfile();
+
+  const userProfile = { address: "", phoneNumber: 0, ...data };
 
   useEffect(() => {
-    if (userProfile) form.reset(userProfile);
-  }, [userProfile]);
+    if (data) form.reset(userProfile, { keepDirty: false });
+  }, [data]);
 
   const { mutateAsync: updateUserProfile, isPending: isUpdatingUP } =
     useUpdateUserProfile();
@@ -100,13 +103,18 @@ const UserProfileForm = () => {
             control={form.control}
             render={({ field }) => (
               <div className="basis-1/2">
-                <Label htmlFor="name">Telefono</Label>
-                <Input
-                  id="name"
-                  type="number"
-                  {...field}
-                  className="appearance-none"
-                />
+                <Label htmlFor="phoneNumber">Telefono</Label>
+                <InputMask
+                  id="phoneNumber"
+                  mask="999 999 9999"
+                  value={field.value || ""}
+                  onChange={(e) =>
+                    field.onChange(parseInt(e.target.value.replace(/\s/g, "")))
+                  }
+                >
+                  {(inputProps: any) => <Input {...inputProps} />}
+                </InputMask>
+                <FormMessage className="mt-1" />
               </div>
             )}
           />
@@ -120,11 +128,11 @@ const UserProfileForm = () => {
           control={form.control}
           render={() => (
             <div>
-              <Label htmlFor="address">Indirizzo</Label>
-              <LocationAutocomplete
-                placeholder="Il tuo indirizzo"
-                shouldShowLatestResearchs={false}
-              />
+              <div className="relative">
+                <Label htmlFor="address">Indirizzo</Label>
+                <LocationAutocomplete placeholder="Il tuo indirizzo" />
+              </div>
+              <FormMessage className="mt-1" />
             </div>
           )}
         />
@@ -165,7 +173,6 @@ const UserProfileForm = () => {
           )}
         />
         <ClientFormBtns
-          form={form}
           defaultValues={userProfile}
           isLoading={isUpdatingUP || isLoadingUP || isCreatingRestaurant}
         />

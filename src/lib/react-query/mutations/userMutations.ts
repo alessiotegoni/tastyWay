@@ -6,11 +6,9 @@ import {
   updateUserProfile,
   updateUserSecurity,
 } from "@/lib/api/userApi";
-import {
-  UserProfileType,
-  UserSecurityType,
-} from "@/lib/validations/userProfileSchema";
+import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useCreateCheckoutSession = () => {
   const privateApi = useAxiosPrivate();
@@ -38,9 +36,15 @@ export const useUpdateUserProfile = () => {
 
 export const useUpdateUserSecurity = () => {
   const privateApi = useAxiosPrivate();
+  const { refreshToken } = useAuth();
 
-  return useMutation<{ message: string }, ApiError, UserSecurityType>({
+  return useMutation<
+    { message: string },
+    ApiError,
+    { newPassword: string; oldPassword: string }
+  >({
     mutationKey: ["updateUserSecurity"],
     mutationFn: (data) => updateUserSecurity(privateApi, data),
+    onSuccess: () => refreshToken(),
   });
 };

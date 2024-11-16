@@ -30,18 +30,23 @@ const searchOptions = {
 const LocationAutocomplete = ({
   placeholder = "",
   shouldShowLatestResearchs = false,
-  className,
-  inputClassName,
+  className = "",
+  inputClassName = "",
 }: LocationAutocompleteProps) => {
   const form = useFormContext<{ address: string }>();
   const formAddress = form?.watch("address");
 
-  const { handleSetSelectedAddress, removeSelectedAddress } = useAddress();
+  const { selectedAddress, handleSetSelectedAddress, removeSelectedAddress } =
+    useAddress();
 
   const [userInput, setUserInput] = useState("");
 
   useEffect(() => {
     if (formAddress) setUserInput(formAddress);
+    if (selectedAddress && form && !formAddress) {
+      setUserInput(formAddress);
+      setFormAddress(selectedAddress);
+    }
   }, [formAddress]);
 
   const {
@@ -115,7 +120,7 @@ const LocationAutocomplete = ({
         const hasSeparator = checkSeparator(suggestions);
 
         return (
-          <div className={`${className ?? ""}`}>
+          <div className={className}>
             <Command>
               <div className="flex-center gap-2">
                 <Input

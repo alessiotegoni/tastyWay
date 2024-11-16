@@ -58,14 +58,14 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
     }
 
     try {
-      updateRestaurant(data);
+      await updateRestaurant(data);
       toast({
         description: "Ristorante aggiornato con successo",
       });
     } catch (err: any) {
       toast({
         description:
-          err.response.data.message ??
+          err.response?.data.message ??
           "Errore nell'aggiornamento del ristorante",
         variant: "destructive",
       });
@@ -83,7 +83,6 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
   }, [formErrors]);
 
   console.log(formErrors);
-  
 
   return (
     <Form {...form}>
@@ -320,7 +319,6 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
           )}
         </div>
         <ClientFormBtns
-          form={form}
           isLoading={isUpdating}
           setItemsImgUrl={setItemsImgUrl}
         />

@@ -53,8 +53,8 @@ const UserProfileLayout = () => {
           rounded-3xl border border-[#ED0000] border-opacity-30"
           >
             <img
-              src="/imgs/default-restaurant.png"
-              alt=""
+              src={user?.imageUrl ?? "/imgs/default-restaurant.png"}
+              alt={user?.name}
               className="w-[125px] h-[125px] object-cover rounded-2xl"
             />
           </figure>

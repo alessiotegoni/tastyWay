@@ -9,6 +9,7 @@ export interface UserJwt {
   surname: string;
   address: string;
   isCmpAccount: boolean;
+  isGoogleLogged: boolean;
   createdAt: string;
   exp: number;
   iat: number;

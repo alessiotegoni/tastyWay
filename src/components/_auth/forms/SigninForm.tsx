@@ -85,7 +85,7 @@ const SigninForm = () => {
             </div>
           )}
         </div>
-        <p className="font-medium text-[15px] mt-[47px] mb-5">
+        <p className="font-medium text-[15px] mt-5 mb-5">
           Se non hai un account,{" "}
           <Link to="/signup" className="text-[#FCAE08] hover:underline">
             Registrati

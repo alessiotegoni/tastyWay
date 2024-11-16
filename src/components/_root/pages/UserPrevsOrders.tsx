@@ -14,9 +14,11 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { UserPrevOrder } from "@/types/userTypes";
+import useAddress from "@/hooks/useAddress";
 
 const UserPrevsOrders = () => {
   const { handleSetCart } = useCart();
+  const { selectedAddress } = useAddress();
 
   const navigate = useNavigate();
 
@@ -214,7 +216,7 @@ const UserPrevsOrders = () => {
               {
                 id: "orderNow",
                 value: "Ordina ora",
-                goto: "/restaurants",
+                goto: selectedAddress ? "/restaurants" : "/",
                 className: "bg-[#ec010184] border border-[#fe0000b3] px-8",
               },
             ]}
