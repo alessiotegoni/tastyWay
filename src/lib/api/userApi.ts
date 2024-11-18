@@ -2,10 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 import { CheckoutSessionBody } from "@/types/apiTypes";
 import { UserPrevOrderRes } from "@/types/userTypes";
-import {
-  UserProfileType,
-  UserSecurityType,
-} from "../validations/userProfileSchema";
+import { UserProfileType } from "../validations/userProfileSchema";
 import { PREV_ORDERS_LIMIT } from "@/config/apiConfig";
 
 export const getMyAddress = async (lat: number, lng: number) => {
@@ -75,7 +72,7 @@ export const updateUserProfile = async (
 
 export const updateUserSecurity = async (
   privateApi: AxiosInstance,
-  data: UserSecurityType
+  data: { newPassword: string; oldPassword: string }
 ) =>
   (await privateApi.patch<{ message: string }>("/users/profile/security", data))
     .data;

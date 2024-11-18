@@ -12,8 +12,8 @@ type LatestResearchsType = {
 };
 
 const useLatestResearch = (
-  userInput: string,
-  shouldShowLatestResearchs: boolean
+  userInput: string = "",
+  shouldShowLatestResearchs: boolean = false
 ): LatestResearchsType => {
   const [searchedLocations, setSearchedLocations] = useState<string[]>([]);
   const [showLatestResearchs, setShowLatestResearchs] = useState(false);

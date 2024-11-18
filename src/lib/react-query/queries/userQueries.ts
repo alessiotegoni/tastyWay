@@ -12,8 +12,8 @@ import {
   getUserProfile,
 } from "@/lib/api/userApi";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { getRestaurantActiveOrders } from "@/lib/api/restaurantApi";
+import { UserProfileType } from "@/lib/validations/userProfileSchema";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
   const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ export const useGetMyAddress = (lat: number, lng: number) => {
   return useQuery<string>({
     queryKey: ["myLocation", lat, lng],
     queryFn: () => getMyAddress(lat, lng),
-    enabled: !!lat && !!lng && !!!initialData,
+    enabled: !!lat && !!lng && !initialData,
     initialData,
   });
 };

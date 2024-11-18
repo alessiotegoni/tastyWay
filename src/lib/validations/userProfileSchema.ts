@@ -14,3 +14,11 @@ export const userProfileSchema = z.object({
 });
 
 export type UserProfileType = z.infer<typeof userProfileSchema>;
+
+export const defaultUserValues = {
+  name: "",
+  surname: "",
+  phoneNumber: 0,
+  address: "",
+  isCompanyAccount: false,
+};
