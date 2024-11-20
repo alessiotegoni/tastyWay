@@ -9,17 +9,16 @@ import {
 import { SignupType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSignup } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
-
-// TODO: Add otp phone verification
+import InputMask from "react-input-mask";
 
 const SignupForm = () => {
   const navigate = useNavigate();
-  const { search } = useLocation();
+  const [searchParams] = useSearchParams();
 
   const form = useFormContext<SignupType>();
 
@@ -32,10 +31,7 @@ const SignupForm = () => {
   } = useSignup();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(search);
-    const redirectPath = queryParams.get("redirect");
-
-    if (isSuccess) navigate(redirectPath ?? "/");
+    if (isSuccess) navigate(searchParams.get("redirect") ?? "/");
   }, [navigate, isSuccess]);
 
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
@@ -111,18 +107,31 @@ const SignupForm = () => {
             )}
           />
           <FormField
-            control={form.control}
             name="phoneNumber"
+            control={form.control}
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="basis-1/2">
                 <FormControl>
-                  <Input
+                  <InputMask
+                    id="phoneNumber"
+                    mask="999 999 9999"
                     {...field}
-                    placeholder="Numero di telefono"
-                    className="signup-form-input"
-                  />
+                    onChange={(e) =>
+                      field.onChange(
+                        parseInt(e.target.value.replace(/\s/g, ""))
+                      )
+                    }
+                  >
+                    {(inputProps: any) => (
+                      <Input
+                        {...inputProps}
+                        className="signup-form-input"
+                        placeholder="Numero di telefono"
+                      />
+                    )}
+                  </InputMask>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="mt-1" />
               </FormItem>
             )}
           />

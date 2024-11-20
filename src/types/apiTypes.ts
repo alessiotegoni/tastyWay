@@ -3,8 +3,8 @@ import { UserGoogleJwt } from "./userTypes";
 
 export type ApiError = AxiosError<{ message: string }>;
 
+export type ApiRes = { message: string };
 export type AuthRes = string;
-
 export type LogoutRes = { message: string };
 
 export type CheckoutSessionBody = {
@@ -21,3 +21,9 @@ export type GoogleLoginBody =
         "email" | "given_name" | "family_name" | "picture"
       >;
     };
+
+export type ResetPasswordBody = {
+  newPassword: string;
+  email: string
+  token: string;
+};

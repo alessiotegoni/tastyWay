@@ -16,6 +16,7 @@ import RestaurantProfileLayout from "./components/_root/layouts/RestaurantProfil
 import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 import RestaurantUserOrder from "./components/_root/pages/RestaurantUserOrder";
 import RestuarantOrders from "./components/_root/pages/RestaurantOrders";
+import ResetPassword from "./components/_auth/ResetPassword";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         {/* Auth */}
         <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="reset-password/:token" element={<ResetPassword />} />
 
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />

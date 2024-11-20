@@ -3,7 +3,21 @@ import axios, { AxiosInstance } from "axios";
 import { CheckoutSessionBody } from "@/types/apiTypes";
 import { UserPrevOrderRes } from "@/types/userTypes";
 import { UserProfileType } from "../validations/userProfileSchema";
-import { PREV_ORDERS_LIMIT } from "@/config/apiConfig";
+import { api, PREV_ORDERS_LIMIT } from "@/config/apiConfig";
+
+export const sendOtpCode = async (phoneNumber: string) =>
+  (await api.post("/users/send-otp", { phoneNumber })).data;
+
+export const verifyOtpCode = async (data: {
+  phoneNumber: string;
+  otpCode: string;
+}) =>
+  (
+    await api.post("/users/verify-otp", {
+      phoneNumber: data.phoneNumber,
+      otpCode: data.otpCode,
+    })
+  ).data;
 
 export const getMyAddress = async (lat: number, lng: number) => {
   const { data } = await axios.get(

@@ -4,7 +4,7 @@ export const signinSchema = z.object({
   email: z.string().email("Email non valida"),
   password: z
     .string({ message: "La password deve essere una stringa" })
-    .min(5, "La password deve avere almeno 5 caratteri"),
+    .min(8, "La password deve avere almeno 8 caratteri"),
 });
 
 export const defaultSigninValues = {
@@ -25,8 +25,11 @@ export const signupSchema = signinSchema.extend({
     .string({ message: "L'indirizzo e' obbligatorio" })
     .min(3, "Indirizzo non valido"),
   phoneNumber: z
-    .string({ message: "Numero di telefono italiano obbligatorio" })
-    .regex(/^(3\d{9}|0\d{6,10})$/, "Numero di telefono italiano non valido"),
+    .number({ message: "Numero invalido" })
+    .refine(
+      (num) => /^3[1-9]\d{8}$/.test(num.toString()),
+      "Il numero deve essere italiano"
+    ),
 });
 
 export const defaultSignupValues = {

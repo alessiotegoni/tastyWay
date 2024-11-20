@@ -1,12 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { googleAuth, logout, signin, signup } from "@/lib/api/authApi";
+import {
+  forgotPassword,
+  googleAuth,
+  logout,
+  resetPassword,
+  signin,
+  signup,
+} from "@/lib/api/authApi";
 import { SigninType, SignupType } from "@/lib/validations/authSchemas";
 import {
   ApiError,
+  ApiRes,
   AuthRes,
   GoogleLoginBody,
   LogoutRes,
+  ResetPasswordBody,
 } from "@/types/apiTypes";
 import { googleLogout } from "@react-oauth/google";
 
@@ -60,3 +69,15 @@ export const useLogout = () => {
     },
   });
 };
+
+export const useForgotPassword = () =>
+  useMutation<ApiRes, ApiError, string>({
+    mutationKey: ["forgotPassword"],
+    mutationFn: (email) => forgotPassword(email),
+  });
+
+export const useResetPassword = () =>
+  useMutation<ApiRes, ApiError, ResetPasswordBody>({
+    mutationKey: ["resetPassword"],
+    mutationFn: (data) => resetPassword(data),
+  });

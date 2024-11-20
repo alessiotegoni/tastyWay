@@ -9,8 +9,11 @@ import {
 import { SigninType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { useSignin } from "@/lib/react-query/mutations/authMutations";
+import { useNavigate } from "react-router-dom";
+import {
+  useForgotPassword,
+  useSignin,
+} from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 
@@ -24,12 +27,38 @@ const SigninForm = () => {
     isSuccess,
     isPending,
   } = useSignin();
+  const { mutateAsync: forgotPassword, isPending: isSendingEmail } =
+    useForgotPassword();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) navigate("/");
   }, [isSuccess]);
+
+  const handleForgotPassword = async () => {
+    if (isSendingEmail) return;
+
+    const email = form.getValues("email");
+    try {
+      if (!email) throw new Error("Inserisci prima la tua email");
+      const res = await forgotPassword(email);
+
+      toast({
+        title: res.message,
+      });
+    } catch (err: any) {
+      console.log(err);
+
+      toast({
+        title: "Errore",
+        description:
+          (err?.response?.data?.message || err.message) ??
+          "Errore nell'invio dell'email, riprovare",
+        variant: "destructive",
+      });
+    }
+  };
 
   const onSubmit: SubmitHandler<SigninType> = async (data) => {
     if (isPending) return;
@@ -85,11 +114,16 @@ const SigninForm = () => {
             </div>
           )}
         </div>
-        <p className="font-medium text-[15px] mt-5 mb-5">
-          Se non hai un account,{" "}
-          <Link to="/signup" className="text-[#FCAE08] hover:underline">
-            Registrati
-          </Link>
+        <p className="font-medium text-[15px] mt-5 mb-5 flex gap-1">
+          Password dimenticata?
+          <Button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-[#FCAE08] hover:underline"
+            disabled={isSendingEmail}
+          >
+            Reimpostala
+          </Button>
         </p>
         <Button
           type="submit"
