@@ -1,4 +1,5 @@
 import UserProfileForm from "@/components/custom/forms/UserProfileForm";
+import RequireEmailVerification from "@/components/shared/RequireEmailVerification";
 import {
   defaultUserValues,
   userProfileSchema,
@@ -24,6 +25,7 @@ const UserProfile = () => {
       }`}
     >
       <h2 className="text-2xl font-semibold">Dettagli Account</h2>
+      <RequireEmailVerification />
       <FormProvider {...form}>
         <UserProfileForm />
       </FormProvider>

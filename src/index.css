@@ -76,7 +76,7 @@
 @layer components {
   .btn {
     @apply disabled:pointer-events-none disabled:opacity-50
-    rounded-[47px] font-semibold active:scale-95
+    rounded-[47px] font-semibold active:scale-95 select-none
     text-[17px] border border-primary-80 transition-all;
   }
 
@@ -93,7 +93,7 @@
       url("/imgs/home-bg.png");
   }
 
-  .hero:has(.signin, .signup, .reset-password) {
+  .hero:has(.signin, .signup, .reset-password, .verify-email) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
       url("/imgs/auth-bg.png");
   }

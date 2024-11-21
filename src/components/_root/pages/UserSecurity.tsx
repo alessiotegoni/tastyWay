@@ -1,9 +1,11 @@
+import RequireEmailVerification from "@/components/shared/RequireEmailVerification";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useUpdateUserSecurity } from "@/lib/react-query/mutations/userMutations";
+import { showErrorToast } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useMatch } from "react-router-dom";
@@ -30,14 +32,10 @@ const UserSecurity = () => {
     )
       return;
 
-    if (newPassword.length < 8) {
-      toast({
-        description: "La nuova password deve avere almento 8 caratteri",
-      });
-      return;
-    }
-
     try {
+      if (newPassword.length < 8)
+        throw new Error("La nuova password deve avere almento 8 caratteri");
+
       await updateUserSecurity({ newPassword, oldPassword });
       toast({
         description: `Password ${
@@ -48,11 +46,9 @@ const UserSecurity = () => {
       setNewPassword("");
       setOldPassword("");
     } catch (err: any) {
-      toast({
-        description:
-          err?.response?.data.message ??
-          "Errore nell'aggiornamento della password",
-        variant: "destructive",
+      showErrorToast({
+        err,
+        description: "Errore nell'aggiornamento della password",
       });
     }
   };
@@ -81,9 +77,10 @@ const UserSecurity = () => {
       </h2>
       {isGoogleLogged && (
         <p className="font-medium mt-1">
-          Crea la tua password per accedere al meglio al tuo profilo
+          Crea una password per accedere al meglio al tuo profilo
         </p>
       )}
+      <RequireEmailVerification />
       <form
         onSubmit={handleSubmit}
         className="grow flex flex-col justify-between"

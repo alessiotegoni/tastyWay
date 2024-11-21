@@ -13,6 +13,7 @@ import { useCreateMyRestaurant } from "@/lib/react-query/mutations/restaurantMut
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import InputMask from "react-input-mask";
 import { useLocation } from "react-router-dom";
+import { showErrorToast } from "@/lib/utils";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
@@ -57,11 +58,9 @@ const UserProfileForm = () => {
             : "Profilo aggiornato con successo",
       });
     } catch (err: any) {
-      toast({
-        description:
-          err.response?.data?.message ??
-          "Errore nell'aggiornamento dell'utente",
-        variant: "destructive",
+      showErrorToast({
+        err,
+        description: "Errore nell'aggiornamento dell'utente",
       });
     }
   };

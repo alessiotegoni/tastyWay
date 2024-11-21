@@ -5,8 +5,10 @@ import {
   googleAuth,
   logout,
   resetPassword,
+  sendVerificationEmail,
   signin,
   signup,
+  verifyEmail,
 } from "@/lib/api/authApi";
 import { SigninType, SignupType } from "@/lib/validations/authSchemas";
 import {
@@ -18,6 +20,8 @@ import {
   ResetPasswordBody,
 } from "@/types/apiTypes";
 import { googleLogout } from "@react-oauth/google";
+import useAxiosPrivate from "@/hooks/usePrivateApi";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useGoogleAuth = () => {
   const queryClient = useQueryClient();
@@ -67,6 +71,26 @@ export const useLogout = () => {
       googleLogout();
       navigate("/");
     },
+  });
+};
+
+export const useSendVerificationEmail = () => {
+  const privateApi = useAxiosPrivate();
+
+  return useMutation<ApiRes, ApiError>({
+    mutationKey: ["sendVerificationEmail"],
+    mutationFn: () => sendVerificationEmail(privateApi),
+  });
+};
+
+export const useVerifyEmail = () => {
+  const privateApi = useAxiosPrivate();
+  const { refreshToken } = useAuth();
+
+  return useMutation<ApiRes, ApiError, string>({
+    mutationKey: ["verifyEmail"],
+    mutationFn: (code) => verifyEmail(privateApi, code),
+    onSuccess: () => refreshToken(),
   });
 };
 

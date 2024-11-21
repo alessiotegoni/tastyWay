@@ -50,9 +50,7 @@ const RestaurantProfileLayout = () => {
     toast({ description: "Logout effettuato con successo!" });
   };
 
-  const handleUploadRestaurantImg = async (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUploadImg = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.item(0);
     if (!file || isPending) return;
 
@@ -101,7 +99,7 @@ const RestaurantProfileLayout = () => {
               type="file"
               className="w-0 h-0"
               id="restaurantImg"
-              onChange={handleUploadRestaurantImg}
+              onChange={handleUploadImg}
             />
             {isPending ? (
               <Loader2 />

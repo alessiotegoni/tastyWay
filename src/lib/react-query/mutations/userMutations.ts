@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { ApiError, CheckoutSessionBody } from "@/types/apiTypes";
+import { ApiError, ApiRes, CheckoutSessionBody } from "@/types/apiTypes";
 import {
   createCheckoutSessionUrl,
+  updateUserImg,
   updateUserProfile,
   updateUserSecurity,
 } from "@/lib/api/userApi";
@@ -26,7 +27,7 @@ export const useUpdateUserProfile = () => {
   const privateApi = useAxiosPrivate();
   const queryClient = useQueryClient();
 
-  return useMutation<{ message: string }, ApiError, UserProfileType>({
+  return useMutation<ApiRes, ApiError, UserProfileType>({
     mutationKey: ["updateUserProfile"],
     mutationFn: (data) => updateUserProfile(privateApi, data),
     onSuccess: (_, variables) =>
@@ -39,12 +40,23 @@ export const useUpdateUserSecurity = () => {
   const { refreshToken } = useAuth();
 
   return useMutation<
-    { message: string },
+    ApiRes,
     ApiError,
     { newPassword: string; oldPassword: string }
   >({
     mutationKey: ["updateUserSecurity"],
     mutationFn: (data) => updateUserSecurity(privateApi, data),
+    onSuccess: () => refreshToken(),
+  });
+};
+
+export const useUpdateUserImg = () => {
+  const privateApi = useAxiosPrivate();
+  const { refreshToken } = useAuth();
+
+  return useMutation<ApiRes, ApiError, File>({
+    mutationKey: ["updateUserImg"],
+    mutationFn: (img) => updateUserImg(privateApi, img),
     onSuccess: () => refreshToken(),
   });
 };

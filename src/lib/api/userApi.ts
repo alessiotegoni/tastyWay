@@ -90,3 +90,14 @@ export const updateUserSecurity = async (
 ) =>
   (await privateApi.patch<{ message: string }>("/users/profile/security", data))
     .data;
+
+export const updateUserImg = async (privateApi: AxiosInstance, userImg: File) =>
+  (
+    await privateApi.patch(
+      "/users/profile-img",
+      { userImg },
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    )
+  ).data;

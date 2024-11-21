@@ -206,10 +206,12 @@ export const showErrorToast = ({
   description = "Errore nella richiesta, riprova piu tardi",
   err,
   duration = 5_000,
+  ...restProps
 }: Toast & { err: any }) =>
   toast({
     title: "Errore",
     description: (err?.response?.data?.message || err?.message) ?? description,
     variant: "destructive",
     duration,
+    ...restProps,
   });
