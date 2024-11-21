@@ -1,6 +1,9 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../shared/Navbar/Navbar";
-import { useResetPassword } from "@/lib/react-query/mutations/authMutations";
+import {
+  useForgotPassword,
+  useResetPassword,
+} from "@/lib/react-query/mutations/authMutations";
 import {
   Card,
   CardContent,
@@ -12,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,13 +28,18 @@ import {
   FormMessage,
 } from "../ui/form";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { showErrorToast } from "@/lib/utils";
 
 const ResetPassword = () => {
+  const { isAuthenticated } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const { token } = useParams();
   const navigate = useNavigate();
 
+  if (isAuthenticated) return <Navigate to="/" />;
   if (!token) return <Navigate to="/signin" />;
 
   const form = useForm<SigninType>({
@@ -43,13 +51,40 @@ const ResetPassword = () => {
     },
   });
 
-  const { mutateAsync: resetPassword, isPending } = useResetPassword();
+  const {
+    mutateAsync: resetPassword,
+    isPending: isResetting,
+    isError,
+    error,
+  } = useResetPassword();
+  const {
+    mutateAsync: forgotPassword,
+    isPending: isSendingToken,
+    isSuccess: hasSentToken,
+  } = useForgotPassword();
+
+  const handleForgotPassword = async () => {
+    const email = form.getValues("email");
+
+    try {
+      if (!email) throw new Error("Inserisci prima l'email");
+      const res = await forgotPassword(email);
+
+      toast({ description: res.message });
+      setTimeout(() => window.close(), 5_000);
+    } catch (err: any) {
+      showErrorToast({
+        err,
+        description: "Errore nell'invio della email di reset",
+      });
+    }
+  };
 
   const onSubmit: SubmitHandler<SigninType> = async ({
     email,
     password: newPassword,
   }) => {
-    if (isPending || !token) return;
+    if (isResetting || isSendingToken || !token) return;
 
     try {
       const res = await resetPassword({ email, newPassword, token });
@@ -58,12 +93,9 @@ const ResetPassword = () => {
       });
       navigate("/signin");
     } catch (err: any) {
-      toast({
-        title: "Errore",
-        description:
-          err.response?.data.message ??
-          "Errore nel reset della password, riprovare",
-        variant: "destructive",
+      showErrorToast({
+        err,
+        description: "Errore nel reset della password, riprovare",
       });
     }
   };
@@ -148,19 +180,35 @@ const ResetPassword = () => {
                       </FormItem>
                     )}
                   />
-                  <CardFooter className="p-0">
-                    <Button
-                      type="submit"
-                      className="btn w-full bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
-    text-sm font-medium border border-[#FF0000] border-opacity-60
-    hover:bg-[#ED0000] hover:bg-opacity-50 mt-3"
-                    >
-                      Resetta password
-                    </Button>
-                  </CardFooter>
                 </form>
               </Form>
             </CardContent>
+            <CardFooter className="flex gap-2 p-0">
+              {isError &&
+                error.response?.data.message === "Token invalido o scaduto" &&
+                !hasSentToken && (
+                  <Button
+                    type="button"
+                    className="btn user-widget rounded-xl py-3 px-4
+                text-sm font-medium border border-blue-800
+                mt-7 basis-1/2 bg-blue-600 hover:bg-blue-700"
+                    disabled={isSendingToken}
+                    onClick={handleForgotPassword}
+                  >
+                    {isSendingToken ? <Loader2 /> : "Rimanda email"}
+                  </Button>
+                )}
+              <Button
+                type="submit"
+                className="btn bg-[#ED0000] bg-opacity-50 rounded-xl py-3 px-4
+    text-sm font-medium border border-[#FF0000] border-opacity-60
+    hover:bg-[#ED0000] hover:bg-opacity-70 mt-7 basis-1/2 grow"
+                onClick={() => form.handleSubmit(onSubmit)()}
+                disabled={isResetting}
+              >
+                {isResetting ? <Loader2 /> : "Resetta password"}
+              </Button>
+            </CardFooter>
           </Card>
         </div>
       </main>

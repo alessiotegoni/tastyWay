@@ -16,17 +16,13 @@ import {
 } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+import { showErrorToast } from "@/lib/utils";
 
 const SigninForm = () => {
   const form = useFormContext<SigninType>();
 
-  const {
-    mutateAsync: signin,
-    isError,
-    error,
-    isSuccess,
-    isPending,
-  } = useSignin();
+  const { mutateAsync: signin, isSuccess, isPending } = useSignin();
   const { mutateAsync: forgotPassword, isPending: isSendingEmail } =
     useForgotPassword();
 
@@ -36,8 +32,10 @@ const SigninForm = () => {
     if (isSuccess) navigate("/");
   }, [isSuccess]);
 
+  const canSend = !isSendingEmail && !isPending;
+
   const handleForgotPassword = async () => {
-    if (isSendingEmail) return;
+    if (!canSend) return;
 
     const email = form.getValues("email");
     try {
@@ -48,24 +46,23 @@ const SigninForm = () => {
         title: res.message,
       });
     } catch (err: any) {
-      console.log(err);
-
-      toast({
-        title: "Errore",
-        description:
-          (err?.response?.data?.message || err.message) ??
-          "Errore nell'invio dell'email, riprovare",
-        variant: "destructive",
+      showErrorToast({
+        err,
+        description: "Errore nell'invio dell'email, riprovare",
       });
     }
   };
 
   const onSubmit: SubmitHandler<SigninType> = async (data) => {
-    if (isPending) return;
+    if (!canSend) return;
 
-    await signin(data);
+    try {
+      await signin(data);
 
-    toast({ title: "Accesso effetuato con successo" });
+      toast({ title: "Accesso effetuato con successo" });
+    } catch (err: any) {
+      showErrorToast({ err });
+    }
   };
 
   return (
@@ -104,15 +101,6 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          {isError && (
-            <div
-              className="rounded-[17px] text-sm sm:text-base p-4 sm:p-5 font-medium
-            bg-x-icon-bg-40 border border-x-icon-bg-60"
-            >
-              {error.response?.data?.message ??
-                "Errore nella richiesta, riprova piu tardi"}
-            </div>
-          )}
         </div>
         <p className="font-medium text-[15px] mt-5 mb-5 flex gap-1">
           Password dimenticata?
@@ -130,7 +118,7 @@ const SigninForm = () => {
           className="w-full py-4 sm:py-5 bg-[#C24C08]
         rounded-[20px] sm:rounded-[26px] text-lg sm:text-[24px] font-semibold"
         >
-          Accedi
+          {!canSend ? <Loader2 /> : "Accedi"}
         </Button>
       </form>
     </Form>

@@ -1,4 +1,5 @@
 import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
+import { toast, Toast } from "@/hooks/use-toast";
 import { ApiError } from "@/types/apiTypes";
 import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
@@ -200,3 +201,15 @@ export const checkUserPass = (isCmpAccount: boolean | undefined) => {
 
   return canPass;
 };
+
+export const showErrorToast = ({
+  description = "Errore nella richiesta, riprova piu tardi",
+  err,
+  duration = 5_000,
+}: Toast & { err: any }) =>
+  toast({
+    title: "Errore",
+    description: (err?.response?.data?.message || err?.message) ?? description,
+    variant: "destructive",
+    duration,
+  });

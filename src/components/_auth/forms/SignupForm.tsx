@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import InputMask from "react-input-mask";
+import { Loader2 } from "lucide-react";
+import { showErrorToast } from "@/lib/utils";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -22,13 +24,7 @@ const SignupForm = () => {
 
   const form = useFormContext<SignupType>();
 
-  const {
-    mutateAsync: signup,
-    isError,
-    error,
-    isSuccess,
-    isPending,
-  } = useSignup();
+  const { mutateAsync: signup, isSuccess, isPending } = useSignup();
 
   useEffect(() => {
     if (isSuccess) navigate(searchParams.get("redirect") ?? "/");
@@ -37,8 +33,13 @@ const SignupForm = () => {
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
     if (isPending) return;
 
-    await signup(data);
-    toast({ title: "Registrazione effettuata con successo" });
+    try {
+      await signup(data);
+
+      toast({ title: "Registrazione effettuata con successo" });
+    } catch (err: any) {
+      showErrorToast({ err });
+    }
   };
 
   return (
@@ -182,15 +183,6 @@ const SignupForm = () => {
               </FormItem>
             )}
           />
-          {isError && (
-            <div
-              className="rounded-[17px] text-sm sm:text-base p-4 sm:p-5 font-medium
-            bg-x-icon-bg-40 border border-x-icon-bg-60"
-            >
-              {error.response?.data?.message ??
-                "Errore nella richiesta, riprova piu tardi"}
-            </div>
-          )}
         </div>
         <p className="font-medium text-[15px] mt-[40px] mb-4">
           Se hai gia un account,{" "}
@@ -203,7 +195,7 @@ const SignupForm = () => {
           className="w-full py-4 sm:py-5 bg-[#C24C08]
         rounded-[20px] sm:rounded-[26px] text-lg sm:text-[24px] font-semibold"
         >
-          Registrati
+          {isPending ? <Loader2 /> : "Registrati"}
         </Button>
       </form>
     </Form>
