@@ -1,6 +1,5 @@
 import {
   api,
-  RESTAURANT_ITEMS_LIMIT,
   RESTAURANT_ORDERS_LIMIT,
   RESTAURANTS_LIMIT,
 } from "@/config/apiConfig";
@@ -43,10 +42,7 @@ export const getRestaurantItems = async (
 ) =>
   (
     await api.get<RestaurantItem[]>(`/restaurants/${restaurantId}/items`, {
-      params: {
-        filters,
-        limit: RESTAURANT_ITEMS_LIMIT,
-      },
+      params: { filters },
     })
   ).data;
 
@@ -99,7 +95,7 @@ export const updateMyRestaurant = async (
   data: RestaurantProfileType
 ) =>
   (
-    await privateApi.patch("/restaurants/my/restaurant", data, {
+    await privateApi.put("/restaurants/my/restaurant", data, {
       headers: { "Content-Type": "multipart/form-data" },
     })
   ).data;

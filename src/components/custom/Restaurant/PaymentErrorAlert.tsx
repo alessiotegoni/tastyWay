@@ -25,7 +25,7 @@ const PaymentErrorAlert = ({
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent className="home-widget">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2 text-[#ec01017e]">
+          <AlertDialogTitle className="flex items-center gap-2 text-red-600 text-2xl">
             <XCircle className="h-5 w-5" />
             Errore di Pagamento
           </AlertDialogTitle>
@@ -34,18 +34,19 @@ const PaymentErrorAlert = ({
             di verificare i dettagli della carta e riprovare.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="mt-3">
           <AlertDialogCancel
             onClick={onClose}
             className="btn bg-home-widget-border-40 hover:bg-home-widget-border-70
-             p-3 px-5 rounded-xl font-medium"
+             px-5 rounded-xl font-medium"
           >
             Chiudi
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onRetry}
-            className="btn bg-[#ec01017e] p-3 px-5
-              rounded-xl border-0 hover:bg-[#ec0101d9] font-medium"
+            className="btn bg-[#ec01017e] py-3 px-5
+              rounded-xl hover:bg-[#ec0101d9] font-medium
+             border-[#ec0101d9]"
           >
             Riprova il Pagamento
           </AlertDialogAction>

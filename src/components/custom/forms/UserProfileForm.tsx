@@ -46,6 +46,8 @@ const UserProfileForm = () => {
     if (isUpdatingUP || isLoadingUP || isCreatingRestaurant) return;
 
     try {
+      if (!user?.emailVerified)
+        throw new Error("Prima di aggiornare il profilo verifica la tua email");
       await updateUserProfile(data);
       if (isUser && data.isCompanyAccount) await createRestaurant();
 

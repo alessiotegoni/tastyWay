@@ -38,6 +38,7 @@ const ClientFormBtns = <T extends FieldValues>({
           type="submit"
           className="btn px-4 py-3 rounded-xl text-sm font-medium
           bg-green-700 border-green-500 hover:bg-green-600"
+          disabled={isLoading}
         >
           {isLoading ? <Loader2 /> : "Salva modifiche"}
         </Button>

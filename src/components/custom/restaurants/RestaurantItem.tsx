@@ -19,7 +19,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       className="py-2 px-5 bg-home-widget-border-40
       rounded-[40px] font-medium text-[12px]"
     >
-      {c.replace("_", " ")}
+      {c.replaceAll("_", " ")}
     </li>
   ));
 
@@ -42,7 +42,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
           <figcaption className="text-2xl sm:text-[26px] font-semibold">
             {restaurant.name}
           </figcaption>
-          <ul className="flex items-center gap-2 mt-2 sm:mt-4">
+          <ul className="flex items-center flex-wrap gap-2 mt-2 sm:mt-4">
             {restaurantCuisine}
           </ul>
         </div>

@@ -15,9 +15,8 @@ export const useCart = (
 ) => {
   const context = useContext(CartContext);
 
-  if (!context) {
+  if (!context)
     throw new Error("To use useCart hook you must be inside of CartProvider");
-  }
 
   const cartItemIds = restaurantId ? context.cartItems[restaurantId] ?? [] : [];
 

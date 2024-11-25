@@ -17,7 +17,7 @@ import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 import RestaurantUserOrder from "./components/_root/pages/RestaurantUserOrder";
 import RestuarantOrders from "./components/_root/pages/RestaurantOrders";
 import ResetPassword from "./components/_auth/ResetPassword";
-import VerifyEmail from "./components/_root/pages/verifyEmail";
+import VerifyEmail from "./components/_root/pages/VerifyEmail";
 
 function App() {
   return (

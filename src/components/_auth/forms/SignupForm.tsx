@@ -9,34 +9,53 @@ import {
 import { SignupType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useSignup } from "@/lib/react-query/mutations/authMutations";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useSendVerificationEmail,
+  useSignup,
+} from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import InputMask from "react-input-mask";
 import { Loader2 } from "lucide-react";
 import { showErrorToast } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SignupForm = () => {
+  const { isAuthenticated } = useAuth();
+
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   const form = useFormContext<SignupType>();
 
-  const { mutateAsync: signup, isSuccess, isPending } = useSignup();
+  const { mutateAsync: signup, isPending } = useSignup();
+  const { mutateAsync: sendEmail, isPending: isSending } =
+    useSendVerificationEmail();
 
   useEffect(() => {
-    if (isSuccess) navigate(searchParams.get("redirect") ?? "/");
-  }, [navigate, isSuccess]);
+    const handleSendEmail = async () => {
+      try {
+        const res = await sendEmail();
+        navigate("/verify-email");
+        toast({ description: res.message });
+      } catch (err) {
+        showErrorToast({
+          err,
+          description: "Errore nell'invio della email di verifica",
+        });
+      }
+    };
+
+    if (isAuthenticated) handleSendEmail();
+  }, [isAuthenticated]);
 
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
-    if (isPending) return;
+    if (isPending || isSending) return;
 
     try {
       await signup(data);
-
-      toast({ title: "Registrazione effettuata con successo" });
+      toast({ description: "Registrazione effettuata con successo" });
     } catch (err: any) {
       showErrorToast({ err });
     }
@@ -195,7 +214,7 @@ const SignupForm = () => {
           className="w-full py-4 sm:py-5 bg-[#C24C08]
         rounded-[20px] sm:rounded-[26px] text-lg sm:text-[24px] font-semibold"
         >
-          {isPending ? <Loader2 /> : "Registrati"}
+          {isPending || isSending ? <Loader2 /> : "Registrati"}
         </Button>
       </form>
     </Form>

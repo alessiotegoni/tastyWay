@@ -43,10 +43,7 @@ const LocationAutocomplete = ({
 
   useEffect(() => {
     if (formAddress) setUserInput(formAddress);
-    // if (selectedAddress && form && !formAddress) {
-    //   setUserInput(formAddress);
-    //   setFormAddress(selectedAddress);
-    // }
+    else if (selectedAddress) setUserInput(selectedAddress);
   }, [formAddress]);
 
   const {

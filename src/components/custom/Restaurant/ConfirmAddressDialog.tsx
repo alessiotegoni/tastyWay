@@ -46,7 +46,6 @@ const ConfirmAddressDialog = ({
         <div className="relative my-4">
           <LocationAutocomplete
             placeholder="Inserisci l'indirizzo dell'ordine"
-            shouldShowLatestResearchs={false}
             inputClassName="bg-transparent rounded-[15px] font-normal
             border-home-widget-border-60 focus:border-home-widget-border
             hover:bg-transparent"
@@ -61,10 +60,11 @@ const ConfirmAddressDialog = ({
             Annulla
           </AlertDialogCancel>
           <AlertDialogAction
-            disabled={!selectedAddress && isPending}
+            disabled={!selectedAddress || isPending}
             onClick={handleCreateSession}
             className="btn px-4 py-3 bg-primary-70
           hover:bg-primary-90 rounded-xl font-medium border-0"
+
           >
             {isPending ? <Loader2 /> : "Conferma"}
           </AlertDialogAction>

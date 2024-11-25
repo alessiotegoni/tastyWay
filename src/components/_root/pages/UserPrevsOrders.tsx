@@ -81,31 +81,35 @@ const UserPrevsOrders = () => {
                 Ultimo ordine
               </h1>
               <div className="mt-4 mb-3">
-                <div className="flex gap-3">
+                <div className="sm:flex gap-3">
                   <img
-                    src="/imgs/default-restaurant.png"
+                    src={
+                      lastOrder.restaurant.img ?? "/imgs/default-restaurant.png"
+                    }
                     alt={`${lastOrder!.restaurant.name} img`}
-                    className="w-[80px] h-[80px] object-cover rounded-xl"
+                    className="sm:w-[80px] sm:h-[80px] object-cover rounded-xl"
                   />
                   <div className="grow flex flex-col justify-between">
-                    <figcaption className="text-xl font-semibold text-left">
+                    <figcaption className="text-2xl mt-1 sm:mt-0 font-semibold text-left">
                       {lastOrder!.restaurant.name}
                     </figcaption>
-                    <div className="flex-between">
-                      <p className="text-white/80 text-lg font-semibold">
+                    <div className="flex-between mt-3 sm:mt-0">
+                      <p className="text-white/80 text-base font-semibold">
                         {getDate(lastOrder!.createdAt)}
                       </p>
                       <div className="flex-center gap-2">
                         <Button
                           className="btn py-2 px-5 text-sm
-                          bg-home-widget-border-50 hover:bg-home-widget-border-80"
+                          bg-home-widget-border-50 hover:bg-home-widget-border-80
+                          rounded-xl"
                         >
                           Ordina ancora
                         </Button>
                         <Link
                           to={`/user/order/${lastOrder!._id}`}
                           className="btn py-2 px-5 text-sm
-                          bg-home-widget-border-50 hover:bg-home-widget-border-80"
+                          bg-home-widget-border-50 hover:bg-home-widget-border-80
+                          rounded-xl"
                         >
                           Vedi
                         </Link>
@@ -144,7 +148,7 @@ const UserPrevsOrders = () => {
               </h2>
             </div>
             <div className="prev-orders__container user-widget border-t-0">
-              <ul className="w-full space-y-4 md:space-y-2">
+              <ul className="w-full space-y-8 md:space-y-4">
                 {prevOrders.map((order, i) => {
                   const orderDate = getDate(order.createdAt);
 
@@ -156,7 +160,10 @@ const UserPrevsOrders = () => {
                     >
                       <figure className="shrink-0">
                         <img
-                          src={"/imgs/default-restaurant.png"}
+                          src={
+                            order.restaurant.img ??
+                            "/imgs/default-restaurant.png"
+                          }
                           alt={`${order.restaurant.name}-img`}
                           className="w-full md:w-[150px] md:h-[150px] object-cover rounded-2xl"
                         />

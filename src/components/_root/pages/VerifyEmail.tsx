@@ -11,6 +11,7 @@ import {
 import {
   InputOTP,
   InputOTPGroup,
+  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "@/hooks/use-toast";
@@ -87,9 +88,15 @@ export default function VerifyEmail() {
             <CardContent className="flex justify-center p-0 mt-5 mb-8">
               <InputOTP value={otp} onChange={setOTP} maxLength={6}>
                 <InputOTPGroup>
-                  {Array.from({ length: 6 }, (_, i) => (
-                    <InputOTPSlot key={i} index={i} className="font-medium" />
-                  ))}
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
                 </InputOTPGroup>
               </InputOTP>
             </CardContent>
@@ -112,6 +119,7 @@ export default function VerifyEmail() {
                 className="btn user-widget rounded-xl py-[10px]  w-fit px-4
                 text-sm font-medium border border-primary border-opacity-90
                 bg-home-widget-border-10 hover:bg-home-widget-border-30"
+                disabled={!canSend}
               >
                 {isPending ? <Loader2 /> : "Verifica email"}
               </Button>

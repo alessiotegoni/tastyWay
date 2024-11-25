@@ -29,6 +29,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { showErrorToast } from "@/lib/utils";
 
 const defaultItemsFilters: RestaurantItemsFilters = {
   name: null,
@@ -71,34 +72,41 @@ const Restaurant = () => {
   const { mutateAsync: createSession, isPending: isCreatingSession } =
     useCreateCheckoutSession();
 
-  const { restaurantCartItems, handleSetCart } = useCart(
+  const { restaurantCartItems, handleSetCart, cartItems } = useCart(
     restaurantItems,
     restaurant?._id
   );
 
-  // FIXME: make useAddress only an hook
-
   const handleCreateSession = async () => {
     if (!isAuthenticated || !user)
       return navigate(`/signin?redirect=${pathname}`);
-    if (!restaurant || !selectedAddress || user.isCmpAccount) return;
 
-    if (!restaurantCartItems.length && !isCreatingSession) return;
+    if (
+      !restaurant ||
+      !selectedAddress ||
+      user.isCmpAccount ||
+      isCreatingSession ||
+      !restaurantCartItems.length
+    )
+      return;
 
     try {
+      if (!user.emailVerified)
+        throw new Error(
+          "Prima di ordinare devi verificare la tua email, puoi farlo andando sul tuo profilo"
+        );
+
       const sessionUrl = await createSession({
         restaurantId: restaurant._id,
-        itemsIds: restaurantCartItems.map((i) => i._id),
+        itemsIds: cartItems[restaurant._id],
         address: selectedAddress,
       });
 
       window.location.href = sessionUrl;
-    } catch (err: any) {
-      toast({
-        title: "Errore",
-        description:
-          err.message ?? "Errore nel redirect alla pagina di pagamento",
-        variant: "destructive",
+    } catch (err) {
+      showErrorToast({
+        err,
+        description: "Errore nel redirect alla pagina di pagamento",
       });
     }
   };

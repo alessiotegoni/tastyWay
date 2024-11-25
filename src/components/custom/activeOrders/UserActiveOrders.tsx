@@ -50,6 +50,7 @@ const UserActiveOrders = ({ orders }: { orders: UserActiveOrder[] }) => (
                         <img
                           src={item.img ?? "/imgs/default-restaurant-item.png"}
                           alt={item.name}
+                          className="rounded-md"
                         />
                       </figure>
                       <div className="w-full flex flex-col justify-between">
