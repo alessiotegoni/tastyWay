@@ -71,6 +71,19 @@
     @apply fixed inset-0 w-full h-full -z-10
     object-cover object-center;
   }
+
+  .toast__container {
+    @apply home-widget rounded-2xl;
+  }
+
+  .toast__content {
+    @apply rounded-3xl text-sm font-medium;
+  }
+
+  .error-toast {
+    @apply bg-gradient-to-r from-red-600 via-red-700 to-red-800
+    text-gray-100 border border-red-900;
+  }
 }
 
 @layer components {
@@ -398,10 +411,6 @@
   .user-order__container .order__address {
     @apply bg-[#ed000071] border border-[#ed00006a]
     font-semibold rounded-3xl px-3 xs:px-4 sm:px-6 py-2 backdrop-blur-3xl;
-  }
-
-  .user-order__container .user-widget {
-    @apply max-w-[600px] mx-auto;
   }
 
   .active-orders__container,

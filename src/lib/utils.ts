@@ -213,5 +213,6 @@ export const showErrorToast = ({
     description: (err?.response?.data?.message || err?.message) ?? description,
     variant: "destructive",
     duration,
+    className: "error-toast",
     ...restProps,
   });

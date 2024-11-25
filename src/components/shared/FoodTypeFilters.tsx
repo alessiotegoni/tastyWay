@@ -33,10 +33,12 @@ const FoodTypeFilters = ({
   const handleSetFilters = (foodType: FoodType, hasFilter: boolean) => {
     if (isError) return;
 
-    if (!selectedAddress)
-      return toast({
+    if (!selectedAddress) {
+      toast({
         description: "Prima di selezionare il cibo inserisci il tuo indirizzo",
       });
+      return;
+    }
 
     const newFoodType = hasFilter
       ? foodTypes.filter((ft) => ft !== foodType)
