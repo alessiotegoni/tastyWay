@@ -46,6 +46,11 @@ export const getRestaurantItems = async (
     })
   ).data;
 
+export const getRestaurantActiveOrdersCount = async (
+  privateApi: AxiosInstance
+) =>
+  (await privateApi.get("/restaurants/my/restaurant/active-orders-count")).data;
+
 export const getRestaurantActiveOrders = async (privateApi: AxiosInstance) =>
   (await privateApi.get("/restaurants/my/restaurant/active-orders")).data;
 

@@ -3,7 +3,6 @@ import { toast, Toast } from "@/hooks/use-toast";
 import { ApiError } from "@/types/apiTypes";
 import { OrderStatus } from "@/types/userTypes";
 import { clsx, type ClassValue } from "clsx";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -176,31 +175,6 @@ export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
 
 export const getOrderStatusIcon = (orderStatus: OrderStatus) =>
   `/icons/${orderStatus.toLowerCase().replaceAll(" ", "-")}-icon.png`;
-
-export const checkUserPass = (isCmpAccount: boolean | undefined) => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  const redirect = searchParams.get("redirect");
-
-  let canPass = true;
-
-  const isActiveOrders = pathname.includes("/active-orders");
-
-  if (isCmpAccount && redirect?.startsWith("my-restaurant")) {
-    navigate(`/${redirect}`);
-    return true;
-  }
-
-  if (isCmpAccount && !pathname.includes("/my-restaurant") && !isActiveOrders)
-    canPass = false;
-
-  if (!isCmpAccount && !pathname.includes("/user") && !isActiveOrders)
-    canPass = false;
-
-  return canPass;
-};
 
 export const showErrorToast = ({
   description = "Errore nella richiesta, riprova piu tardi",

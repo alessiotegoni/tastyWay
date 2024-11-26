@@ -1,15 +1,17 @@
+import ActiveOrdersCount from "@/components/custom/ActiveOrdersCount";
 import { tastyWayLogo } from "@/constants";
+import { useAuth } from "@/contexts/AuthContext";
 import { ReactElement } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 
 interface DefaultNavbarProps {
   navRightBtn: ReactElement;
 }
 
 const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
-  const { pathname } = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
-  const homeBtn = pathname !== "/" && (
+  const homeBtn = !useMatch("/") ? (
     <Link to="/" className="btn home-btn">
       <img
         src="/icons/home-icon.png"
@@ -18,10 +20,15 @@ const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
       />
       <p className="hidden sm:block text-sm md:text-base">Home</p>
     </Link>
+  ) : (
+    <ActiveOrdersCount
+      isAuthenticated={isAuthenticated}
+      isCmpAccount={!!user?.isCmpAccount}
+    />
   );
 
   return (
-    <header className="restaurants-header">
+    <header className="relative">
       <div className="container max-w-none lg:max-w-[1300px]">
         <div className="row flex-between">
           <Link to="/" className="shrink-0">
@@ -31,7 +38,12 @@ const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
               className="w-[120px] md:w-[170px]"
             />
           </Link>
-          {homeBtn}
+          <div
+            className="absolute left-1/2 -translate-x-1/2
+    top-1/2 -translate-y-1/2"
+          >
+            {homeBtn}
+          </div>
           {navRightBtn}
         </div>
       </div>

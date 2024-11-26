@@ -14,7 +14,7 @@ export interface btn {
 export interface ErrorWidgetProps {
   error?: ApiError | null;
   title?: string;
-  subtitle: string;
+  subtitle?: string;
   className?: string;
   btns: btn[];
 }
@@ -37,6 +37,7 @@ const ErrorWidget = ({
     return (
       <Button
         key={btn.id}
+        id={btn.id}
         onClick={handleClick}
         className={`btn font-semibold flex-center gap-2
           py-3 px-3 xs:py-4 xs:px-6 rounded-[30px]

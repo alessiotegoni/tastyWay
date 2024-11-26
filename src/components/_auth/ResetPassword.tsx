@@ -39,9 +39,6 @@ const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  if (isAuthenticated) return <Navigate to="/" />;
-  if (!token) return <Navigate to="/signin" />;
-
   const form = useForm<SigninType>({
     mode: "onSubmit",
     resolver: zodResolver(signinSchema),
@@ -102,7 +99,11 @@ const ResetPassword = () => {
 
   // FormControl deve avere solo un unico figlio react
 
-  return (
+  return isAuthenticated ? (
+    <Navigate to="/" />
+  ) : !token ? (
+    <Navigate to="/signin" />
+  ) : (
     <div className="hero">
       <Navbar pageNum={0} />
       <main className="reset-password">

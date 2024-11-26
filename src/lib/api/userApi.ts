@@ -59,6 +59,9 @@ export const createCheckoutSessionUrl = async (
   return data;
 };
 
+export const getUserActiveOrdersCount = async (privateApi: AxiosInstance) =>
+  (await privateApi.get("/users/active-orders-count")).data;
+
 export const getUserActiveOrders = async (privateApi: AxiosInstance) =>
   (await privateApi.get("/users/active-orders")).data;
 

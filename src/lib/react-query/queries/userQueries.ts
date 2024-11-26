@@ -8,11 +8,15 @@ import { UserPrevOrderRes } from "@/types/userTypes";
 import {
   getMyAddress,
   getUserActiveOrders,
+  getUserActiveOrdersCount,
   getUserPrevOrders,
   getUserProfile,
 } from "@/lib/api/userApi";
 import useAxiosPrivate from "@/hooks/usePrivateApi";
-import { getRestaurantActiveOrders } from "@/lib/api/restaurantApi";
+import {
+  getRestaurantActiveOrders,
+  getRestaurantActiveOrdersCount,
+} from "@/lib/api/restaurantApi";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
@@ -49,6 +53,26 @@ export const useGetPrevOrders = () => {
     queryFn: ({ pageParam }) => getUserPrevOrders(privateApi, pageParam),
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
+  });
+};
+
+export const useGetActiveOrdersCount = (
+  isCmpAccount: boolean | undefined,
+  isAuthenticated: boolean
+) => {
+  const privateApi = useAxiosPrivate();
+
+  const queryKey = isCmpAccount
+    ? ["restaurantActiveOrdersCount"]
+    : ["userActiveOrdersCount"];
+
+  return useQuery<number, ApiError>({
+    queryKey,
+    queryFn: () =>
+      isCmpAccount
+        ? getRestaurantActiveOrdersCount(privateApi)
+        : getUserActiveOrdersCount(privateApi),
+    enabled: isAuthenticated,
   });
 };
 

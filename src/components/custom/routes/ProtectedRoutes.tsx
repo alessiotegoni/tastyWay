@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { checkUserPass } from "@/lib/utils";
+import useProtectRoutes from "@/hooks/useProtectRoutes";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = () => {
@@ -7,7 +7,7 @@ const ProtectedRoutes = () => {
 
   if (isLoadingToken) return;
 
-  const canPass = checkUserPass(user?.isCmpAccount);
+  const canPass = useProtectRoutes(user?.isCmpAccount);
 
   if (isAuthenticated && user && canPass) return <Outlet />;
 

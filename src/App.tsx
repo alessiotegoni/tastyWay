@@ -26,7 +26,6 @@ function App() {
         {/* Auth */}
         <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="verify-email" element={<VerifyEmail />} />
         <Route path="reset-password/:token" element={<ResetPassword />} />
 
         <Route element={<HomeLayout />}>
@@ -41,6 +40,8 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoutes />}>
+          <Route path="verify-email" element={<VerifyEmail />} />
+
           <Route element={<ClientLayout />}>
             <Route path="user">
               <Route element={<UserProfileLayout />}>

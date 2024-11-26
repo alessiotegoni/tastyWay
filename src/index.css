@@ -127,7 +127,7 @@
   }
 
   .home {
-    @apply md:pt-0;
+    @apply md:pt-0 relative;
   }
 
   .home__subtitle {
@@ -416,6 +416,10 @@
   .active-orders__container,
   .last-order__container {
     @apply max-w-[600px] w-full mx-auto;
+  }
+
+  .user-orders:has(.relative[aria-roledescription="carousel"]) .relative {
+    @apply mt-20 xl:mt-0;
   }
 
   .user-last-order {
