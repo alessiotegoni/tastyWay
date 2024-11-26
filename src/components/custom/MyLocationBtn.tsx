@@ -41,8 +41,6 @@ const MyLocationBtn = ({ className }: MyLocationBtnProps) => {
     }
   }, [address, isError, error]);
 
-  // TODO: add loading components to btn
-
   const handleSetMyPosition = async () => {
     if (isFetching) return;
 

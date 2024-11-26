@@ -13,8 +13,6 @@ import SuggestsList from "./suggests/SuggestsList";
 import useLatestResearch from "@/hooks/useLatestResearch";
 import XIconBtn from "../XIconBtn";
 
-// const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
 interface LocationAutocompleteProps {
   placeholder?: string;
   shouldShowLatestResearchs?: boolean;
@@ -58,13 +56,12 @@ const LocationAutocomplete = ({
   const setFormAddress = (
     selectedAddress: string,
     shouldDirty: boolean = false
-  ) => {
-    if (form)
-      form.setValue("address", selectedAddress, {
-        shouldValidate: true,
-        shouldDirty,
-      });
-  };
+  ) =>
+    form &&
+    form.setValue("address", selectedAddress, {
+      shouldValidate: true,
+      shouldDirty,
+    });
 
   const handleSelect = async (value: string) => {
     const address = value?.replace(", Italia", "");
@@ -113,7 +110,7 @@ const LocationAutocomplete = ({
       debounce={500}
       searchOptions={searchOptions}
     >
-      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+      {({ getInputProps, suggestions, getSuggestionItemProps }) => {
         const hasSeparator = checkSeparator(suggestions);
 
         return (

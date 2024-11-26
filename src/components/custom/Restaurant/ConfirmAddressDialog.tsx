@@ -46,7 +46,7 @@ const ConfirmAddressDialog = ({
         <div className="relative my-4">
           <LocationAutocomplete
             placeholder="Inserisci l'indirizzo dell'ordine"
-            inputClassName="bg-transparent rounded-[15px] font-normal
+            inputClassName="bg-transparent rounded-[15px] font-medium
             border-home-widget-border-60 focus:border-home-widget-border
             hover:bg-transparent"
           />

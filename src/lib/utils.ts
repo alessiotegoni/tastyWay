@@ -181,7 +181,7 @@ export const showErrorToast = ({
   err,
   duration = 5_000,
   ...restProps
-}: Toast & { err: any }) =>
+}: Toast & { err?: any }) =>
   toast({
     title: "Errore",
     description: (err?.response?.data?.message || err?.message) ?? description,

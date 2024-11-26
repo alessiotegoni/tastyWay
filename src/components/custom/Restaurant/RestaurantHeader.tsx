@@ -1,41 +1,42 @@
 import { Button } from "@/components/ui/button";
 import { getCityFromAddress } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-
-interface RestaurantHeaderProps {
-  restaurantName: string;
-  restaurantAddress: string;
-  restaurantImg: string;
-}
+import MapsModal from "../MapsModal";
+import { RestaurantRes } from "@/types/restaurantTypes";
 
 const RestaurantHeader = ({
-  restaurantImg,
-  restaurantName,
-  restaurantAddress,
-}: RestaurantHeaderProps) => {
+  imageUrl,
+  name,
+  address,
+  coordinates,
+}: RestaurantRes) => {
   const navigate = useNavigate();
 
-  const restautantCity = (
-    getCityFromAddress(restaurantAddress) + ", italia"
-  ).replace("a", "");
+  const restautantCity = (getCityFromAddress(address) + ", italia").replace(
+    "a",
+    ""
+  );
 
   return (
     <div className="restaurant__header">
       <div className="md:flex gap-5 md:gap-3 lg:gap-5">
         <figure className="shrink-0">
           <img
-            src={restaurantImg ?? "/imgs/default-restaurant.png"}
-            alt={`${restaurantName}-img`}
+            src={imageUrl ?? "/imgs/default-restaurant.png"}
+            alt={`${name}-img`}
             className="md:w-[130px] md:h-[130px] lg:w-[150px] lg:h-[150px]
             object-cover rounded-[20px]"
           />
         </figure>
         <div className="w-full flex flex-col justify-between">
-          <div className="">
-            <h1 className="text-xl sm:text-3xl md:text-xl lg:text-[30px] mt-3 md:mt-0">
-              {restaurantName}
-            </h1>
-            <p className="font-normal text-white/70">{restautantCity}</p>
+          <div className="flex justify-between mt-3 md:mt-0">
+            <div>
+              <h1 className="text-xl md:text-lg font-semibold lg:text-[30px]">
+                {name}
+              </h1>
+              <p className="font-normal text-white/70">{restautantCity}</p>
+            </div>
+            <MapsModal name={name} coordinates={coordinates} />
           </div>
           <div
             className="flex

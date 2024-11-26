@@ -8,7 +8,7 @@ import ClientNavbar from "./ClientNavbar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface NavbarProps {
-  pageNum: number;
+  pageNum?: number;
 }
 
 enum PAGES {
@@ -20,7 +20,7 @@ enum PAGES {
   HANDLE_CLIENT,
 }
 
-const Navbar = ({ pageNum }: NavbarProps) => {
+const Navbar = ({ pageNum = 0 }: NavbarProps) => {
   const { isAuthenticated, user, logout, isLoadingToken } = useAuth();
 
   const navRightBtn = isLoadingToken ? (

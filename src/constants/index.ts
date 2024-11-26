@@ -183,3 +183,31 @@ export const restaurantDropdownLinks = [
     alt: "help-support-icon",
   },
 ];
+
+export const faqs = [
+  {
+    question: "Come posso tracciare il mio ordine?",
+    answer:
+      'Puoi tracciare il tuo ordine accedendo alla sezione "I miei ordini" nel tuo account. Lì troverai informazioni in tempo reale sullo stato della tua consegna.',
+  },
+  {
+    question: "Quali sono i metodi di pagamento accettati?",
+    answer:
+      "Accettiamo pagamenti con carte di credito/debito, PayPal e, in alcune zone, il pagamento in contanti alla consegna.",
+  },
+  {
+    question: "Come posso modificare o annullare un ordine?",
+    answer:
+      "Puoi modificare o annullare un ordine entro 5 minuti dall'invio. Dopo questo periodo, contatta il nostro servizio clienti per assistenza.",
+  },
+  {
+    question: "Qual è il tempo medio di consegna?",
+    answer:
+      "Il tempo medio di consegna è di 30-45 minuti, ma può variare in base alla distanza e al traffico.",
+  },
+  {
+    question: "Come posso segnalare un problema con il mio ordine?",
+    answer:
+      'Puoi segnalare un problema con il tuo ordine attraverso la sezione "Aiuto" nell\'app o contattando direttamente il nostro servizio clienti.',
+  },
+];

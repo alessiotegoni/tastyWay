@@ -102,6 +102,7 @@ const UserPrevsOrders = () => {
                           className="btn py-2 px-5 text-sm
                           bg-home-widget-border-50 hover:bg-home-widget-border-80
                           rounded-xl"
+                          onClick={() => handleOrderAgain(lastOrder)}
                         >
                           Ordina ancora
                         </Button>

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { ApiError, LogoutRes } from "@/types/apiTypes";
 import { useLogout } from "@/lib/react-query/mutations/authMutations";
-import GoogleOneTapLogin from "@/components/custom/GoogleOneTapLogin";
+import GoogleOneTapLogin from "@/components/_auth/GoogleOneTapLogin";
 
 interface AuthContextType {
   accessToken: string | undefined;

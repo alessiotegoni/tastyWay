@@ -1,9 +1,17 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import Navbar from "../shared/Navbar/Navbar";
 import {
   useForgotPassword,
   useResetPassword,
 } from "@/lib/react-query/mutations/authMutations";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { showErrorToast } from "@/lib/utils";
+import Navbar from "@/components/shared/Navbar/Navbar";
 import {
   Card,
   CardContent,
@@ -11,14 +19,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -26,10 +27,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { toast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
-import { showErrorToast } from "@/lib/utils";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const ResetPassword = () => {
   const { isAuthenticated } = useAuth();

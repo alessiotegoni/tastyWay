@@ -10,8 +10,9 @@ const useAddress = () => {
   );
 
   useEffect(() => {
-    if (user?.address) handleSetSelectedAddress(user.address);
-  }, [user?.address, selectedAddress]);
+    if (user?.address && !selectedAddress)
+      handleSetSelectedAddress(user.address);
+  }, [user?.address]);
 
   const handleSetSelectedAddress = (address: string) => {
     try {

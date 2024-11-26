@@ -159,11 +159,7 @@ const Restaurant = () => {
           <div className="row flex gap-3">
             <div className="col grow md:basis-[640px]">
               {!isLoadingInfo && restaurant ? (
-                <RestaurantHeader
-                  restaurantName={restaurant.name}
-                  restaurantImg={restaurant.imageUrl}
-                  restaurantAddress={restaurant.address}
-                />
+                <RestaurantHeader {...restaurant} />
               ) : (
                 <RestaurantHeaderSkeleton />
               )}

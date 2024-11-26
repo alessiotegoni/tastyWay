@@ -124,6 +124,11 @@
   .hero:has(.restaurant-profile) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
       url("/imgs/restaurant-profile-bg.png");
+    }
+
+    .hero:has(.help-support) {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
+      url("/imgs/help-bg-1.png");
   }
 
   .home {

@@ -33,6 +33,7 @@ export type RestaurantItem = {
 };
 
 export type RestaurantRes = {
+  coordinates: [number, number];
   itemsTypes: RestaurantItemsTypes[];
   createdAt: string;
 } & Omit<RestaurantsType, "cuisine">;

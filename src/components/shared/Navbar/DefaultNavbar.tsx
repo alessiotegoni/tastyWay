@@ -1,4 +1,4 @@
-import ActiveOrdersCount from "@/components/custom/ActiveOrdersCount";
+import ActiveOrdersCount from "@/components/custom/activeOrders/ActiveOrdersCount";
 import { tastyWayLogo } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
 import { ReactElement } from "react";
