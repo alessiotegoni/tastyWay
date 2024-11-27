@@ -57,19 +57,7 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
       return;
     }
 
-    try {
-      await updateRestaurant(data);
-      toast({
-        description: "Ristorante aggiornato con successo",
-      });
-    } catch (err: any) {
-      toast({
-        description:
-          err.response?.data.message ??
-          "Errore nell'aggiornamento del ristorante",
-        variant: "destructive",
-      });
-    }
+    await updateRestaurant(data);
   };
 
   const formErrors = form.formState.errors;

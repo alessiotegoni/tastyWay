@@ -13,7 +13,7 @@ import { useCreateMyRestaurant } from "@/lib/react-query/mutations/restaurantMut
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import InputMask from "react-input-mask";
 import { useLocation } from "react-router-dom";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 
 const UserProfileForm = () => {
   const { user, refreshToken } = useAuth();
@@ -41,13 +41,20 @@ const UserProfileForm = () => {
   }, [isCreateError]);
 
   // isDirty = Se il form o il campo e' stato modificato (diverso da quello di prima)
+  const canSend = [isUpdatingUP, isLoadingUP, isCreatingRestaurant].every(
+    (b) => !b
+  );
 
   const onSubmit: SubmitHandler<UserProfileType> = async (data) => {
-    if (isUpdatingUP || isLoadingUP || isCreatingRestaurant) return;
+    if (!canSend) return;
 
+    if (!user?.emailVerified) {
+      errorToast({
+        description: "Prima di aggiornare il profilo verifica la tua email",
+      });
+      return;
+    }
     try {
-      if (!user?.emailVerified)
-        throw new Error("Prima di aggiornare il profilo verifica la tua email");
       await updateUserProfile(data);
       if (isUser && data.isCompanyAccount) await createRestaurant();
 
@@ -59,12 +66,7 @@ const UserProfileForm = () => {
             ? "Passaggio ad account aziendale eseguito"
             : "Profilo aggiornato con successo",
       });
-    } catch (err: any) {
-      showErrorToast({
-        err,
-        description: "Errore nell'aggiornamento dell'utente",
-      });
-    }
+    } catch (err: any) {}
   };
 
   return (
@@ -179,10 +181,7 @@ const UserProfileForm = () => {
             />
           </>
         )}
-        <ClientFormBtns
-          defaultValues={data}
-          isLoading={isUpdatingUP || isLoadingUP || isCreatingRestaurant}
-        />
+        <ClientFormBtns defaultValues={data} isLoading={!canSend} />
       </form>
     </Form>
   );

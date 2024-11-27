@@ -29,7 +29,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 
 const defaultItemsFilters: RestaurantItemsFilters = {
   name: null,
@@ -104,7 +104,7 @@ const Restaurant = () => {
 
       window.location.href = sessionUrl;
     } catch (err) {
-      showErrorToast({
+      errorToast({
         err,
         description: "Errore nel redirect alla pagina di pagamento",
       });

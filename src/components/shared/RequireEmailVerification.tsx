@@ -8,37 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useSendVerificationEmail } from "@/lib/react-query/mutations/authMutations";
-import { toast } from "@/hooks/use-toast";
-import { showErrorToast } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function RequireEmailVerification() {
   const { user } = useAuth();
 
-  const navigate = useNavigate();
-
-  const {
-    mutateAsync: sendEmail,
-    isPending,
-    isSuccess,
-  } = useSendVerificationEmail();
-
-  const handleSendEmail = async () => {
-    if (isPending) return;
-
-    try {
-      const res = await sendEmail();
-
-      toast({ description: res.message });
-      navigate("/verify-email");
-    } catch (err) {
-      showErrorToast({
-        err,
-        description: "Errore nell'invio delle email di verrifica",
-      });
-    }
-  };
+  const { sendEmail, isPending, isSuccess } = useSendVerificationEmail();
 
   return (
     !user?.emailVerified && (
@@ -59,7 +34,7 @@ export default function RequireEmailVerification() {
         <CardContent className="p-0 flex justify-end">
           {!isSuccess && (
             <Button
-              onClick={handleSendEmail}
+              onClick={sendEmail}
               disabled={isPending}
               className="btn mt-2 py-[10px] px-4 font-medium rounded-xl
             bg-amber-500 hover:bg-amber-600 text-sm text-white

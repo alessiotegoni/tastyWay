@@ -10,6 +10,9 @@ import {
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/contexts/AuthContext";
+import { errorToast } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { ChangeEvent } from "react";
 
 export const useCreateCheckoutSession = () => {
   const privateApi = useAxiosPrivate();
@@ -32,6 +35,11 @@ export const useUpdateUserProfile = () => {
     mutationFn: (data) => updateUserProfile(privateApi, data),
     onSuccess: (_, variables) =>
       queryClient.setQueryData(["userProfile"], () => variables),
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nell'aggiornamento dell'utente",
+      }),
   });
 };
 
@@ -54,9 +62,28 @@ export const useUpdateUserImg = () => {
   const privateApi = useAxiosPrivate();
   const { refreshToken } = useAuth();
 
-  return useMutation<ApiRes, ApiError, File>({
+  const mutation = useMutation<ApiRes, ApiError, File>({
     mutationKey: ["updateUserImg"],
     mutationFn: (img) => updateUserImg(privateApi, img),
-    onSuccess: () => refreshToken(),
+    onSuccess: ({ message }) => {
+      refreshToken();
+      toast({
+        description: message,
+      });
+    },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nel caricamento dell'immagine",
+      }),
   });
+
+  const handleUploadImg = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.item(0);
+    if (!file || mutation.isPending) return;
+
+    await mutation.mutateAsync(file);
+  };
+
+  return { handleUploadImg, ...mutation };
 };

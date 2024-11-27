@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
-import useAddress from "@/hooks/useAddress";
-import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
-import { getDate, showErrorToast } from "@/lib/utils";
+import { getDate } from "@/lib/utils";
 import { NavLink, Outlet } from "react-router-dom";
-import { ChangeEvent, useRef } from "react";
+import { useRef } from "react";
 import { useUpdateUserImg } from "@/lib/react-query/mutations/userMutations";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
 
 const links = [
   {
@@ -25,34 +23,12 @@ const links = [
 
 const UserProfileLayout = () => {
   const { user, logout } = useAuth();
-  const { removeSelectedAddress } = useAddress();
 
   const { name, surname, imageUrl, createdAt } = user!;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { mutateAsync: updateImg, isPending } = useUpdateUserImg();
-
-  const handleLogout = async () => {
-    await logout();
-    removeSelectedAddress();
-    toast({ description: "Logout effettuato con successo!" });
-  };
-
-  const handleUploadImg = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.item(0);
-    if (!file || isPending) return;
-
-    try {
-      const res = await updateImg(file);
-      toast({ description: res.message });
-    } catch (err) {
-      showErrorToast({
-        err,
-        description: "Errore nel caricamento dell'immagine",
-      });
-    }
-  };
+  const { handleUploadImg, isPending } = useUpdateUserImg();
 
   const userLinks = links.map((l, i) => (
     <NavLink
@@ -125,7 +101,7 @@ const UserProfileLayout = () => {
                 </Button>
               )}
               <Button
-                onClick={handleLogout}
+                onClick={() => logout()}
                 className="p-2 px-3 btn logout-btn m-0 rounded-xl self-end gap-2"
               >
                 <img src="/icons/logout-door-icon.png" alt="logout-icon" />

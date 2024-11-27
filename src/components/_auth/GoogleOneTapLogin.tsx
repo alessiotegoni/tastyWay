@@ -1,5 +1,5 @@
 import { useGoogleAuth } from "@/lib/react-query/mutations/authMutations";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 import { UserGoogleJwt } from "@/types/userTypes";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
@@ -22,14 +22,14 @@ const GoogleOneTapLogin = () => {
           userData: { email, given_name, family_name, picture },
         });
       } catch (err: any) {
-        showErrorToast({
+        errorToast({
           err,
           description: "Errore nel login con google",
         });
       }
     },
     onError: () =>
-      showErrorToast({
+      errorToast({
         err: { message: "Errore nel login con google" },
       }),
   });

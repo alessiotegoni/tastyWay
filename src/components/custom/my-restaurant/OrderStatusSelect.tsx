@@ -1,10 +1,7 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -17,7 +14,6 @@ import { OrderStatus } from "@/types/restaurantTypes";
 import { useEffect, useState } from "react";
 import { useUpdateOrderStatus } from "@/lib/react-query/mutations/restaurantMutations";
 import { Loader2 } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 
 interface SelectOrderStatusProps {
   currentStatus: OrderStatus;
@@ -40,28 +36,11 @@ export function SelectOrderStatus({
   const [selectedStatus, setSelectedStatus] =
     useState<OrderStatus>(currentStatus);
 
-  const {
-    data,
-    isSuccess,
-    mutateAsync: updateOrderStatus,
-    isPending,
-    isError,
-    error,
-  } = useUpdateOrderStatus(orderId);
+  const { handleUpdateOrderStatus, isPending } = useUpdateOrderStatus(orderId);
 
   useEffect(() => {
-    if (selectedStatus !== currentStatus) updateOrderStatus(selectedStatus);
+    handleUpdateOrderStatus(selectedStatus, currentStatus);
   }, [selectedStatus]);
-
-  useEffect(() => {
-    if (isSuccess) toast({ description: data.message });
-    if (isError)
-      toast({
-        description:
-          error.response?.data.message ??
-          "Errore nell'aggiornamento dello stato dell'ordine",
-      });
-  }, [isSuccess, isError, data]);
 
   return (
     <div
@@ -75,10 +54,7 @@ export function SelectOrderStatus({
             {isPending && <Loader2 />}
           </div>
         </PopoverTrigger>
-        <PopoverContent
-          className="restaurant-widget p-3"
-          align="center"
-        >
+        <PopoverContent className="restaurant-widget p-3" align="center">
           <Command>
             <CommandList>
               <CommandGroup>

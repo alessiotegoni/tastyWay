@@ -2,12 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
-import useAddress from "@/hooks/useAddress";
+import { logout } from "@/lib/api/authApi";
 import { useUpdateMyRestaurantImg } from "@/lib/react-query/mutations/restaurantMutations";
 import { getDate } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { ChangeEvent, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const links = [
@@ -29,48 +28,12 @@ const links = [
 ];
 
 const RestaurantProfileLayout = () => {
-  const { user: restaurant, logout } = useAuth();
+  const { user: restaurant } = useAuth();
   const { restaurantName, createdAt, imageUrl } = restaurant!;
-
-  const { removeSelectedAddress } = useAddress();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    data,
-    mutateAsync: updateImg,
-    isPending,
-    isError,
-    error,
-  } = useUpdateMyRestaurantImg();
-
-  const handleLogout = async () => {
-    await logout();
-    removeSelectedAddress();
-    toast({ description: "Logout effettuato con successo!" });
-  };
-
-  const handleUploadImg = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.item(0);
-    if (!file || isPending) return;
-
-    await updateImg(file);
-  };
-
-  useEffect(() => {
-    if (data) toast({ description: data.message });
-  }, [data]);
-
-  useEffect(() => {
-    if (isError)
-      toast({
-        title: "Errore",
-        description:
-          error.response?.data.message ??
-          "Erorre nel caricamento dell'immagine",
-        variant: "destructive",
-      });
-  }, [isError, error]);
+  const { handleUploadImg, isPending } = useUpdateMyRestaurantImg();
 
   const restaurantLinks = links.map((l, i) => (
     <NavLink
@@ -145,7 +108,7 @@ const RestaurantProfileLayout = () => {
                 </Button>
               )}
               <Button
-                onClick={handleLogout}
+                onClick={() => logout()}
                 className="p-2 px-3 btn logout-btn m-0 rounded-xl
                 self-end gap-2"
               >

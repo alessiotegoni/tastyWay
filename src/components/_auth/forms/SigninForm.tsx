@@ -15,9 +15,8 @@ import {
   useSignin,
 } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
-import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 
 const SigninForm = () => {
   const form = useFormContext<SigninType>();
@@ -38,31 +37,18 @@ const SigninForm = () => {
     if (!canSend) return;
 
     const email = form.getValues("email");
-    try {
-      if (!email) throw new Error("Inserisci prima la tua email");
-      const res = await forgotPassword(email);
-
-      toast({
-        title: res.message,
-      });
-    } catch (err: any) {
-      showErrorToast({
-        err,
-        description: "Errore nell'invio dell'email, riprovare",
-      });
+    if (!email) {
+      errorToast({ description: "Inserisci prima la tua email" });
+      return;
     }
+
+    await forgotPassword(email);
   };
 
   const onSubmit: SubmitHandler<SigninType> = async (data) => {
     if (!canSend) return;
 
-    try {
-      await signin(data);
-
-      toast({ title: "Accesso effetuato con successo" });
-    } catch (err: any) {
-      showErrorToast({ err });
-    }
+    await signin(data);
   };
 
   return (

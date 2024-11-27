@@ -93,8 +93,8 @@ const UserPrevsOrders = () => {
                     <figcaption className="text-2xl mt-1 sm:mt-0 font-semibold text-left">
                       {lastOrder!.restaurant.name}
                     </figcaption>
-                    <div className="flex-between mt-3 sm:mt-0">
-                      <p className="text-white/80 text-base font-semibold">
+                    <div className="sm:flex-between mt-3 sm:mt-0">
+                      <p className="text-white/80 text-base font-semibold mb-3 sm:mb-0 text-left">
                         {getDate(lastOrder!.createdAt)}
                       </p>
                       <div className="flex-center gap-2">
@@ -125,7 +125,10 @@ const UserPrevsOrders = () => {
                   lastOrder!.items.length <= 1 ? "justify-center" : ""
                 } mt-2 mb-4`}
               >
-                <OrderItemsList items={lastOrder!.items} />
+                <OrderItemsList
+                  items={lastOrder!.items}
+                  className="min-w-[190px]"
+                />
               </ul>
               <h3 className="font-semibold text-3xl">
                 Totale: <span>${lastOrder!.totalPrice.toFixed(2)}</span>

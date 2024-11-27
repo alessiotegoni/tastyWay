@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { useUpdateUserSecurity } from "@/lib/react-query/mutations/userMutations";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useMatch } from "react-router-dom";
@@ -46,7 +46,7 @@ const UserSecurity = () => {
       setNewPassword("");
       setOldPassword("");
     } catch (err: any) {
-      showErrorToast({
+      errorToast({
         err,
         description: "Errore nell'aggiornamento della password",
       });

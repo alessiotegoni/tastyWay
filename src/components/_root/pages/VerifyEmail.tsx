@@ -14,15 +14,13 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import {
   useSendVerificationEmail,
   useVerifyEmail,
 } from "@/lib/react-query/mutations/authMutations";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import ErrorWidget from "@/components/widgets/ErrorWidget";
 
@@ -31,8 +29,6 @@ export default function VerifyEmail() {
 
   const [otp, setOTP] = useState<string>("");
 
-  const navigate = useNavigate();
-
   const {
     mutateAsync: verifyEmail,
     isPending,
@@ -40,39 +36,22 @@ export default function VerifyEmail() {
     error,
   } = useVerifyEmail();
   const {
-    mutateAsync: sendEmail,
+    sendEmail,
     isPending: isSendingCode,
     isSuccess: isSent,
   } = useSendVerificationEmail();
 
   const canSend = !isPending && !isSendingCode;
 
-  const handleResendCode = async () => {
-    if (!canSend || isSent) return;
-
-    try {
-      const res = await sendEmail();
-
-      toast({ description: res.message });
-    } catch (err) {
-      showErrorToast({ err });
-    }
-  };
-
   const handleVerifyEmail = async () => {
     if (!canSend) return;
 
-    try {
-      if (otp.length !== 6)
-        throw new Error("Inserisci un codice OTP valido a 6 cifre.");
-
-      const res = await verifyEmail(otp);
-
-      toast({ description: res.message });
-      navigate(-1);
-    } catch (err) {
-      showErrorToast({ err });
+    if (otp.length !== 6) {
+      errorToast({ description: "Inserisci un codice OTP valido a 6 cifre." });
+      return;
     }
+
+    await verifyEmail(otp);
   };
 
   return (
@@ -114,7 +93,7 @@ export default function VerifyEmail() {
                 text-sm font-medium border border-blue-800 w-fit
                  bg-blue-600 hover:bg-blue-700"
                       disabled={!canSend || isSent}
-                      onClick={handleResendCode}
+                      onClick={() => canSend && !isSent && sendEmail()}
                     >
                       {isSendingCode ? <Loader2 /> : "Rimanda codice"}
                     </Button>

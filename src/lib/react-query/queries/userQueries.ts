@@ -95,5 +95,6 @@ export const useGetActiveOrders = (
     queryKey,
     queryFn,
     enabled: isAuthenticated,
+    refetchInterval: 5_000,
   });
 };

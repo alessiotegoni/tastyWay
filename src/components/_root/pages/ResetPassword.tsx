@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import {
   useForgotPassword,
   useResetPassword,
@@ -8,9 +8,8 @@ import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { showErrorToast } from "@/lib/utils";
+import { errorToast } from "@/lib/utils";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import {
   Card,
@@ -37,7 +36,6 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { token } = useParams();
-  const navigate = useNavigate();
 
   const form = useForm<SigninType>({
     mode: "onSubmit",
@@ -61,20 +59,16 @@ const ResetPassword = () => {
   } = useForgotPassword();
 
   const handleForgotPassword = async () => {
+    if (isSendingToken || isResetting) return;
+
     const email = form.getValues("email");
-
-    try {
-      if (!email) throw new Error("Inserisci prima l'email");
-      const res = await forgotPassword(email);
-
-      toast({ description: res.message });
-      setTimeout(() => window.close(), 5_000);
-    } catch (err: any) {
-      showErrorToast({
-        err,
-        description: "Errore nell'invio della email di reset",
-      });
+    if (!email) {
+      errorToast({ description: "Inserisci prima la tua email" });
+      return;
     }
+
+    await forgotPassword(email);
+    setTimeout(() => window.close(), 5_000);
   };
 
   const onSubmit: SubmitHandler<SigninType> = async ({
@@ -82,19 +76,7 @@ const ResetPassword = () => {
     password: newPassword,
   }) => {
     if (isResetting || isSendingToken || !token) return;
-
-    try {
-      const res = await resetPassword({ email, newPassword, token });
-      toast({
-        description: res.message,
-      });
-      navigate("/signin");
-    } catch (err: any) {
-      showErrorToast({
-        err,
-        description: "Errore nel reset della password, riprovare",
-      });
-    }
+    await resetPassword({ email, newPassword, token });
   };
 
   // FormControl deve avere solo un unico figlio react

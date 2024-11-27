@@ -176,17 +176,27 @@ export const getOrderSatusStyle = (orderStatus: OrderStatus) => {
 export const getOrderStatusIcon = (orderStatus: OrderStatus) =>
   `/icons/${orderStatus.toLowerCase().replaceAll(" ", "-")}-icon.png`;
 
-export const showErrorToast = ({
-  description = "Errore nella richiesta, riprova piu tardi",
+export const errorToast = ({
+  description = "Errore nella richiesta, riprova più tardi",
   err,
   duration = 5_000,
   ...restProps
-}: Toast & { err?: any }) =>
-  toast({
+}: Toast & { err?: ApiError | Error }) => {
+  const isApiError = (error: ApiError | Error): error is ApiError =>
+    !!(error as ApiError)?.response;
+
+  const errorMessage = err
+    ? isApiError(err)
+      ? err.response?.data?.message
+      : err.message
+    : description;
+
+  return toast({
     title: "Errore",
-    description: (err?.response?.data?.message || err?.message) ?? description,
+    description: errorMessage,
     variant: "destructive",
     duration,
     className: "error-toast",
     ...restProps,
   });
+};

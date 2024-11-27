@@ -10,8 +10,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { defaultSigninValues as defaultValues } from "../../lib/validations/authSchemas";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "../ui/button";
-import { toast } from "@/hooks/use-toast";
 import { useGoogleAuth } from "@/lib/react-query/mutations/authMutations";
+import { errorToast } from "@/lib/utils";
 
 const Signin = () => {
   const { isAuthenticated } = useAuth();
@@ -25,21 +25,11 @@ const Signin = () => {
     onSuccess: async ({ access_token }) => {
       if (isPending) return;
 
-      try {
-        await login({ access_token });
-      } catch (err) {
-        toast({
-          title: "Errore",
-          description: "Errore nel login, riprovare",
-          variant: "destructive",
-        });
-      }
+      await login({ access_token });
     },
     onError: () =>
-      toast({
-        title: "Errore",
-        description: "Errore nel login, riprovare",
-        variant: "destructive",
+      errorToast({
+        description: "Errore nel login con google, riprovare",
       }),
   });
 

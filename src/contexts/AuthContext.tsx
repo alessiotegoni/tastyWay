@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useRefreshToken } from "@/lib/react-query/queries/authQueries";
 import { UserJwt } from "@/types/userTypes";
 import { jwtDecode } from "jwt-decode";
@@ -10,6 +10,7 @@ import {
 import { ApiError, LogoutRes } from "@/types/apiTypes";
 import { useLogout } from "@/lib/react-query/mutations/authMutations";
 import GoogleOneTapLogin from "@/components/_auth/GoogleOneTapLogin";
+import useAddress from "@/hooks/useAddress";
 
 interface AuthContextType {
   accessToken: string | undefined;
@@ -32,6 +33,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Refresh token only if it isn't stored in react-query cache
 
+  const { handleSetSelectedAddress, selectedAddress } = useAddress();
+
   const { mutateAsync: logout, isSuccess: hasLoggedOut } = useLogout();
 
   const {
@@ -48,6 +51,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   let user: UserJwt | null = null;
 
   if (isAuthenticated) user = jwtDecode<UserJwt>(accessToken);
+
+  useEffect(() => {
+    if (user?.address && !selectedAddress)
+      handleSetSelectedAddress(user.address);
+  }, [user?.address]);
 
   return (
     <AuthContext.Provider
@@ -71,8 +79,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (!context)
     throw new Error("useAuth deve essere usato all'interno di AuthProvider");
-  }
+
   return context;
 };

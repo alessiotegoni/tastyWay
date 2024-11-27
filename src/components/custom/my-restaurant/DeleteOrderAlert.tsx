@@ -10,41 +10,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { useDeleteOrder } from "@/lib/react-query/mutations/restaurantMutations";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export function DeleteOrderAlert({ orderId }: { orderId: string }) {
-  const {
-    mutateAsync: deleteOrder,
-    data,
-    isPending,
-    isSuccess,
-    isError,
-    error,
-  } = useDeleteOrder(orderId);
-
-  const navigate = useNavigate();
-
-  const handleDeleteOrder = async () => {
-    if (!isPending) await deleteOrder();
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast({ description: data.message });
-      navigate("/active-orders");
-    }
-    if (isError)
-      toast({
-        description:
-          error.response?.data.message ??
-          "Errore nell'eliminazione dell'ordine",
-        variant: "destructive",
-      });
-  }, [data, isSuccess, isError, error]);
+  const { handleDeleteOrder, isPending } = useDeleteOrder(orderId);
 
   return (
     <AlertDialog>

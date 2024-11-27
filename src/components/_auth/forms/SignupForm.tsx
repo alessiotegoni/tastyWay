@@ -9,56 +9,34 @@ import {
 import { SignupType } from "@/lib/validations/authSchemas";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   useSendVerificationEmail,
   useSignup,
 } from "@/lib/react-query/mutations/authMutations";
 import { useEffect } from "react";
-import { toast } from "@/hooks/use-toast";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import InputMask from "react-input-mask";
 import { Loader2 } from "lucide-react";
-import { showErrorToast } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 
 const SignupForm = () => {
-  const { isAuthenticated } = useAuth();
-
-  const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
 
   const form = useFormContext<SignupType>();
 
   const { mutateAsync: signup, isPending } = useSignup();
-  const { mutateAsync: sendEmail, isPending: isSending } =
-    useSendVerificationEmail();
+  const { sendEmail, isPending: isSending } = useSendVerificationEmail();
 
   useEffect(() => {
-    const handleSendEmail = async () => {
-      try {
-        const res = await sendEmail();
-        navigate("/verify-email");
-        toast({ description: res.message });
-      } catch (err) {
-        showErrorToast({
-          err,
-          description: "Errore nell'invio della email di verifica",
-        });
-      }
-    };
-
-    if (isAuthenticated) handleSendEmail();
+    if (isAuthenticated && user?.email === "sp.aletheking05@gmail.com")
+      sendEmail();
   }, [isAuthenticated]);
 
   const onSubmit: SubmitHandler<SignupType> = async (data) => {
     if (isPending || isSending) return;
 
-    try {
-      await signup(data);
-      toast({ description: "Registrazione effettuata con successo" });
-    } catch (err: any) {
-      showErrorToast({ err });
-    }
+    await signup(data);
   };
 
   return (

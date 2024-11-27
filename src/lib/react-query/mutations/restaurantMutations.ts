@@ -12,11 +12,14 @@ import {
   defaultRestaurantValues,
   RestaurantProfileType,
 } from "@/lib/validations/RestaurantProfileSchema";
-import { ApiError } from "@/types/apiTypes";
+import { ApiError, ApiRes } from "@/types/apiTypes";
 import { OrderStatus, RestaurantUserOrder } from "@/types/restaurantTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { errorToast } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { ChangeEvent } from "react";
 
 export const useCreateMyRestaurant = () => {
   const [_, setSearchParams] = useSearchParams();
@@ -35,6 +38,11 @@ export const useCreateMyRestaurant = () => {
 
       setSearchParams({ redirect: "my-restaurant" });
     },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nella creazione del ristorante",
+      }),
   });
 };
 
@@ -49,34 +57,62 @@ export const useUpdateMyRestaurant = (
   return useMutation<{ message: string }, ApiError, RestaurantProfileType>({
     mutationKey: ["updateMyRestaurant"],
     mutationFn: (data) => updateMyRestaurant(privateApi, data),
-    onSuccess: (_, variables) => {
+    onSuccess: ({ message }, variables) => {
       if (restaurantName !== form.getValues("name")) refreshToken();
 
       queryClient.setQueryData(["myRestaurant"], () => variables);
+
+      toast({
+        description: message,
+      });
     },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nell'aggiornamento del ristorante",
+      }),
   });
 };
 
 export const useUpdateMyRestaurantImg = () => {
-  const { refreshToken } = useAuth();
   const privateApi = useAxiosPrivate();
+  const { refreshToken } = useAuth();
 
-  return useMutation<{ message: string; imageUrl: string }, ApiError, File>({
+  const mutation = useMutation<ApiRes, ApiError, File>({
     mutationKey: ["updateMyRestaurantImg"],
-    mutationFn: (data) => updateMyRestaurantImg(privateApi, data),
-    onSuccess: () => refreshToken(),
+    mutationFn: (img) => updateMyRestaurantImg(privateApi, img),
+    onSuccess: ({ message }) => {
+      refreshToken();
+      toast({
+        description: message,
+      });
+    },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nel caricamento dell'immagine",
+      }),
   });
+
+  const handleUploadImg = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.item(0);
+    if (!file || mutation.isPending) return;
+
+    await mutation.mutateAsync(file);
+  };
+
+  return { handleUploadImg, ...mutation };
 };
 
 export const useUpdateOrderStatus = (orderId: string) => {
   const privateApi = useAxiosPrivate();
   const queryClient = useQueryClient();
 
-  return useMutation<{ message: string }, ApiError, OrderStatus>({
+  const mutation = useMutation<{ message: string }, ApiError, OrderStatus>({
     mutationKey: ["updateOrderStatus"],
     mutationFn: (orderStatus) =>
       updateOrderStatus(privateApi, orderId, { status: orderStatus }),
-    onSuccess: (_, orderStatus) =>
+    onSuccess: ({ message }, orderStatus) => {
       queryClient.setQueryData<RestaurantUserOrder>(
         ["restaurantOrder", orderId],
         (order) => ({
@@ -84,20 +120,49 @@ export const useUpdateOrderStatus = (orderId: string) => {
           status: orderStatus,
         })
       ),
+        toast({ description: message });
+    },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nell'aggiornamento dello stato dell'ordine",
+      }),
   });
+
+  const handleUpdateOrderStatus = async (
+    selectedStatus: OrderStatus,
+    currentStatus: OrderStatus
+  ) => {
+    if (selectedStatus !== currentStatus && !mutation.isPending)
+      mutation.mutateAsync(selectedStatus);
+  };
+
+  return { handleUpdateOrderStatus, ...mutation };
 };
 
 export const useDeleteOrder = (orderId: string) => {
   const privateApi = useAxiosPrivate();
   const queryClient = useQueryClient();
 
-  return useMutation<{ message: string }, ApiError>({
+  const navigate = useNavigate();
+
+  const mutation = useMutation<{ message: string }, ApiError>({
     mutationKey: ["deleteOrder"],
     mutationFn: () => deleteOrder(privateApi, orderId),
-    onSuccess: () =>
+    onSuccess: ({ message }) => {
       queryClient.removeQueries({
         queryKey: ["restaurantOrder", orderId],
         exact: true,
       }),
+        toast({ description: message });
+      navigate("/active-orders");
+    },
+    onError: (err) =>
+      errorToast({ err, description: "Errore nell'eliminazione dell'ordine" }),
   });
+
+  const handleDeleteOrder = async () =>
+    !mutation.isPending && mutation.mutateAsync();
+
+  return { handleDeleteOrder, ...mutation };
 };
