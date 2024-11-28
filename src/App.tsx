@@ -15,10 +15,10 @@ import UserSecurity from "./components/_root/pages/UserSecurity";
 import RestaurantProfileLayout from "./components/_root/layouts/RestaurantProfileLayout";
 import RestaurantProfile from "./components/_root/pages/RestaurantProfile";
 import RestaurantUserOrder from "./components/_root/pages/RestaurantUserOrder";
-import RestuarantOrders from "./components/_root/pages/RestaurantOrders";
 import VerifyEmail from "./components/_root/pages/VerifyEmail";
 import ResetPassword from "./components/_root/pages/ResetPassword";
 import HelpAndSupport from "./components/_root/pages/HelpAndSupport";
+import RestaurantOrders from "./components/_root/pages/RestaurantOrders";
 
 const App = () => (
   <Routes>
@@ -58,7 +58,7 @@ const App = () => (
               <Route path="security" element={<UserSecurity />} />
               <Route path="owner" element={<UserProfile />} />
             </Route>
-            <Route path="orders" element={<RestuarantOrders />} />
+            <Route path="orders" element={<RestaurantOrders />} />
             <Route path="order/:orderId" element={<RestaurantUserOrder />} />
           </Route>
         </Route>

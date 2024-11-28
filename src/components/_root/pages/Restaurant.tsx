@@ -90,25 +90,21 @@ const Restaurant = () => {
     )
       return;
 
-    try {
-      if (!user.emailVerified)
-        throw new Error(
-          "Prima di ordinare devi verificare la tua email, puoi farlo andando sul tuo profilo"
-        );
-
-      const sessionUrl = await createSession({
-        restaurantId: restaurant._id,
-        itemsIds: cartItems[restaurant._id],
-        address: selectedAddress,
-      });
-
-      window.location.href = sessionUrl;
-    } catch (err) {
+    if (!user.emailVerified) {
       errorToast({
-        err,
-        description: "Errore nel redirect alla pagina di pagamento",
+        description:
+          "Prima di ordinare devi verificare la tua email, puoi farlo andando sul tuo profilo",
       });
+      return;
     }
+
+    const sessionUrl = await createSession({
+      restaurantId: restaurant._id,
+      itemsIds: cartItems[restaurant._id],
+      address: selectedAddress,
+    });
+
+    if (sessionUrl) window.location.href = sessionUrl;
   };
 
   const handleSetFilters = (currentValue?: RestaurantItemsTypes) =>

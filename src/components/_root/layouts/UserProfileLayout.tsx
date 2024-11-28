@@ -30,20 +30,6 @@ const UserProfileLayout = () => {
 
   const { handleUploadImg, isPending } = useUpdateUserImg();
 
-  const userLinks = links.map((l, i) => (
-    <NavLink
-      key={i}
-      to={l.value}
-      className="
-        btn client-nav-btn user-btn py-2 px-4 font-semibold backdrop-blur-3xl"
-      end // attivo solo quando sono esattamente sulla route
-      // (e non se fa parte di una sotto route)
-    >
-      <img src={l.iconUrl} alt={`${l.value} icon`} className="w-6 h-6" />
-      {l.label}
-    </NavLink>
-  ));
-
   return (
     <main className="user-profile">
       <div className="container max-w-[570px]">
@@ -110,7 +96,25 @@ const UserProfileLayout = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-4 mt-9 mb-3">{userLinks}</div>
+        <div className="flex gap-4 mt-9 mb-3">
+          {links.map((l, i) => (
+            <NavLink
+              key={i}
+              to={l.value}
+              className="
+        btn client-nav-btn user-btn py-2 px-4 font-semibold backdrop-blur-3xl"
+              end // attivo solo quando sono esattamente sulla route
+              // (e non se fa parte di una sotto route)
+            >
+              <img
+                src={l.iconUrl}
+                alt={`${l.value} icon`}
+                className="w-6 h-6"
+              />
+              {l.label}
+            </NavLink>
+          ))}
+        </div>
         <Outlet />
       </div>
     </main>

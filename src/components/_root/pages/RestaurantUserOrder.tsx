@@ -14,14 +14,7 @@ import { useParams } from "react-router-dom";
 const RestaurantUserOrder = () => {
   const { orderId } = useParams();
 
-  const {
-    data: order,
-    isLoading,
-    isError,
-    error,
-  } = useGetRestaurantOrder(orderId);
-
-  console.log(order);
+  const { data: order, isLoading, error } = useGetRestaurantOrder(orderId);
 
   return (
     <main className="restaurant-user-order pt-0">
@@ -101,6 +94,7 @@ const RestaurantUserOrder = () => {
       ) : (
         <ErrorWidget
           className="restaurant-widget max-w-[600px] mx-auto mt-20"
+          error={error}
           title="Ordine non trovato"
           subtitle="Quest'ordine e' stato eliminato o l'utente che l'ha creato non esiste piu"
           btns={[

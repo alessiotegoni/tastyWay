@@ -25,7 +25,7 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
   const form = useFormContext<RestaurantProfileType>();
 
   const { mutateAsync: updateRestaurant, isPending: isUpdating } =
-    useUpdateMyRestaurant(form, restaurantName);
+    useUpdateMyRestaurant(restaurantName);
 
   const {
     fields: items,

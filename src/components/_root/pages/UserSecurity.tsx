@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
 import { useUpdateUserSecurity } from "@/lib/react-query/mutations/userMutations";
 import { errorToast } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -20,7 +19,7 @@ const UserSecurity = () => {
   const [oldPassword, setOldPassword] = useState("");
 
   const { mutateAsync: updateUserSecurity, isPending } =
-    useUpdateUserSecurity();
+    useUpdateUserSecurity(isGoogleLogged);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,25 +31,19 @@ const UserSecurity = () => {
     )
       return;
 
-    try {
-      if (newPassword.length < 8)
-        throw new Error("La nuova password deve avere almento 8 caratteri");
-
-      await updateUserSecurity({ newPassword, oldPassword });
-      toast({
-        description: `Password ${
-          isGoogleLogged ? "creata" : "modificata"
-        } con successo`,
-      });
-
-      setNewPassword("");
-      setOldPassword("");
-    } catch (err: any) {
+    if (newPassword.length < 8) {
       errorToast({
-        err,
-        description: "Errore nell'aggiornamento della password",
+        description: "La nuova password deve avere almento 8 caratteri",
       });
+      return;
     }
+
+    const res = await updateUserSecurity({ newPassword, oldPassword });
+
+    if (!res) return;
+
+    setNewPassword("");
+    setOldPassword("");
   };
 
   const newPasswordInput = (

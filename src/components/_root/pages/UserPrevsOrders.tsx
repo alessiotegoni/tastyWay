@@ -182,7 +182,7 @@ const UserPrevsOrders = () => {
                               ${order.totalPrice.toFixed(2)}
                             </h3>
                           </div>
-                          <ul className="flex flex-wrap md:grid grid-cols-3 my-3 gap-2">
+                          <ul className="flex flex-wrap my-3 gap-2">
                             <OrderItemsList
                               items={order.items}
                               className="min-w-[190px]"

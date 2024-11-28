@@ -12,11 +12,6 @@ const RestaurantHeader = ({
 }: RestaurantRes) => {
   const navigate = useNavigate();
 
-  const restautantCity = (getCityFromAddress(address) + ", italia").replace(
-    "a",
-    ""
-  );
-
   return (
     <div className="restaurant__header">
       <div className="md:flex gap-5 md:gap-3 lg:gap-5">
@@ -34,7 +29,9 @@ const RestaurantHeader = ({
               <h1 className="text-xl md:text-lg font-semibold lg:text-[30px]">
                 {name}
               </h1>
-              <p className="font-normal text-white/70">{restautantCity}</p>
+              <p className="font-normal text-white/70">
+                {(getCityFromAddress(address) + ", italia").replace("a", "")}
+              </p>
             </div>
             <MapsModal name={name} coordinates={coordinates} />
           </div>
@@ -50,18 +47,6 @@ const RestaurantHeader = ({
           lg:font-semibold rounded-[15px]"
             >
               Vedi altri ristoranti
-            </Button>
-            <Button
-              className="btn grow md:grow-0 bg-[#00d0925d] border border-[#00D394]
-            hover:bg-[#00d092ad] min-w-[51.5px] min-h-[51.5px]
-            md:min-h-[46px] lg:min-h-[51.5px] rounded-[15px]"
-            >
-              <img
-                src="/icons/thumb-icon.png"
-                alt="thumb-img"
-                width={24}
-                height={24}
-              />
             </Button>
           </div>
         </div>

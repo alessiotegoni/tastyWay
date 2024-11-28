@@ -15,7 +15,7 @@ import {
 import { ApiError, ApiRes } from "@/types/apiTypes";
 import { OrderStatus, RestaurantUserOrder } from "@/types/restaurantTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { errorToast } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -47,9 +47,9 @@ export const useCreateMyRestaurant = () => {
 };
 
 export const useUpdateMyRestaurant = (
-  form: UseFormReturn<RestaurantProfileType, any, undefined>,
   restaurantName: string | undefined
 ) => {
+  const form = useFormContext<RestaurantProfileType>()
   const { refreshToken } = useAuth();
   const privateApi = useAxiosPrivate();
   const queryClient = useQueryClient();

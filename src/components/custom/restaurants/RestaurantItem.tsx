@@ -75,18 +75,6 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
         </div>
         <div className="flex xs:justify-end sm:items-center gap-2">
           <Button
-            className="btn bg-[#00d0925d] border border-[#00D394]
-            hover:bg-[#00d092ad] h-full py-3 rounded-2xl sm:rounded-[40px]
-            basis-20 min-w-[60px] max-w-[70px]"
-          >
-            <img
-              src="/icons/thumb-icon.png"
-              alt="thumb-img"
-              width={24}
-              height={24}
-            />
-          </Button>
-          <Button
             onClick={handleNavigate}
             className="basis-80 py-3 px-8 border border-[#FE0000]
             rounded-2xl sm:rounded-[40px] xs:max-w-[140px] md:max-w-[120px]

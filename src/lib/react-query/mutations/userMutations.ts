@@ -8,7 +8,6 @@ import {
   updateUserSecurity,
 } from "@/lib/api/userApi";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
-import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/contexts/AuthContext";
 import { errorToast } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -16,13 +15,15 @@ import { ChangeEvent } from "react";
 
 export const useCreateCheckoutSession = () => {
   const privateApi = useAxiosPrivate();
-  const { handleSetCart } = useCart();
 
   return useMutation<string, ApiError, CheckoutSessionBody>({
     mutationKey: ["checkoutSessionUrl"],
     mutationFn: (data) => createCheckoutSessionUrl(data, privateApi),
-    onSuccess: (_, { restaurantId }) =>
-      handleSetCart({ restaurantId, type: "REMOVE" }),
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nel redirect alla pagina di pagamento",
+      }),
   });
 };
 
@@ -43,7 +44,7 @@ export const useUpdateUserProfile = () => {
   });
 };
 
-export const useUpdateUserSecurity = () => {
+export const useUpdateUserSecurity = (isGoogleLogged: boolean) => {
   const privateApi = useAxiosPrivate();
   const { refreshToken } = useAuth();
 
@@ -54,7 +55,19 @@ export const useUpdateUserSecurity = () => {
   >({
     mutationKey: ["updateUserSecurity"],
     mutationFn: (data) => updateUserSecurity(privateApi, data),
-    onSuccess: () => refreshToken(),
+    onSuccess: () => {
+      refreshToken();
+      toast({
+        description: `Password ${
+          isGoogleLogged ? "creata" : "modificata"
+        } con successo`,
+      });
+    },
+    onError: (err) =>
+      errorToast({
+        err,
+        description: "Errore nell'aggiornamento della password",
+      }),
   });
 };
 
