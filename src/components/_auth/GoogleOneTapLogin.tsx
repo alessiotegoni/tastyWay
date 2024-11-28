@@ -30,7 +30,7 @@ const GoogleOneTapLogin = () => {
     },
     onError: () =>
       errorToast({
-        err: { message: "Errore nel login con google" },
+        description: "Errore nel login con google",
       }),
   });
 
