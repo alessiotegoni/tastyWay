@@ -1,13 +1,14 @@
 import axios, { CreateAxiosDefaults } from "axios";
 
+const baseURL: string = import.meta.env.VITE_API_BASE_URL;
+
 const defaultApi: CreateAxiosDefaults = {
-  baseURL: "http://localhost:3000/api",
+  baseURL,
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
 };
 
 export const api = axios.create(defaultApi);
-
 export const privateApi = axios.create(defaultApi);
 
 export const RESTAURANTS_LIMIT = 9;
