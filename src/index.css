@@ -124,11 +124,21 @@
   .hero:has(.restaurant-profile) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
       url("/imgs/restaurant-profile-bg.png");
-    }
+  }
 
-    .hero:has(.help-support) {
+  .hero:has(.help-support) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
       url("/imgs/help-bg-1.png");
+    }
+
+    .hero:has(.not-found) {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
+      url("/imgs/not-found-bg.jpeg");
+      background-position: 0%;
+  }
+
+  .not-found {
+    @apply home-widget flex items-center justify-center;
   }
 
   .home {
