@@ -5,7 +5,6 @@ import UserDropdown from "../../custom/UserDropdown";
 import AuthNavbar from "./AuthNavbar";
 import DefaultNavbar from "./DefaultNavbar";
 import ClientNavbar from "./ClientNavbar";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface NavbarProps {
   pageNum?: number;
@@ -21,20 +20,16 @@ enum PAGES {
 }
 
 const Navbar = ({ pageNum = 0 }: NavbarProps) => {
-  const { isAuthenticated, user, logout, isLoadingToken } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
 
-  const navRightBtn = isLoadingToken ? (
-    <Skeleton
-      className="user-btn user-btn-bg w-[100px] h-[40px]
-    md:w-[180px] md:h-[45px] rounded-3xl"
-    />
-  ) : isAuthenticated && user ? (
-    <UserDropdown user={user} logoutFn={logout} />
-  ) : (
-    <Link to="/signin">
-      <Button className="btn login-btn user-btn-bg">Login</Button>
-    </Link>
-  );
+  const navRightBtn =
+    isAuthenticated && user ? (
+      <UserDropdown user={user} logoutFn={logout} />
+    ) : (
+      <Link to="/signin">
+        <Button className="btn login-btn user-btn-bg">Login</Button>
+      </Link>
+    );
 
   const defaultNavbar = <DefaultNavbar navRightBtn={navRightBtn} />;
 
