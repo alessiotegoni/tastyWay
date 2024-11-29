@@ -19,7 +19,7 @@ import VerifyEmail from "./components/_root/pages/VerifyEmail";
 import ResetPassword from "./components/_root/pages/ResetPassword";
 import HelpAndSupport from "./components/_root/pages/HelpAndSupport";
 import RestaurantOrders from "./components/_root/pages/RestaurantOrders";
-import NotFound from "./components/_root/pages/NotFOund";
+import NotFound from "./components/_root/pages/NotFound";
 
 const App = () => (
   <Routes>
