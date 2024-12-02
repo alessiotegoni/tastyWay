@@ -127,7 +127,7 @@ const UserPrevsOrders = () => {
               >
                 <OrderItemsList
                   items={lastOrder!.items}
-                  className="min-w-[190px]"
+                  className="min-w-[180px]"
                 />
               </ul>
               <h3 className="font-semibold text-3xl">

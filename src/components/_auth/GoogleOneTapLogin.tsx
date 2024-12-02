@@ -3,6 +3,7 @@ import { errorToast } from "@/lib/utils";
 import { UserGoogleJwt } from "@/types/userTypes";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { useMatch } from "react-router-dom";
 
 const GoogleOneTapLogin = () => {
   const { mutateAsync: googleLogin, isPending } = useGoogleAuth();
@@ -32,6 +33,7 @@ const GoogleOneTapLogin = () => {
       errorToast({
         description: "Errore nel login con google",
       }),
+    disabled: !!useMatch("/signin"),
   });
 
   return <></>;

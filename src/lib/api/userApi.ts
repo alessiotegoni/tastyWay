@@ -42,8 +42,6 @@ export const getMyAddress = async (lat: number, lng: number) => {
   if (!country || country !== "Italia")
     throw new Error("Devi essere in italia per ordinare");
 
-  console.log(address);
-
   return address.formatted_address.replace(", Italia", "");
 };
 

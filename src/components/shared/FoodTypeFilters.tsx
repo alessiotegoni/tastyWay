@@ -7,8 +7,8 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import useAddress from "@/hooks/useAddress";
-import { toast } from "@/hooks/use-toast";
 import { useMatch, useSearchParams } from "react-router-dom";
+import { errorToast } from "@/lib/utils";
 
 interface FoodTypeFiltersProps {
   filters: FoodFilters[];
@@ -34,7 +34,7 @@ const FoodTypeFilters = ({
     if (isError) return;
 
     if (!selectedAddress) {
-      toast({
+      errorToast({
         description: "Prima di selezionare il cibo inserisci il tuo indirizzo",
       });
       return;
@@ -58,8 +58,10 @@ const FoodTypeFilters = ({
         className="basis-1/3 sm:basis-1/5 select-none mt-4 pl-0"
       >
         <figure
-          className={`flex flex-col items-center justify-center group/food-filter-item ${
-            isError ? "cursor-not-allowed" : "cursor-pointer"
+          className={`flex flex-col items-center justify-center ${
+            isError
+              ? "cursor-not-allowed"
+              : "cursor-pointer group/food-filter-item"
           }`}
           onClick={() => handleSetFilters(filter.value, hasFilter)}
         >

@@ -8,7 +8,6 @@ import { restaurantsFilters } from "@/config/filtersConfig";
 import { cuisineTypes } from "@/constants";
 import useAddress from "@/hooks/useAddress";
 import { useGetRestaurants } from "@/lib/react-query/queries/restaurantQueries";
-import { getInvalidAddressProps, getNoRestaurantsProps } from "@/lib/utils";
 import {
   FoodType,
   RestaurantFilters,
@@ -51,16 +50,6 @@ const Restaurants = () => {
     setSearchParams({});
   };
 
-  const invalidAddressErrProps = getInvalidAddressProps(
-    removeSelectedAddress,
-    error
-  );
-
-  const noRestaurantsErrProps = getNoRestaurantsProps(
-    () => handleResetFilters(),
-    removeSelectedAddress
-  );
-
   const restaurants = data?.pages.flatMap((p) => p.restaurants) ?? [];
 
   const noRestaurantsFound = !restaurants.length && !isLoading && !isError;
@@ -78,12 +67,10 @@ const Restaurants = () => {
         <div>
           <div className="flex flex-col items-center gap-3">
             <RestaurantsWidget
-              isError={isError}
+              isError={isError || noRestaurantsFound}
               filters={filters}
               setFilters={setFilters}
             />
-            {noRestaurantsFound && <ErrorWidget {...noRestaurantsErrProps} />}
-            {isError && <ErrorWidget {...invalidAddressErrProps} />}
             {canShowRestaurants && (
               <>
                 <FiltersPopover
@@ -94,7 +81,11 @@ const Restaurants = () => {
                   className="primary-widget-bg border border-primary-20
                   w-full max-w-[900px] rounded-[30px] overflow-hidden"
                 >
-                  <ul className="restaurants__list">
+                  <ul
+                    className={`flex flex-col ${
+                      restaurants.length === 1 ? "min-h-[400px]" : "min-h-fit"
+                    }`}
+                  >
                     {isLoading && !restaurants.length ? (
                       Array.from({ length: 2 }, (_, i) => (
                         <RestaurantSkeleton key={i} />
@@ -109,6 +100,52 @@ const Restaurants = () => {
                   </ul>
                 </div>
               </>
+            )}
+            {noRestaurantsFound && (
+              <ErrorWidget
+                title="Oops! Non abbiamo trovato il ristorante che stai cercando."
+                className="primary-widget-bg border border-primary-20 rounded-[30px] max-w-[650px]"
+                subtitle="Ma non preoccuparti! Prova a controllare la tua ricerca per eventuali errori di ortografia, oppure esplora ristoranti simili che potrebbero piacerti. Continuare la tua esplorazione?"
+                btns={[
+                  !!filters.foodType.length ||
+                  !!filters.name ||
+                  !!filters.restaurantType.length
+                    ? {
+                        id: "resetFilters",
+                        value: "Resetta filtri",
+                        icon: "reset-filters-icon",
+                        className:
+                          "bg-home-widget-border-30 border border-primary-80 my-0 hover:bg-home-widget-border-80",
+                        handleClick: () => handleResetFilters(),
+                      }
+                    : {
+                        id: "changePosition",
+                        value: "Cambia posizione",
+                        icon: "cursor-icon",
+                        className:
+                          "use-location-btn my-0 border-location-btn-border-70",
+                        goto: "/",
+                        handleClick: () => removeSelectedAddress(),
+                      },
+                ]}
+              />
+            )}
+            {isError && (
+              <ErrorWidget
+                error={error}
+                className="primary-widget-bg border border-primary-20 rounded-[30px]"
+                subtitle="Non siamo riusciti a trovare ristoranti nella tua zona perché non è stato inserito un indirizzo valido. Per scoprire i migliori ristoranti vicini a te, inserisci un indirizzo corretto nel campo di ricerca. Questo ci aiuterà a mostrarti le opzioni più adatte e vicine."
+                btns={[
+                  {
+                    id: "change_location",
+                    value: "Cambia posizione",
+                    icon: "cursor-icon",
+                    className: "use-location-btn my-0",
+                    goto: "/",
+                    handleClick: () => removeSelectedAddress(),
+                  },
+                ]}
+              />
             )}
           </div>
         </div>

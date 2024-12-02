@@ -30,7 +30,7 @@ export default function NotFound() {
             Torna alla home
           </Link>
         </div>
-        <div className="mt-10 flex justify-center space-x-4">
+        <div className="mb-2 mt-7 flex justify-center space-x-4">
           {Array.from({ length: 3 }, (_, i) => (
             <div
               key={i}

@@ -19,7 +19,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       className="py-2 px-5 bg-home-widget-border-40
       rounded-[40px] font-medium text-[12px]"
     >
-      {c.replaceAll("_", " ")}
+      {c.replaceAll("_", " ").toLowerCase()}
     </li>
   ));
 
@@ -31,7 +31,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       ref={observerRef}
     >
       <div className="col-left sm:flex grow gap-4">
-        <figure className="sm:w-[260px] sm:h-[160px]">
+        <figure className="sm:w-[260px] sm:h-[160px] aspect-square">
           <img
             src={restaurantImg}
             alt={`${restaurantName}-img`}

@@ -32,8 +32,8 @@ export default function MapsModal({ name, coordinates }: MapsModalProps) {
           Vedi su mappa
         </Button>
       </DialogTrigger>
-      <DialogContent className="home-widget rounded-4xl sm:max-w-[600px]">
-        <DialogHeader>
+      <DialogContent className="home-widget rounded-4xl sm:max-w-[600px] p-3 sm:p-5">
+        <DialogHeader className="mt-1 sm:mt-0">
           <DialogTitle>Mappa di Google</DialogTitle>
           <DialogDescription>
             Ecco una mappa centrata sul ristorante <b>{name}</b>

@@ -125,7 +125,7 @@ text-xs w-6 h-6 flex-center bg-[#ed0000] rounded-full"
           <AlertDialogCancel
             className="btn w-10 h-10 rounded-full
           backdrop-blur-3xl bg-[#ec01017e]
-border border-x-icon-bg-70 hover:bg-[#ec0101d9]"
+border border-x-icon-bg-70 hover:bg-[#ec0101d9] flex-center"
           >
             <X size={20} />
           </AlertDialogCancel>

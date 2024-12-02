@@ -1,4 +1,3 @@
-import { ErrorWidgetProps } from "@/components/widgets/ErrorWidget";
 import { toast, Toast } from "@/hooks/use-toast";
 import { ApiError } from "@/types/apiTypes";
 import { OrderStatus } from "@/types/userTypes";
@@ -33,55 +32,6 @@ export const getCityFromAddress = (address: string) => {
 
 export const formatRestaurantName = (name: string) =>
   name.toLowerCase().replace(/\s+/g, "-");
-
-export const getInvalidAddressProps = (
-  removeSelectedAddress: () => void,
-  error?: ApiError | null
-): ErrorWidgetProps => ({
-  error,
-  className: "primary-widget-bg border border-primary-20 rounded-[30px]",
-  subtitle:
-    "Non siamo riusciti a trovare ristoranti nella tua zona perché non è stato inserito un indirizzo valido. Per scoprire i migliori ristoranti vicini a te, inserisci un indirizzo corretto nel campo di ricerca. Questo ci aiuterà a mostrarti le opzioni più adatte e vicine.",
-  btns: [
-    {
-      id: "change_location",
-      value: "Cambia posizione",
-      icon: "cursor-icon",
-      className: "use-location-btn my-0",
-      goto: "/",
-      handleClick: () => removeSelectedAddress(),
-    },
-  ],
-});
-
-export const getNoRestaurantsProps = (
-  removeFilters: () => void,
-  removeSelectedAddress: () => void
-): ErrorWidgetProps => ({
-  title: "Oops! Non abbiamo trovato il ristorante che stai cercando.",
-  className:
-    "primary-widget-bg border border-primary-20 rounded-[30px] max-w-[650px]",
-  subtitle:
-    "Ma non preoccuparti! Prova a controllare la tua ricerca per eventuali errori di ortografia, oppure esplora ristoranti simili che potrebbero piacerti. Continuare la tua esplorazione?",
-  btns: [
-    {
-      id: "reset_filters",
-      value: "Resetta filtri",
-      icon: "reset-filters-icon",
-      className:
-        "bg-home-widget-border-30 border border-primary-80 my-0 hover:bg-home-widget-border-80",
-      handleClick: () => removeFilters(),
-    },
-    {
-      id: "change_position",
-      value: "Cambia posizione",
-      icon: "cursor-icon",
-      className: "use-location-btn my-0 border-location-btn-border-70",
-      goto: "/",
-      handleClick: () => removeSelectedAddress(),
-    },
-  ],
-});
 
 export const getOrderStatusMsg = (orderStatus: OrderStatus): string => {
   let msg = "";
@@ -183,13 +133,10 @@ export const errorToast = ({
   ...restProps
 }: Toast & { err?: ApiError | Error }) => {
   const isApiError = (error: ApiError | Error): error is ApiError =>
-    !!(error as ApiError)?.response;
+    !!(error as ApiError)?.response?.data?.message;
 
-  const errorMessage = err
-    ? isApiError(err)
-      ? err.response?.data?.message
-      : err.message
-    : description;
+  const errorMessage =
+    err && isApiError(err) ? err.response?.data?.message : description;
 
   return toast({
     title: "Errore",

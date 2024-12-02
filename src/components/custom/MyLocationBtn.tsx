@@ -1,8 +1,6 @@
-import useAddress from "@/hooks/useAddress";
-import { useToast } from "@/hooks/use-toast";
 import { useGetMyAddress } from "@/lib/react-query/queries/userQueries";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { errorToast } from "@/lib/utils";
+import { useState } from "react";
 
 type PositionType = { lat: number; lng: number } | null;
 
@@ -13,41 +11,14 @@ interface MyLocationBtnProps {
 const MyLocationBtn = ({ className }: MyLocationBtnProps) => {
   const [position, setPosition] = useState<PositionType>(null);
 
-  const { handleSetSelectedAddress } = useAddress();
-
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const {
-    data: address,
-    isFetching,
-    isError,
-    error,
-  } = useGetMyAddress(position?.lat!, position?.lng!);
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        title: "Errore",
-        description: error.message,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (address) {
-      handleSetSelectedAddress(address);
-      navigate(`/restaurants`);
-    }
-  }, [address, isError, error]);
+  const { isFetching } = useGetMyAddress(position?.lat!, position?.lng!);
 
   const handleSetMyPosition = async () => {
     if (isFetching) return;
 
     if (!navigator.geolocation)
-      return toast({
-        title: "Il tuo browser non supporta questa funzione",
-        variant: "destructive",
+      return errorToast({
+        description: "Il tuo browser non supporta questa funzione",
       });
 
     navigator.geolocation.getCurrentPosition(
@@ -61,11 +32,7 @@ const MyLocationBtn = ({ className }: MyLocationBtnProps) => {
         const description = err.PERMISSION_DENIED
           ? "Devi accettare i permessi per poter accedere alla tua posizione"
           : "Impossibile ottenere la tua posizione";
-        toast({
-          title: "Errore",
-          description,
-          variant: "destructive",
-        });
+        errorToast({ description });
       },
       { enableHighAccuracy: true }
     );

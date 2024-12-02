@@ -1,7 +1,6 @@
 import {
   useInfiniteQuery,
   useQuery,
-  useQueryClient,
 } from "@tanstack/react-query";
 import { ApiError } from "@/types/apiTypes";
 import { UserPrevOrderRes } from "@/types/userTypes";
@@ -18,22 +17,29 @@ import {
   getRestaurantActiveOrdersCount,
 } from "@/lib/api/restaurantApi";
 import { UserProfileType } from "@/lib/validations/userProfileSchema";
+import useAddress from "@/hooks/useAddress";
+import { useNavigate } from "react-router-dom";
+import { errorToast } from "@/lib/utils";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
-  const queryClient = useQueryClient();
 
-  const initialData = queryClient.getQueryData<string | undefined>([
-    "myLocation",
-    lat,
-    lng,
-  ]);
+  const { handleSetSelectedAddress } = useAddress()
+  const navigate = useNavigate()
 
-  return useQuery<string>({
+  const query = useQuery<string>({
     queryKey: ["myLocation", lat, lng],
     queryFn: () => getMyAddress(lat, lng),
-    enabled: !!lat && !!lng && !initialData,
-    initialData,
+    enabled: !!lat && !!lng,
   });
+
+  if (query.data) {
+    handleSetSelectedAddress(query.data);
+    navigate(`/restaurants`);
+  }
+
+  if (query.isError) errorToast({ err: query.error })
+
+  return query
 };
 
 export const useGetUserProfile = () => {

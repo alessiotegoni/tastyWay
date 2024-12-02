@@ -24,7 +24,7 @@ const RestaurantListItem = ({
 
   return (
     <li className="restaurant__item restaurant-separator">
-      <figure className="item__body sm:flex gap-5">
+      <figure className="item__body sm:flex gap-5 sm:gap-3 lg:gap-5">
         <div
           className="item__img shrink-0 sm:w-[130px] sm:h-[130px]
          rounded-[20px] overflow-hidden xs:max-w-[200px] xs:max-h-[200px]"
@@ -36,7 +36,7 @@ const RestaurantListItem = ({
           />
         </div>
         <div className="mt-1 mb-5 sm:mt-0 sm:mb-0">
-          <figcaption className="text-[25px]">{name}</figcaption>
+          <figcaption className="text-[25px] sm:text-base lg:text-[25px]">{name}</figcaption>
           <p className="text-[14px] sm:max-w-[280px] font-normal mt-1">
             {description}
           </p>

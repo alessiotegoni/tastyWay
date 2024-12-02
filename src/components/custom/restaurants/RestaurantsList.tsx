@@ -6,6 +6,7 @@ import {
 import RestaurantItem from "./RestaurantItem";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { RESTAURANTS_LIMIT } from "@/config/apiConfig";
 
 interface RestaurantsListProps {
   restaurants: RestaurantsType[];
@@ -30,7 +31,9 @@ const RestaurantsList = ({
     <RestaurantItem
       key={r._id}
       restaurant={r}
-      observerRef={i === restaurants.length - 2 ? ref : undefined}
+      observerRef={
+        i >= RESTAURANTS_LIMIT && i === restaurants.length - 2 ? ref : undefined
+      }
     />
   ));
 };

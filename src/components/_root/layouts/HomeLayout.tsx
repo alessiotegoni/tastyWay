@@ -5,7 +5,7 @@ const HomeLayout = () => {
   return (
     <div className="hero">
       <Navbar pageNum={0} />
-      <main className="home group mt-6 sm:mt-0">
+      <main className="home group mt-12 sm:mt-6">
         <div className="md:container">
           <div className="w-full text-center mb-6 sm:mb-10">
             <div className="home__title">

@@ -39,8 +39,12 @@ const DefaultNavbar = ({ navRightBtn }: DefaultNavbarProps) => {
             />
           </Link>
           <div
-            className="absolute left-1/2 -translate-x-1/2
-    top-1/2 -translate-y-1/2"
+            className={`absolute left-1/2 -translate-x-1/2 ${
+              useMatch("/")
+                ? "top-full md:top-1/2 md:-translate-y-1/2"
+                : `
+                  top-1/2 -translate-y-1/2`
+            }`}
           >
             {homeBtn}
           </div>

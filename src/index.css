@@ -388,10 +388,6 @@
     before:bg-white/10;
   }
 
-  .restaurants__list {
-    @apply flex flex-col;
-  }
-
   .restaurant__header {
     @apply bg-home-widget border
     border-primary-20 rounded-[30px] p-4 gap-3

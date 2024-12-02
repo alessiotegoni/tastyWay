@@ -21,7 +21,7 @@ const ActiveOrdersCount = ({
         to="active-orders"
         className={`btn ${
           isCmpAccount ? "restaurant-widget" : "user-widget"
-        } h-[45px] flex-center z-50`}
+        } h-[45px] flex-center`}
       >
         <figure className="flex-center gap-2">
           <img
@@ -29,7 +29,7 @@ const ActiveOrdersCount = ({
             alt="order-icon"
             className="w-6 h-6"
           />
-          <figcaption className="font-semibold">
+          <figcaption className="font-semibold text-sm sm:text-base">
             {isCmpAccount
               ? `${activeOrdersCount} ${
                   activeOrdersCount === 1 ? "nuovo ordine" : "nuovi ordini"
