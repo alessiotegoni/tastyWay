@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 
-const useLatestResearch = (userInput: string) => {
+const useLatestResearch = (
+  userInput: string,
+  shouldShowLatestResearch: boolean
+) => {
   const [searchedLocations, setSearchedLocations] = useState<string[]>(
     JSON.parse(localStorage.getItem("latestResearch")!) ?? []
   );
+  const [showSearchedLocations, setShowSearchedLocations] = useState(false);
 
   useEffect(() => {
     if (
@@ -24,10 +28,17 @@ const useLatestResearch = (userInput: string) => {
     setSearchedLocations(newArr);
   };
 
-  const latestResearch = searchedLocations.filter((sl) =>
-    sl.toLowerCase().trim().includes(userInput.toLowerCase().trim())
-  );
+  const latestResearch = shouldShowLatestResearch
+    ? searchedLocations.filter((sl) =>
+        sl.toLowerCase().trim().includes(userInput.toLowerCase().trim())
+      )
+    : [];
 
-  return { latestResearch, saveLatestResearch };
+  return {
+    latestResearch,
+    saveLatestResearch,
+    showSearchedLocations,
+    setShowSearchedLocations,
+  };
 };
 export default useLatestResearch;

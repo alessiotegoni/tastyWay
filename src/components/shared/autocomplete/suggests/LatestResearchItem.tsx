@@ -10,9 +10,12 @@ const LocationLatestResearch = ({ latestResearch }: LocationLatestProps) => {
 
   const { handleSetSelectedAddress } = useAddress();
 
+
+
   const handleClick = () => {
     handleSetSelectedAddress(latestResearch);
     navigate("/restaurants");
+    console.log("dbjihqiej");
   };
 
   return (

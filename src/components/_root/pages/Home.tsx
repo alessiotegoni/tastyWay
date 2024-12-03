@@ -40,7 +40,7 @@ const Home = () => {
             className="w-6 h-6 xs:ml-[10px]"
           />
           <LocationAutocomplete
-            shouldShowLatestResearchs={true}
+            shouldShowLatestResearch={true}
             placeholder="Inserisci il tuo indirizzo"
             className="grow"
           />

@@ -1,4 +1,4 @@
-import PlacesAutocomplete, { Suggestion } from "react-places-autocomplete";
+import PlacesAutocomplete from "react-places-autocomplete";
 import { Input } from "../../ui/input";
 import {
   Command,
@@ -15,7 +15,7 @@ import XIconBtn from "../XIconBtn";
 
 interface LocationAutocompleteProps {
   placeholder?: string;
-  shouldShowLatestResearchs?: boolean;
+  shouldShowLatestResearch?: boolean;
   className?: string;
   inputClassName?: string;
 }
@@ -27,7 +27,7 @@ const searchOptions = {
 
 const LocationAutocomplete = ({
   placeholder = "",
-  shouldShowLatestResearchs = false,
+  shouldShowLatestResearch = false,
   className = "",
   inputClassName = "",
 }: LocationAutocompleteProps) => {
@@ -48,7 +48,12 @@ const LocationAutocomplete = ({
     }
   }, [formAddress, selectedAddress]);
 
-  const { latestResearch, saveLatestResearch } = useLatestResearch(userInput);
+  const {
+    latestResearch,
+    saveLatestResearch,
+    showSearchedLocations,
+    setShowSearchedLocations,
+  } = useLatestResearch(userInput, shouldShowLatestResearch);
 
   const setFormAddress = (
     selectedAddress: string,
@@ -79,17 +84,8 @@ const LocationAutocomplete = ({
     handleChange("");
     removeSelectedAddress();
     setFormAddress("", true);
+    setShowSearchedLocations(false);
   };
-
-  const checkSeparator = (suggestions: readonly Suggestion[]) =>
-    !!latestResearch.length && !!suggestions.length;
-
-  const dropdownClasses = (sugg: readonly Suggestion[]) =>
-    `location-dropdown ${
-      shouldShowLatestResearchs ? "left-0 top-[105%] xs:top-[115%]" : ""
-    } ${
-      sugg.length ? "opacity-100 pointer-events-auto" : "pointer-events-none"
-    }`;
 
   return (
     <PlacesAutocomplete
@@ -101,7 +97,7 @@ const LocationAutocomplete = ({
       searchOptions={searchOptions}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps }) => {
-        const hasSeparator = checkSeparator(suggestions);
+        const hasSeparator = !!latestResearch.length && !!suggestions.length;
 
         return (
           <div className={className}>
@@ -110,28 +106,40 @@ const LocationAutocomplete = ({
                 <Input
                   {...getInputProps({ placeholder })}
                   className={`widget-input text-sm sm:text-base ${
-                    shouldShowLatestResearchs
+                    shouldShowLatestResearch
                       ? "bg-transparent"
                       : "signup-form-input pr-14"
                   } ${inputClassName}`}
+                  onClick={() =>
+                    !!latestResearch.length &&
+                    setShowSearchedLocations((p) => !p)
+                  }
                 />
                 <XIconBtn
                   input={userInput}
                   handleRemoveInput={handleDeleteAddress}
                 />
               </div>
-              <CommandList className={dropdownClasses(suggestions)}>
-                {shouldShowLatestResearchs && !!latestResearch.length && (
+              <CommandList
+                className={`location-dropdown ${
+                  shouldShowLatestResearch
+                    ? "left-0 top-[105%] xs:top-[115%]"
+                    : ""
+                } ${
+                  suggestions.length || showSearchedLocations
+                    ? "opacity-100 pointer-events-auto"
+                    : "pointer-events-none"
+                }`}
+              >
+                {showSearchedLocations && !!latestResearch.length && (
                   <LatestResearchsList
                     latestResearchs={latestResearch}
                     hasSeparator={hasSeparator}
                   />
                 )}
-
                 {hasSeparator && (
                   <CommandSeparator className="w-full bg-white/20" />
                 )}
-
                 {!!suggestions.length && (
                   <SuggestsList
                     suggestions={suggestions}
@@ -141,15 +149,6 @@ const LocationAutocomplete = ({
                 )}
               </CommandList>
             </Command>
-
-            {/*
-            {loading &&
-              Array.from({ length: 5 }, () => (
-                <div className="flex items-center gap-[10px]">
-                  <Skeleton className="w-10 h-7 bg-home-widget-border" />
-                  <Skeleton className="w-full rounded-md h-7 bg-home-widget-border" />
-                </div>
-              ))} */}
           </div>
         );
       }}
