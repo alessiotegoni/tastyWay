@@ -95,10 +95,7 @@ const SignupForm = () => {
             render={() => (
               <FormItem className="relative w-full">
                 <FormControl>
-                  <LocationAutocomplete
-                    shouldShowLatestResearchs={false}
-                    placeholder="Indirizzo"
-                  />
+                  <LocationAutocomplete placeholder="Indirizzo" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
