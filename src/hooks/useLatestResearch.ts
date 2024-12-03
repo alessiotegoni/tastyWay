@@ -1,80 +1,33 @@
-import useAddress from "@/hooks/useAddress";
-import { filterSearchedLocations } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-type LatestResearchsType = {
-  searchedLocations: string[];
-  saveLatestResearch: (userAddress: string) => void;
-  showLatestResearchs: boolean;
-  setShowLatestResearchs: React.Dispatch<React.SetStateAction<boolean>>;
-  handleShowLatestResearchs: () => void;
-  latestResearchs: string[];
-};
-
-const useLatestResearch = (
-  userInput: string = "",
-  shouldShowLatestResearchs: boolean = false
-): LatestResearchsType => {
-  const [searchedLocations, setSearchedLocations] = useState<string[]>([]);
-  const [showLatestResearchs, setShowLatestResearchs] = useState(false);
-
-  const { selectedAddress } = useAddress();
+const useLatestResearch = (userInput: string) => {
+  const [searchedLocations, setSearchedLocations] = useState<string[]>(
+    JSON.parse(localStorage.getItem("latestResearch")!) ?? []
+  );
 
   useEffect(() => {
-    if (!shouldShowLatestResearchs) return;
-
-    const latestCities = JSON.parse(localStorage.getItem("latestCity")!) || [];
-
     if (
-      Array.isArray(latestCities) &&
-      latestCities.every((lc) => typeof lc === "string")
+      !Array.isArray(searchedLocations) ||
+      !searchedLocations.every((sl) => typeof sl === "string")
     )
-      setSearchedLocations(latestCities);
-  }, []);
+      setSearchedLocations([]);
+  }, [searchedLocations]);
 
-  const saveLatestResearch = (userAddress: string) => {
-    if (searchedLocations.includes(userAddress)) return;
+  const saveLatestResearch = (address: string) => {
+    if (searchedLocations.includes(address)) return;
 
     if (searchedLocations.length > 4) searchedLocations.splice(4);
 
-    const newArr = [userAddress, ...searchedLocations];
+    const newArr = [address, ...searchedLocations];
 
-    localStorage.setItem("latestCity", JSON.stringify(newArr));
+    localStorage.setItem("latestResearch", JSON.stringify(newArr));
     setSearchedLocations(newArr);
   };
 
-  const filteredSL = filterSearchedLocations(searchedLocations, userInput);
+  const latestResearch = searchedLocations.filter((sl) =>
+    sl.toLowerCase().trim().includes(userInput.toLowerCase().trim())
+  );
 
-  const isWriting = !!userInput.length;
-  const canShowFilteredSL = isWriting && !!filteredSL.length;
-  const canShowSearchedLocations = !isWriting && !!searchedLocations.length;
-
-  const latestResearchs = canShowFilteredSL
-    ? filteredSL
-    : canShowSearchedLocations
-    ? searchedLocations
-    : [];
-
-  useEffect(() => {
-    if (shouldShowLatestResearchs && isWriting && !selectedAddress)
-      setShowLatestResearchs(!!latestResearchs.length);
-  }, [latestResearchs]);
-
-  const handleShowLatestResearchs = () => {
-    if (
-      shouldShowLatestResearchs &&
-      (canShowFilteredSL || canShowSearchedLocations)
-    )
-      setShowLatestResearchs((p) => !p);
-  };
-
-  return {
-    searchedLocations,
-    saveLatestResearch,
-    showLatestResearchs,
-    setShowLatestResearchs,
-    handleShowLatestResearchs,
-    latestResearchs,
-  };
+  return { latestResearch, saveLatestResearch };
 };
 export default useLatestResearch;

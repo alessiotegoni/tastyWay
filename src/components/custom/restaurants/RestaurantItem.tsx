@@ -76,7 +76,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
         <div className="flex xs:justify-end sm:items-center gap-2">
           <Button
             onClick={handleNavigate}
-            className="basis-80 py-3 px-8 border border-[#FE0000]
+            className="grow basis-80 py-3 px-8 border border-[#FE0000]
             rounded-2xl sm:rounded-[40px] xs:max-w-[140px] md:max-w-[120px]
             bg-[#EC0101] bg-opacity-60 hover:bg-opacity-90"
           >

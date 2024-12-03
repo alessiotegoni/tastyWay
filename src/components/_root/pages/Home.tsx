@@ -2,7 +2,6 @@ import { FormEvent, useState } from "react";
 import { foodFilters } from "@/constants";
 import { FoodType } from "@/types/restaurantTypes";
 import { useNavigate } from "react-router-dom";
-import useAddress from "@/hooks/useAddress";
 import LocationAutocomplete from "@/components/shared/autocomplete/LocationAutocomplete";
 import { Button } from "@/components/ui/button";
 import FoodTypeFilters from "@/components/shared/FoodTypeFilters";
@@ -11,13 +10,12 @@ import MyLocationBtn from "@/components/custom/MyLocationBtn";
 const Home = () => {
   const [foodTypeFilters, setFoodTypeFilters] = useState<FoodType[]>([]);
 
-  const { selectedAddress } = useAddress();
   const navigate = useNavigate();
 
   const handleSearchRestaurant = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!selectedAddress) return;
+    if (!localStorage.getItem("selectedAddress")) return;
 
     const filtersParams = new URLSearchParams();
 

@@ -48,14 +48,7 @@ const LocationAutocomplete = ({
     }
   }, [formAddress, selectedAddress]);
 
-  const {
-    searchedLocations,
-    saveLatestResearch,
-    showLatestResearchs,
-    setShowLatestResearchs,
-    handleShowLatestResearchs,
-    latestResearchs,
-  } = useLatestResearch(userInput, shouldShowLatestResearchs);
+  const { latestResearch, saveLatestResearch } = useLatestResearch(userInput);
 
   const setFormAddress = (
     selectedAddress: string,
@@ -76,7 +69,6 @@ const LocationAutocomplete = ({
     handleSetSelectedAddress(address);
 
     saveLatestResearch(address);
-    setShowLatestResearchs(false);
 
     setFormAddress(address, true);
   };
@@ -90,20 +82,14 @@ const LocationAutocomplete = ({
   };
 
   const checkSeparator = (suggestions: readonly Suggestion[]) =>
-    searchedLocations.length > 0 && suggestions.length > 0;
+    !!latestResearch.length && !!suggestions.length;
 
   const dropdownClasses = (sugg: readonly Suggestion[]) =>
     `location-dropdown ${
       shouldShowLatestResearchs ? "left-0 top-[105%] xs:top-[115%]" : ""
     } ${
-      sugg.length || showLatestResearchs
-        ? "opacity-100 pointer-events-auto"
-        : "pointer-events-none"
+      sugg.length ? "opacity-100 pointer-events-auto" : "pointer-events-none"
     }`;
-
-  const inputClasses = `widget-input text-sm sm:text-base ${
-    shouldShowLatestResearchs ? "bg-transparent" : "signup-form-input pr-14"
-  } ${inputClassName}`;
 
   return (
     <PlacesAutocomplete
@@ -123,8 +109,11 @@ const LocationAutocomplete = ({
               <div className="flex-center gap-2">
                 <Input
                   {...getInputProps({ placeholder })}
-                  className={inputClasses}
-                  onClick={handleShowLatestResearchs}
+                  className={`widget-input text-sm sm:text-base ${
+                    shouldShowLatestResearchs
+                      ? "bg-transparent"
+                      : "signup-form-input pr-14"
+                  } ${inputClassName}`}
                 />
                 <XIconBtn
                   input={userInput}
@@ -132,9 +121,9 @@ const LocationAutocomplete = ({
                 />
               </div>
               <CommandList className={dropdownClasses(suggestions)}>
-                {shouldShowLatestResearchs && showLatestResearchs && (
+                {shouldShowLatestResearchs && !!latestResearch.length && (
                   <LatestResearchsList
-                    latestResearchs={latestResearchs}
+                    latestResearchs={latestResearch}
                     hasSeparator={hasSeparator}
                   />
                 )}

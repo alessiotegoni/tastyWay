@@ -34,37 +34,39 @@ const UserProfileLayout = () => {
     <main className="user-profile">
       <div className="container max-w-[570px]">
         <div className="user-profile__header mt-16 xl:mt-0">
-          <figure
-            className={`p-3 self-center sm:self-auto bg-[#ED0000] bg-opacity-40
+          <div className="flex-center sm:block bg-transparent">
+            <figure
+              className={`p-3 bg-[#ED0000] bg-opacity-40
           rounded-3xl border border-[#ED0000] border-opacity-30 ${
             isPending ? "w-[151px] h-[151px] flex-center" : ""
           }`}
-          >
-            <Input
-              ref={fileInputRef}
-              type="file"
-              className="w-0 h-0"
-              id="restaurantImg"
-              onChange={handleUploadImg}
-            />
-            {isPending ? (
-              <Loader2 />
-            ) : imageUrl ? (
-              <img
-                src={imageUrl}
-                alt=""
-                className="w-[125px] h-[125px] object-cover rounded-2xl"
+            >
+              <Input
+                ref={fileInputRef}
+                type="file"
+                className="w-0 h-0"
+                id="restaurantImg"
+                onChange={handleUploadImg}
               />
-            ) : (
-              <Label
-                htmlFor="restaurantImg"
-                className="w-[125px] h-[125px] flex-center leading-5
+              {isPending ? (
+                <Loader2 />
+              ) : imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt=""
+                  className="w-[125px] h-[125px] object-cover rounded-2xl"
+                />
+              ) : (
+                <Label
+                  htmlFor="restaurantImg"
+                  className="w-[125px] h-[125px] flex-center leading-5
                 cursor-pointer text-center"
-              >
-                Aggiungi immagine
-              </Label>
-            )}
-          </figure>
+                >
+                  Aggiungi immagine
+                </Label>
+              )}
+            </figure>
+          </div>
           <div
             className="p-3 px-4 bg-[#ED0000] bg-opacity-40
           rounded-3xl border border-[#ED0000] border-opacity-30 grow
