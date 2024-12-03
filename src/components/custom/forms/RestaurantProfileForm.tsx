@@ -70,8 +70,6 @@ const RestaurantProfileForm = ({ restaurantName }: RestaurantProfileProps) => {
     }
   }, [formErrors]);
 
-  console.log(formErrors);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -22,7 +22,7 @@ const RestaurantUserOrder = () => {
         <RestaurantActiveOrderSkeleton />
       ) : order ? (
         <>
-          <div className="restaurant-widget max-w-[700px] mx-auto mt-16 lg:mt-0">
+          <div className="restaurant-widget max-w-[700px] mx-auto mt-16 xl:mt-0">
             <div className="text-center">
               <p className="text-white/70 font-semibold text-lg">Nome</p>
               <h2 className="text-lg sm:text-2xl font-semibold mt-2 mb-4">
@@ -50,7 +50,7 @@ const RestaurantUserOrder = () => {
           </div>
           <div
             className={`w-fit mx-auto px-4 py-3 sm:px-6 border rounded-full
-              my-3 sm:my-4 text-2xl font-semibold flex-center gap-2
+              my-3 sm:my-4 text-xl sm:text-2xl font-semibold flex-center gap-2
               ${getOrderSatusStyle(order.status)}`}
           >
             <img
@@ -64,25 +64,18 @@ const RestaurantUserOrder = () => {
             className="restaurant-widget max-w-[1000px] mx-auto min-h-[420px]
       flex flex-col justify-between"
           >
-            <div className="">
+            <div>
               <h2 className="text-center text-3xl font-semibold mb-4">
                 Ordine
               </h2>
-              <ul
-                className={`flex ${
-                  order.items.length <= 2 ? "justify-center" : "flex-wrap"
-                } gap-3`}
-              >
-                <OrderItemsList
-                  items={order.items}
-                  className="bg-[#FF2323] bg-opacity-60 py-2 px-3
-                  xs:py-4 xs:px-5 basis-1/3 h-fit"
-                  itemImgSize={80}
-                  fontSize={18}
-                />
-              </ul>
+              <OrderItemsList
+                items={order.items}
+                className="grow sm:grow-0"
+                itemImgSize={80}
+                fontSize={18}
+              />
             </div>
-            <div className="flex-center flex-wrap-reverse gap-3">
+            <div className="flex-center flex-wrap-reverse gap-3 mt-6">
               <DeleteOrderAlert orderId={order.orderId} />
               <SelectOrderStatus
                 currentStatus={order.status}

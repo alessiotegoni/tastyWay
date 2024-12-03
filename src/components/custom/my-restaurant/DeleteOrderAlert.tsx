@@ -20,9 +20,9 @@ export function DeleteOrderAlert({ orderId }: { orderId: string }) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className="btn bg-[#B40000] bg-opacity-80
+          className="btn grow sm:grow-0 bg-[#B40000] bg-opacity-80
           border-[#ED0000] border-opacity-50 font-semibold py-3 px-5
-          hover:bg-opacity-100"
+          hover:bg-opacity-100" disabled={isPending}
         >
           Cancella ordine
         </Button>

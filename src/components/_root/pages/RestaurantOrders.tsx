@@ -166,11 +166,12 @@ const RestaurantOrders = () => {
       {isLoading && <RestaurantOrdersSkeleton />}
       {isSuccess && !!orders.length && (
         <div className="restaurant-widget p-4 max-w-[1000px] min-h-[600px] mx-auto mt-5">
-          <ul className="restaurant-order">
+          <ul className="my-restaurant-orders">
             {orders.map((order) => (
               <li
                 key={order.orderId}
-                className={`bg-[#2A003E] px-4 py-3 rounded-2xl ${
+                className={`bg-[#2A003E] px-4 py-3 rounded-2xl
+                  flex flex-col justify-between ${
                   orders.length === 1 ? "max-w-[350px]" : ""
                 }`}
               >
@@ -197,7 +198,7 @@ const RestaurantOrders = () => {
                       {order.status}
                     </figcaption>
                   </figure>
-                  <div className="mt-3 font-medium">{order.address}</div>
+                  <div className="mt-3 font-medium text-center">{order.address}</div>
                 </div>
                 <ul className="flex-center flex-wrap gap gap-2 mb-7">
                   {order.items.map((item) => (

@@ -19,14 +19,12 @@ const OrderItem = ({
       key={item._id}
     >
       <div className="w-full flex gap-2">
-        <figure
-          className={`shrink-0 w-[${itemImgSize}px] h-[${itemImgSize}px]
-          self-center flex-center`}
-        >
+        <figure className="shrink-0 self-center flex-center">
           <img
             src={item.img ?? "/imgs/default-restaurant-item.png"}
             alt={item.name}
-            className="block w-full h-full rounded-lg object-contain"
+            className="rounded-lg object-contain"
+            width={itemImgSize}
           />
         </figure>
         <div className={`w-full flex flex-col justify-between`}>

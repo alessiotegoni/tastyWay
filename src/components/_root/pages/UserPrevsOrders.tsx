@@ -7,20 +7,14 @@ import {
   useGetActiveOrders,
   useGetPrevOrders,
 } from "@/lib/react-query/queries/userQueries";
-import { formatRestaurantName, getDate } from "@/lib/utils";
-import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { useCart } from "@/hooks/useCart";
-import { UserPrevOrder } from "@/types/userTypes";
 import useAddress from "@/hooks/useAddress";
+import OrderAgainBtn from "@/components/custom/OrderAgainBtn";
+import { getDate } from "@/lib/utils";
 
 const UserPrevsOrders = () => {
-  const { handleSetCart } = useCart();
   const { selectedAddress } = useAddress();
-
-  const navigate = useNavigate();
 
   const { inView, ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
@@ -41,26 +35,10 @@ const UserPrevsOrders = () => {
   const activeOrders = activeOrdersData?.orders ?? [];
   const prevOrders = prevOrdersData?.pages.flatMap((p) => p.orders) ?? [];
 
-  const hasNoOrders =
-    !areActiveOrdersLoading &&
-    !activeOrders.length &&
-    !arePrevOrdersLoading &&
-    !prevOrders.length;
-
   const canShowLastOrder =
     !areActiveOrdersLoading && !activeOrdersData.orders?.length;
 
   const lastOrder = canShowLastOrder ? prevOrders.splice(0, 1).at(0) : null;
-
-  const handleOrderAgain = ({ items, restaurant }: UserPrevOrder) => {
-    handleSetCart({
-      restaurantId: restaurant.id,
-      itemsIds: items.map((i) => i._id),
-      type: "ADD",
-    });
-
-    navigate(`/restaurants/${formatRestaurantName(restaurant.name)}`);
-  };
 
   return (
     <main className="user-orders flex flex-col items-center">
@@ -98,38 +76,25 @@ const UserPrevsOrders = () => {
                         {getDate(lastOrder!.createdAt)}
                       </p>
                       <div className="flex-center gap-2">
-                        <Button
-                          className="btn py-2 px-5 text-sm
-                          bg-home-widget-border-50 hover:bg-home-widget-border-80
-                          rounded-xl"
-                          onClick={() => handleOrderAgain(lastOrder)}
-                        >
-                          Ordina ancora
-                        </Button>
-                        <Link
+                        <OrderAgainBtn order={lastOrder} />
+                        {/* <Link
                           to={`/user/order/${lastOrder!._id}`}
                           className="btn py-2 px-5 text-sm
                           bg-home-widget-border-50 hover:bg-home-widget-border-80
                           rounded-xl"
                         >
                           Vedi
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <h3 className="text-xl font-semibold">Il tuo ordine</h3>
-              <ul
-                className={`flex flex-wrap gap-2 ${
-                  lastOrder!.items.length <= 1 ? "justify-center" : ""
-                } mt-2 mb-4`}
-              >
-                <OrderItemsList
-                  items={lastOrder!.items}
-                  className="min-w-[180px]"
-                />
-              </ul>
+              <OrderItemsList
+                items={lastOrder!.items}
+                className="grow sm:grow-0 min-w-[190px]"
+              />
               <h3 className="font-semibold text-3xl">
                 Totale: <span>${lastOrder!.totalPrice.toFixed(2)}</span>
               </h3>
@@ -151,7 +116,7 @@ const UserPrevsOrders = () => {
                 Ordini precedenti
               </h2>
             </div>
-            <div className="prev-orders__container user-widget border-t-0">
+            <div className="user-widget border-t-0 min-h-[400px]">
               <ul className="w-full space-y-8 md:space-y-4">
                 {prevOrders.map((order, i) => {
                   const orderDate = getDate(order.createdAt);
@@ -182,32 +147,24 @@ const UserPrevsOrders = () => {
                               ${order.totalPrice.toFixed(2)}
                             </h3>
                           </div>
-                          <ul className="flex flex-wrap my-3 gap-2">
-                            <OrderItemsList
-                              items={order.items}
-                              className="min-w-[190px]"
-                            />
-                          </ul>
+                          <OrderItemsList
+                            items={order.items}
+                            className="grow sm:grow-0 min-w-[190px]"
+                          />
                         </div>
                         <div className="sm:flex-between gap-3 mt-1 sm:mt-0">
                           <p className="text-right sm:text-left text-sm lg:text-lg font-semibold text-white/80 self-end">
                             {orderDate}
                           </p>
                           <div className="flex-center gap-2 mt-3 sm:mt-0">
-                            <Button
-                              className="btn rounded-xl basis-2/3 py-2 px-5 text-sm
-                        bg-home-widget-border-50 hover:bg-home-widget-border-80"
-                              onClick={() => handleOrderAgain(order)}
-                            >
-                              Ordina ancora
-                            </Button>
-                            <Link
+                            <OrderAgainBtn order={order} />
+                            {/* <Link
                               to={`/user/orders/${order._id}`}
                               className="btn rounded-xl basis-1/3 py-2 px-5 text-sm
                         bg-home-widget-border-50 hover:bg-home-widget-border-80"
                             >
                               Vedi
-                            </Link>
+                            </Link> */}
                           </div>
                         </div>
                       </div>
@@ -218,21 +175,24 @@ const UserPrevsOrders = () => {
             </div>
           </>
         )}
-        {hasNoOrders && (
-          <ErrorWidget
-            className="sm:w-[530px] sm:py-5 user-widget mt-4 mx-auto"
-            title="Non hai ancora effettuato nessun ordine."
-            subtitle="Nessun ordine trovato. Esplora i migliori ristoranti nella tua zona e fai il tuo primo ordine in pochi clic!"
-            btns={[
-              {
-                id: "orderNow",
-                value: "Ordina ora",
-                goto: selectedAddress ? "/restaurants" : "/",
-                className: "bg-[#ec010184] border border-[#fe0000b3] px-8",
-              },
-            ]}
-          />
-        )}
+        {!areActiveOrdersLoading &&
+          !activeOrders.length &&
+          !arePrevOrdersLoading &&
+          !prevOrders.length && (
+            <ErrorWidget
+              className="sm:w-[530px] sm:py-5 user-widget mt-4 mx-auto"
+              title="Non hai ancora effettuato nessun ordine."
+              subtitle="Nessun ordine trovato. Esplora i migliori ristoranti nella tua zona e fai il tuo primo ordine in pochi clic!"
+              btns={[
+                {
+                  id: "orderNow",
+                  value: "Ordina ora",
+                  goto: selectedAddress ? "/restaurants" : "/",
+                  className: "bg-[#ec010184] border border-[#fe0000b3] px-8",
+                },
+              ]}
+            />
+          )}
       </div>
     </main>
   );

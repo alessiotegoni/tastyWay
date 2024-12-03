@@ -1,7 +1,4 @@
-import {
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { ApiError } from "@/types/apiTypes";
 import { UserPrevOrderRes } from "@/types/userTypes";
 import {
@@ -22,9 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { errorToast } from "@/lib/utils";
 
 export const useGetMyAddress = (lat: number, lng: number) => {
-
-  const { handleSetSelectedAddress } = useAddress()
-  const navigate = useNavigate()
+  const { handleSetSelectedAddress } = useAddress();
+  const navigate = useNavigate();
 
   const query = useQuery<string>({
     queryKey: ["myLocation", lat, lng],
@@ -37,9 +33,9 @@ export const useGetMyAddress = (lat: number, lng: number) => {
     navigate(`/restaurants`);
   }
 
-  if (query.isError) errorToast({ err: query.error })
+  if (query.isError) errorToast({ err: query.error });
 
-  return query
+  return query;
 };
 
 export const useGetUserProfile = () => {
@@ -79,6 +75,7 @@ export const useGetActiveOrdersCount = (
         ? getRestaurantActiveOrdersCount(privateApi)
         : getUserActiveOrdersCount(privateApi),
     enabled: isAuthenticated,
+    refetchInterval: 5000,
   });
 };
 

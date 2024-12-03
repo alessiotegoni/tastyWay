@@ -31,7 +31,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       ref={observerRef}
     >
       <div className="col-left sm:flex grow gap-4">
-        <figure className="sm:w-[260px] sm:h-[160px] aspect-square">
+        <figure className="sm:w-[260px] sm:h-[160px] aspect-square shrink-0">
           <img
             src={restaurantImg}
             alt={`${restaurantName}-img`}

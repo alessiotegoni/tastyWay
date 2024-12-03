@@ -437,7 +437,7 @@
     align-items: unset;
   }
 
-  .restaurant-order {
+  .my-restaurant-orders {
     @apply grid gap-4;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }

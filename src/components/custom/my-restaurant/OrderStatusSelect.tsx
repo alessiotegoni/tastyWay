@@ -44,14 +44,14 @@ export function SelectOrderStatus({
 
   return (
     <div
-      className="btn py-3 px-5 bg-[#2A003E] border-transparent
-     flex items-center space-x-4"
+      className="btn grow sm:grow-0 py-3 px-5 bg-[#2A003E] border-transparent
+     flex justify-center items-center space-x-4"
     >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <div className="flex-center gap-3">
-            <Button className="font-semibold">Cambia stato dell'ordine</Button>
             {isPending && <Loader2 />}
+            <Button className="font-semibold">Cambia stato dell'ordine</Button>
           </div>
         </PopoverTrigger>
         <PopoverContent className="restaurant-widget p-3" align="center">

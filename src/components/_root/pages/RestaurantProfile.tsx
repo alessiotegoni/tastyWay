@@ -33,8 +33,6 @@ const RestaurantProfile = () => {
     },
   });
 
-  console.log(form.getValues("address"));
-
   useEffect(() => {
     if (data) form.reset(data, { keepDirty: false });
   }, [data]);
