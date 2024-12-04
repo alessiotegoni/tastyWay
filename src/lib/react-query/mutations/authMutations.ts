@@ -143,8 +143,9 @@ export const useForgotPassword = () =>
     mutationKey: ["forgotPassword"],
     mutationFn: (email) => forgotPassword(email),
     onSuccess: ({ message }) => toast({ description: message }),
-    onError: () =>
+    onError: (err) =>
       errorToast({
+        err,
         description:
           "Errore nell'invio della email per il reset della password",
       }),
