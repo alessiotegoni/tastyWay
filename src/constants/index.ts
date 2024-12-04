@@ -44,7 +44,7 @@ export const foodFilters: FoodFilters[] = [
     value: "chinese",
   },
   {
-    img: "/icons/food-filters/mexican.png",
+    img: "/icons/food-filters/mexican.webp",
     name: "Messicana",
     value: "mexican",
   },
@@ -64,7 +64,7 @@ export const foodFilters: FoodFilters[] = [
     value: "mediterranean",
   },
   {
-    img: "/icons/food-filters/vegetarian.png",
+    img: "/icons/food-filters/vegetarian.webp",
     name: "Vegetariana",
     value: "vegetarian",
   },
@@ -74,7 +74,7 @@ export const foodFilters: FoodFilters[] = [
     value: "vegan",
   },
   {
-    img: "/icons/food-filters/seafood.png",
+    img: "/icons/food-filters/seafood.webp",
     name: "Pesce",
     value: "seafood",
   },
@@ -94,7 +94,7 @@ export const foodFilters: FoodFilters[] = [
     value: "breakfast",
   },
   {
-    img: "/icons/`food-filters/bakery.png",
+    img: "/icons/food-filters/bakery.png",
     name: "Panetteria",
     value: "bakery",
   },

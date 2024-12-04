@@ -8,6 +8,7 @@ export type RestaurantsType = {
     price: number;
     time: number;
   };
+  isNew: boolean;
 };
 
 export type RestaurantsRes = {

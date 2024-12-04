@@ -51,6 +51,14 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
       </div>
       <div className="col-right flex flex-col sm:flex-row lg:flex-col justify-between gap-3 sm:gap-0 mt-3 lg:mt-0">
         <div className="flex items-center flex-wrap md:flex-nowrap lg:flex-center gap-2">
+          {!user?.isCmpAccount && restaurant.isNew && (
+            <div
+              className="bg-restaurant-primary
+              border-restaurant-border restaurant-info"
+            >
+              <p className="whitespace-nowrap">Nuovo</p>
+            </div>
+          )}
           {user?.restaurantName === restaurant.name && (
             <div
               className="bg-restaurant-primary
@@ -63,11 +71,11 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
             className="restaurant-info bg-[#004D85]
            border-[#0088EB] text-[#C8DEFF]"
           >
-            <img
+            {/* <img
               src="/icons/delivery-time-icon.png"
               alt="delivery-time-icon"
               width={20}
-            />
+            /> */}
             <p className="whitespace-nowrap">
               {restaurant.deliveryInfo.time} min
             </p>
@@ -76,11 +84,11 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
             className="bg-[#FCAE08] restaurant-info
            border-[#ffd374] text-[#171001]"
           >
-            <img
+            {/* <img
               src="/icons/delivery-price-icon.png"
               alt="delivery-price-icon"
               width={20}
-            />
+            /> */}
             <p>{restaurant.deliveryInfo.price.toFixed(2)}€</p>
           </div>
         </div>

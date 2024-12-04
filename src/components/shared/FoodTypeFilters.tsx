@@ -35,7 +35,8 @@ const FoodTypeFilters = ({
 
     if (!selectedAddress) {
       errorToast({
-        description: "Prima di selezionare il cibo inserisci il tuo indirizzo",
+        description:
+          "Prima di selezionare il filtro inserisci il tuo indirizzo",
       });
       return;
     }
@@ -76,11 +77,7 @@ const FoodTypeFilters = ({
             <img
               src={filter.img}
               alt={filter.name}
-              className={`${
-                filter.name === "Fast food"
-                  ? "w-[40px] md:w-[60px]"
-                  : "w-[35px] sm:w-auto"
-              }`}
+              className="w-[50px] h-[50px] object-cover"
             />
           </div>
           <figcaption className="text-[13px] font-semibold mt-2">
