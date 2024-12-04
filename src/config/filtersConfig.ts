@@ -52,4 +52,5 @@ export const restaurantItemFilters: {
   { value: "rice", label: "Riso" },
   { value: "poke", label: "Poke" },
   { value: "main_course", label: "Portata Principale" },
+  { value: "healthy", label: "Salutare" },
 ];

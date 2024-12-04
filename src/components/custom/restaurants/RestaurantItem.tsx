@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatRestaurantName } from "@/lib/utils";
 import { RestaurantsType } from "@/types/restaurantTypes";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ interface RestaurantItemProps {
 }
 
 const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const restaurantName = formatRestaurantName(restaurant.name);
@@ -16,7 +18,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
   const restaurantCuisine = restaurant.cuisine.map((c, i) => (
     <li
       key={i}
-      className="py-2 px-5 bg-home-widget-border-40
+      className="py-2 px-4 text-xs bg-home-widget-border-40
       rounded-[40px] font-medium text-[12px]"
     >
       {c.replaceAll("_", " ").toLowerCase()}
@@ -34,7 +36,7 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
         <figure className="sm:w-[260px] sm:h-[160px] aspect-square shrink-0">
           <img
             src={restaurantImg}
-            alt={`${restaurantName}-img`}
+            alt={restaurantName}
             className="w-full h-full object-cover rounded-[20px]"
           />
         </figure>
@@ -48,27 +50,36 @@ const RestaurantItem = ({ restaurant, observerRef }: RestaurantItemProps) => {
         </div>
       </div>
       <div className="col-right flex flex-col sm:flex-row lg:flex-col justify-between gap-3 sm:gap-0 mt-3 lg:mt-0">
-        <div className="lg:flex-center flex gap-2">
+        <div className="flex items-center flex-wrap md:flex-nowrap lg:flex-center gap-2">
+          {user?.restaurantName === restaurant.name && (
+            <div
+              className="bg-restaurant-primary
+              border-restaurant-border restaurant-info"
+            >
+              <p className="whitespace-nowrap">Tuo ristorante</p>
+            </div>
+          )}
           <div
-            className="restaurant-deliveryinfo bg-[#004D85]
+            className="restaurant-info bg-[#004D85]
            border-[#0088EB] text-[#C8DEFF]"
           >
             <img
               src="/icons/delivery-time-icon.png"
               alt="delivery-time-icon"
-              width={30}
+              width={20}
             />
-            <p>{restaurant.deliveryInfo.time}</p>
-            <p>min</p>
+            <p className="whitespace-nowrap">
+              {restaurant.deliveryInfo.time} min
+            </p>
           </div>
           <div
-            className="bg-[#FCAE08] restaurant-deliveryinfo
-           border-[#825800] text-[#171001]"
+            className="bg-[#FCAE08] restaurant-info
+           border-[#ffd374] text-[#171001]"
           >
             <img
               src="/icons/delivery-price-icon.png"
               alt="delivery-price-icon"
-              width={30}
+              width={20}
             />
             <p>{restaurant.deliveryInfo.price.toFixed(2)}€</p>
           </div>

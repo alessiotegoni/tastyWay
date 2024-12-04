@@ -377,8 +377,8 @@
     text-white placeholder:text-white/80 font-medium;
   }
 
-  .restaurant-deliveryinfo {
-    @apply px-3 py-[5px] rounded-[30px]
+  .restaurant-info {
+    @apply py-2 px-4 text-sm rounded-full
     border flex-center gap-2;
   }
 
