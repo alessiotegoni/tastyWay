@@ -5,13 +5,21 @@ import { FormProvider, useForm } from "react-hook-form";
 import { signupSchema, SignupType } from "@/lib/validations/authSchemas";
 import { defaultSignupValues as defaultValues } from "../../lib/validations/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate, useSearchParams } from "react-router-dom";
 
 const Signup = () => {
+  const { isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
+
   const methods = useForm<SignupType>({
     mode: "onSubmit",
     resolver: zodResolver(signupSchema),
     defaultValues,
   });
+
+  if (isAuthenticated)
+    return <Navigate to={searchParams.get("redirect") ?? "/"} />;
 
   return (
     <div className="hero">

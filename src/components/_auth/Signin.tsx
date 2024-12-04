@@ -4,9 +4,8 @@ import SigninForm from "./forms/SigninForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { signinSchema, SigninType } from "@/lib/validations/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { defaultSigninValues as defaultValues } from "../../lib/validations/authSchemas";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "../ui/button";
@@ -16,7 +15,6 @@ import { errorToast } from "@/lib/utils";
 const Signin = () => {
   const { isAuthenticated } = useAuth();
 
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const { mutateAsync: login, isPending } = useGoogleAuth();
@@ -33,15 +31,14 @@ const Signin = () => {
       }),
   });
 
-  useEffect(() => {
-    if (isAuthenticated) navigate(searchParams.get("redirect") ?? "/");
-  }, [navigate, isAuthenticated]);
-
   const methods = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     mode: "onSubmit",
     defaultValues,
   });
+
+  if (isAuthenticated)
+    return <Navigate to={searchParams.get("redirect") ?? "/"} />;
 
   return (
     <div className="hero">
